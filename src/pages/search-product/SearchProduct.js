@@ -47,10 +47,9 @@ const SearchProduct = ({ strings, location, defaultStore, currentLanguageCode, s
             let response = await WebService.post(action, param);
             if (response) {
                 // console.log(response)
-                // console.log(response.categoryFacets)
                 setProductData(response.products);
                 setTotalProduct(response.productCount);
-                setSubCategory(response.categoryFacets)
+                setSubCategory(response?.categoryFacets || [])
             }
             setLoader(false)
         } catch (error) {

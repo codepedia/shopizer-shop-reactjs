@@ -41,7 +41,7 @@ const HeaderTop = ({
         dispatch={dispatch}
       />
       <div className="header-offer">
-        <p dangerouslySetInnerHTML={{ __html: message.replace("]]>", "") }}>
+        <p dangerouslySetInnerHTML={{ __html: message.replace("]]>", "").replace("<![CDATA[", "") }}>
         </p>
       </div>
     </div>
