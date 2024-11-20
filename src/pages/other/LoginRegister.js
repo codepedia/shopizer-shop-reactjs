@@ -363,7 +363,7 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
 
                               </div>
                               <div className="login-input">
-                                <input type="password" name={registerForm.repeatPassword.name} ref={register2(registerForm.repeatPassword.validate)} placeholder={strings["Repeat Password"]} onChange={(e) => onConfirmPassword(e)} />
+                                <input type="password" autoComplete="new-confirm-password" name={registerForm.repeatPassword.name} ref={register2(registerForm.repeatPassword.validate)} placeholder={strings["Repeat Password"]} onChange={(e) => onConfirmPassword(e)} />
                                 {errors2[registerForm.repeatPassword.name] && <p className="error-msg">{errors2[registerForm.repeatPassword.name].message}</p>}
 
                               </div>
@@ -381,6 +381,7 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
                                 <Controller
                                   name={registerForm.country.name}
                                   control={control}
+                                  defaultValue={null}
                                   rules={registerForm.country.validate}
                                   render={props => {
                                     return (
@@ -401,6 +402,7 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
                                 {
                                   stateData && stateData.length > 0 ?
                                     <Controller
+                                      defaultValue={null}
                                       name={registerForm.stateProvince.name}
                                       control={control}
                                       rules={registerForm.stateProvince.validate}

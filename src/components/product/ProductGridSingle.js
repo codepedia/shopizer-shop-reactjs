@@ -154,25 +154,28 @@ const ProductGridSingleTwo = ({
         </div>
       </div>
       {/* product modal */}
-      <ProductModal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-        product={product}
-        defaultStore={defaultStore}
-        // currency={currency}
-        // discountedprice={discountedPrice}
-        finalproductprice={finalProductPrice}
-        finaldiscountedprice={finalDiscountedPrice}
-        // cartitem={cartItem}
-        // wishlistitem={wishlistItem}
-        // compareitem={compareItem}
-        addtocart={addToCart}
+      {
+        modalShow && 
+        <ProductModal
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          product={product}
+          defaultStore={defaultStore}
+          // currency={currency}
+          // discountedprice={discountedPrice}
+          finalproductprice={finalProductPrice}
+          finaldiscountedprice={finalDiscountedPrice}
+          // cartitem={cartItem}
+          // wishlistitem={wishlistItem}
+          // compareitem={compareItem}
+          addtocart={addToCart}
 
-        cartData={cartData}
-        userData={userData}
-        // addtocompare={addToCompare}
-        addtoast={addToast}
-      />
+          cartData={cartData}
+          userData={userData}
+          // addtocompare={addToCompare}
+          addtoast={addToast}
+        />
+      }
     </Fragment >
   );
 };

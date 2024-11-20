@@ -12,6 +12,7 @@ import { isValidObject } from "../../util/helper";
 import { useForm } from "react-hook-form";
 import { getState } from "../../redux/actions/userAction";
 import { setLoader } from "../../redux/actions/loaderActions";
+import { Controller } from "react-hook-form";
 import {
   addToCart,
   // decreaseQuantity,
@@ -40,36 +41,36 @@ const couponCode = {
     }
   }
 }
-// const quoteForm = {
+const quoteForm = {
 
-//   postalCode: {
-//     name: "postalCode",
-//     validate: {
-//       required: {
-//         value: true,
-//         message: "postalCode is required"
-//       }
-//     }
-//   },
-//   country: {
-//     name: "country",
-//     validate: {
-//       required: {
-//         value: true,
-//         message: "Country is required"
-//       }
-//     }
-//   },
-//   stateProvince: {
-//     name: "stateProvince",
-//     validate: {
-//       required: {
-//         value: true,
-//         message: "State is required"
-//       }
-//     }
-//   },
-// };
+  postalCode: {
+    name: "postalCode",
+    validate: {
+      required: {
+        value: true,
+        message: "postalCode is required"
+      }
+    }
+  },
+  country: {
+    name: "country",
+    validate: {
+      required: {
+        value: true,
+        message: "Country is required"
+      }
+    }
+  },
+  stateProvince: {
+    name: "stateProvince",
+    validate: {
+      required: {
+        value: true,
+        message: "State is required"
+      }
+    }
+  },
+};
 const Cart = ({
   location,
   cartID,
@@ -95,7 +96,7 @@ const Cart = ({
   const [cartItems, setCartItems] = useState({})
   // const cartTotalPrice = cartItems.displaySubTotal;
   // const grandTotalPrice = cartItems.displaySubTotal;
-  // const { register, handleSubmit, control, errors } = useForm({ mode: 'onChange' });
+  const { register, handleSubmit, control, errors } = useForm({ mode: 'onChange' });
   const {
     register: codeRef,
     handleSubmit: codeSubmit,
@@ -103,8 +104,8 @@ const Cart = ({
   } =
     useForm({ mode: 'onChange' });
 
-  // const [shippingOptions, setShippingOptions] = useState();
-  const [shippingOptions] = useState();
+  const [shippingOptions, setShippingOptions] = useState();
+  // const [shippingOptions] = useState();
 
   useEffect(() => {
     getCartData()
@@ -174,19 +175,19 @@ const Cart = ({
 
   // }
 
-  // const getQuote = async (data) => {
-  //   let action = constant.ACTION.CART + cartID + '/' + constant.ACTION.SHIPPING;
-  //   let param = {};
-  //   param = { 'postalCode': data.postalCode, 'countryCode': data.country }
-  //   try {
-  //     let response = await WebService.post(action, param);
-  //     //console.log(response.shippingOptions);
-  //     if (response) {
-  //       setShippingOptions(response.shippingOptions)
-  //     }
-  //   } catch (error) {
-  //   }
-  // }
+  const getQuote = async (data) => {
+    let action = constant.ACTION.CART + cartID + '/' + constant.ACTION.SHIPPING;
+    let param = {};
+    param = { 'postalCode': data.postalCode, 'countryCode': data.country }
+    try {
+      let response = await WebService.post(action, param);
+      //console.log(response.shippingOptions);
+      if (response) {
+        setShippingOptions(response.shippingOptions)
+      }
+    } catch (error) {
+    }
+  }
   const applyPromoCode = async (data) => {
     // console.log(data)
     setLoader(true)
@@ -326,10 +327,10 @@ const Cart = ({
 
 
                 <div className="row cart-custom-row">
-                  <div className="col-lg-4 col-md-6">
+                  {/* <div className="col-lg-4 col-md-6">
                     &nbsp;
-                  </div>
-                  {/* 
+                  </div> */}
+                  
                   <div className="col-lg-4 col-md-6">
                     <div className="cart-tax">
                       <div className="title-wrap">
@@ -402,7 +403,7 @@ const Cart = ({
                     </div>
                     
                   </div>
-                    */}
+                   
 
                   <div className="col-lg-8 col-md-6 cart-total">
                     <div className="box-custom">
