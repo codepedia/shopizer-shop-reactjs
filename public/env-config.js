@@ -8,6 +8,6 @@ window._env_ = {
   APP_NUVEI_TERMINAL_ID: "",
   APP_NUVEI_SECRET: "",
   APP_PAYMENT_TYPE: "STRIPE",
-  APP_STRIPE_KEY: "pk_test_TYooMQauvdEDq54NiTphI7jx",
-  APP_THEME_COLOR: "#D1D1D1",
+  APP_STRIPE_KEY: "pk_test_51PDuSnRtzBKjslO0OqboJGRXXLTsSf6diPwJ2aIl5tGKxdlqSQTSEOUR7CijjNvlq928JtP0rftHgC4VFoulf1Jv00WnsnPfam",
+  APP_STRIPE_ACCOUNT: "acct_1PDuSnRtzBKjslO0",
 }

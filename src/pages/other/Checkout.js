@@ -28,7 +28,7 @@ import { multilanguage } from "redux-multilanguage";
 
 
 
-const stripePromise = loadStripe(window._env_.APP_STRIPE_KEY);
+const stripePromise = loadStripe(window._env_.APP_STRIPE_KEY, { stripeAccount: window._env_.APP_STRIPE_ACCOUNT});
 const paymentForm = {
   firstName: {
     name: "firstName",
@@ -545,8 +545,8 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
         "payment": {
           "paymentType": "CREDITCARD",
           "transactionType": "CAPTURE",
-          "paymentModule": "stripe",
-          "paymentToken": result.token,
+          "paymentModule": "stripe3",
+          "paymentToken": result,
           "amount": shippingQuote[shippingQuote.length - 1].value
         }
       }
@@ -608,8 +608,8 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
         "payment": {
           "paymentType": "CREDITCARD",
           "transactionType": "CAPTURE",
-          "paymentModule": "stripe",
-          "paymentToken": result.token,
+          "paymentModule": "stripe3",
+          "paymentToken": result,
           "amount": shippingQuote[shippingQuote.length - 1].value
         },
         "customer": customer

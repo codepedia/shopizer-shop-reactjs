@@ -103,3 +103,4 @@ dist
 
 #temporary configurations
 #env-config.js
+package-lock.json
