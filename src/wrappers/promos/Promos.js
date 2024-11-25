@@ -31,24 +31,6 @@ const FeatureIcon = ({
       console.log(response);
       if (response) {
         setPromoData(response?.products)
-        // let category = [{ 'id': '', 'name': 'All', 'code': 'all', data: response.products }];
-        // response.products.forEach((item) => {
-        //   if (item.categories !== null) {
-        //     item.categories.forEach((a) => {
-        //       // console.log(a)
-        //       let index = category.findIndex(value => value.id === a.id);
-        //       // console.log(index);
-        //       if (index === -1) {
-        //         category.push({ 'id': a.description.id, 'name': a.description.name, 'code': a.code, data: [item] })
-        //       } else {
-        //         category[index].data.push(item)
-        //       }
-        //     })
-        //   }
-        // });
-        // // setFeaturedData(response.products)
-        // setCategoryData(category)
-        // // setLoader(false)
       }
     } catch (error) {
       // setLoader(false)
@@ -73,20 +55,11 @@ const FeatureIcon = ({
           {
             promoData.map((promo) => {
               return  <div style={{textAlign: 'center'}} className={promoData.length === 1 ? "col-lg-12" : promoData.length === 2 ? "col-lg-6" : promoData.length === 3 ? "col-lg-4" : "col-lg-3" }>
-                <img src="/assets/img/promo/promo20.jpg" alt="promo20" />
+                <img src="/assets/img/promo/promo20.jpg" alt="promo20" style={{margin: '12px', boxShadow: '5px 5px 5px lightgrey'}}/>
                 </div>
             })
             
           }
-          {/* <div className="col-lg-3 col-md-3 col-sm-6"><img src="/assets/img/promo/promo10.jpg" alt="promo10" /></div> */}
-          {/* <div className="col-lg-3 col-md-3 col-sm-6"></div>
-          
-          <div className="col-lg-3 col-md-3 col-sm-6"><img src="/assets/img/promo/promo10.jpg" alt="promo10" /></div>
-          <div className="col-lg-3 col-md-3 col-sm-6"></div> */}
-         
-          {/* <div className="col-lg-2"></div>
-          <div className="col-lg-8"><img src="/assets/img/promo/promo.png" alt="promo20" width="1200"/></div>
-          <div className="col-lg-2"></div> */}
 
         </div>
       </div>

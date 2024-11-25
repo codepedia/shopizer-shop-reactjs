@@ -8,7 +8,7 @@ const HeroSliderFifteenSingle = ({ data, sliderClass, strings, sliderText }) => 
       className={`single-slider-2 slider-height-2 d-flex align-items-center bg-img ${
         sliderClass ? sliderClass : ""
         }`}
-      style={{ backgroundImage: `url(assets/img/slider/slider-12.jpg)`, height: '500px' }}
+      style={{ backgroundImage: `url(${data.path + data.name})`, height: '500px' }}
     >
       <div className="container">
         <div className="row">
@@ -19,14 +19,14 @@ const HeroSliderFifteenSingle = ({ data, sliderClass, strings, sliderText }) => 
                 className="animated"
                 dangerouslySetInnerHTML={{ __html: sliderText?.description?.description.replace("]]>", "").replace("<![CDATA[", "") }}
               />
-              <div className="slider-btn btn-hover">
+              {/* <div className="slider-btn btn-hover">
                 <Link
                   className="animated rounden-btn"
                   to={process.env.PUBLIC_URL + data.url}
                 >
                   {strings["Shop Now"]}
                 </Link>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
