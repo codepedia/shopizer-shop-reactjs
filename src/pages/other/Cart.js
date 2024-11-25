@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 // import { getDiscountPrice } from "../../helpers/product";
 import { isValidObject } from "../../util/helper";
 import { useForm } from "react-hook-form";
-import { getState } from "../../redux/actions/userAction";
+import { getState, getCountry } from "../../redux/actions/userAction";
 import { setLoader } from "../../redux/actions/loaderActions";
 import { Controller } from "react-hook-form";
 import {
@@ -86,7 +86,8 @@ const Cart = ({
   merchant,
   isLoading,
   setLoader,
-  cartCount
+  cartCount,
+  getCountry
   // deleteAllFromCart,
 
 }) => {
@@ -94,6 +95,8 @@ const Cart = ({
   const { pathname } = location;
   const history = useHistory();
   const [cartItems, setCartItems] = useState({})
+  const [selectedOptions, setSelectedOptions] = useState('');
+  const [shippingQuote, setShippingQuote] = useState([]);
   // const cartTotalPrice = cartItems.displaySubTotal;
   // const grandTotalPrice = cartItems.displaySubTotal;
   const { register, handleSubmit, control, errors } = useForm({ mode: 'onChange' });
@@ -108,7 +111,8 @@ const Cart = ({
   // const [shippingOptions] = useState();
 
   useEffect(() => {
-    getCartData()
+    getCountry();
+    getCartData();
     // if (!isValidObject(cartItems)) {
     //   history.push('/')
     // }
@@ -143,6 +147,7 @@ const Cart = ({
       if (response) {
         setCartItems(response)
       }
+      shippingQuoteChange('')
       setLoader(false)
     } catch (error) {
       setLoader(false)
@@ -178,7 +183,7 @@ const Cart = ({
   const getQuote = async (data) => {
     let action = constant.ACTION.CART + cartID + '/' + constant.ACTION.SHIPPING;
     let param = {};
-    param = { 'postalCode': data.postalCode, 'countryCode': data.country }
+    param = { 'postalCode': '11111', 'countryCode': 'US' }
     try {
       let response = await WebService.post(action, param);
       //console.log(response.shippingOptions);
@@ -204,6 +209,27 @@ const Cart = ({
     } catch (error) {
       setLoader(false)
     }
+  }
+  const shippingQuoteChange = async (quoteID) => {
+    let action;
+
+    //console.log('SHIPPING QUOTE CHANGED');
+
+    if (quoteID) {
+      action = constant.ACTION.CART + cartID + '/' + constant.ACTION.TOTAL + '?quote=' + quoteID;
+    } else {
+      action = constant.ACTION.CART + cartID + '/' + constant.ACTION.TOTAL;
+    }
+    // console.log('Shipping action ' +action);
+    try {
+      let response = await WebService.get(action);
+      // console.log('Order total response ' + JSON.stringify(response));
+      if (response) {
+        setShippingQuote(response.totals)
+      }
+    } catch (error) {
+    }
+
   }
   return (
     <Fragment>
@@ -365,7 +391,7 @@ const Cart = ({
                               />
                               {errors[quoteForm.country.name] && <p className="error-msg">{errors[quoteForm.country.name].message}</p>}
                             </div>
-                            <div className="tax-select">
+                            {/* <div className="tax-select">
                               {
                                 stateData && stateData.length > 0 ?
                                   <Controller
@@ -388,7 +414,7 @@ const Cart = ({
                                   <input type="text" name={quoteForm.stateProvince.name} ref={register(quoteForm.stateProvince.validate)} placeholder={strings["State"]} />
                               }
                               {errors[quoteForm.stateProvince.name] && <p className="error-msg">{errors[quoteForm.stateProvince.name].message}</p>}
-                            </div>
+                            </div> */}
                             <div className="tax-select">
                               
                               <input type="text" name={quoteForm.postalCode.name} ref={register(quoteForm.postalCode.validate)} placeholder={strings["Postcode"]} />
@@ -441,14 +467,38 @@ const Cart = ({
                         </div>
                         <h5>
                           {strings["Total products"]}{" "}
-                          <span>
+                          <span style={{width: '60px'}}>
                             {cartItems.displaySubTotal}
                           </span>
                         </h5>
+                       
+                        <div className="your-order-bottom">
+                            { shippingOptions &&
+                                <ul>
+                                  {
+                                    shippingOptions.map((value, i) => {
+                                      return (<li key={i}>
+                                        <div className="login-toggle-btn">
+                                            <h5>                                            
+                                            {value.optionName}
+                                            
+                                              <span>
+                                                <input type="radio" style={{width: '30px', height: '10%'}} value={value.shippingQuoteOptionId} onChange={() => { setSelectedOptions(value.shippingQuoteOptionId); shippingQuoteChange(value.shippingQuoteOptionId)}} checked={selectedOptions === value.shippingQuoteOptionId} />
+                                                <span style={{width: '60px'}}>{value.optionPriceText}</span>
+                                              </span>
+                                            </h5>
+                                        </div>
+                                      </li>)
+                                    })
+                                  }
+                                </ul>
+                            }
+                        </div>
                         <h4 className="grand-totall-title">
                           {strings["Grand Total"]}{" "}
-                          <span>
-                            {cartItems.displaySubTotal}
+                          <span style={{width: '60px'}}>
+                            {shippingQuote.filter((a) => a.title === 'Total')[0]?.total}
+                            {/* {cartItems.displaySubTotal} */}
                           </span>
                         </h4>
                         <Link to={process.env.PUBLIC_URL + "/checkout"}>
@@ -456,7 +506,7 @@ const Cart = ({
                         </Link>
                       </div>
                     </div>
-                    {
+                    {/* {
                       shippingOptions &&
                       <div className="grand-totall" style={{ marginTop: 30 }}>
                         <div className="title-wrap">
@@ -475,7 +525,7 @@ const Cart = ({
                           })
                         }
                       </div>
-                    }
+                    } */}
                   </div>
 
                 </div>
@@ -567,7 +617,10 @@ const mapDispatchToProps = dispatch => {
     },
     getState: (code) => {
       dispatch(getState(code));
-    }
+    },
+    getCountry: () => {
+      dispatch(getCountry());
+    },
     // deleteAllFromCart: addToast => {
     //   dispatch(deleteAllFromCart(addToast));
     // }
