@@ -16,20 +16,21 @@ import constant from '../../util/constant';
 import { isCheckValueAndSetParams } from '../../util/helper';
 import { setLoader } from "../../redux/actions/loaderActions";
 import { multilanguage } from "redux-multilanguage";
-import { setCategoryID } from "../../redux/actions/productActions";
+import { setCategoryID, setCategoryFrindlyUrl } from "../../redux/actions/productActions";
 import ReactPaginate from 'react-paginate';
 
-const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader, }) => {
+const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader, friendlyUrl, setCategoryFrindlyUrl}) => {
     const [layout, setLayout] = useState('grid three-column');
     const history = useHistory();
     // const [sortType, setSortType] = useState('');
     const [categoryValue, setCategoryValue] = useState('');
+    const [categoryURL, setCategoryURL] = useState('');
     // const [filterSortType, setFilterSortType] = useState('');
     // const [filterSortValue, setFilterSortValue] = useState('');
     const [offset, setOffset] = useState(0);
     // const [skip, setSkip] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
-    const pageLimit = parseInt(window._env_.APP_PRODUCT_GRID_LIMIT) || 12;
+    const pageLimit = parseInt(window._env_.APP_PRODUCT_GRID_LIMIT) || 6;
     const [productData, setProductData] = useState([]);
     const [totalProduct, setTotalProduct] = useState(0);
     const [productDetails, setProductDetails] = useState('');
@@ -74,14 +75,15 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
             setSelectedManufature(tempSelectedManufature)
         }
         // console.log(categoryValue, tempSelectedOption, selectedManufature)
-        getProductList(categoryValue, tempSelectedOption, tempSelectedManufature)
+        getProductList(categoryValue, tempSelectedOption, tempSelectedManufature, categoryURL)
     }
 
     const getCategoryParams = (sortType, sortValue) => {
         // console.log(sortType)
-        // console.log(sortValue)
+        console.log(sortValue)
         // setCategoryValue(sortValue)
         setCategoryID(sortValue.id)
+        setCategoryFrindlyUrl(sortValue.description.friendlyUrl)
         history.push("/category/" + sortValue.description.friendlyUrl)
         // getProductList(categoryValue, selectedOption, selectedManufature)
     }
@@ -89,16 +91,17 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
     useEffect(() => {
 
         setCategoryValue(categoryID)
+        setCategoryURL(friendlyUrl)
         setSubCategory([])
         setColor([])
         setManufacture([])
         setSize([])
         setSelectedManufature([])
         setSelectedOption([])
-        getProductList(categoryID, [], [])
+        getProductList(categoryID, [], [], friendlyUrl)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categoryID, offset]);
-    const getProductList = async (categoryid, size, manufacture) => {
+    const getProductList = async (categoryid, size, manufacture, friendlyUrl) => {
         setLoader(true)
         // setProductData([]);
         // let action = `${constant.ACTION.PRODUCTS} + '?store=' + defaultStore + '&lang=' + currentLanguageCode + '&start=' + offset + '&count=' + pageLimit + '&category=' + categoryID`;
@@ -115,10 +118,10 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
             setLoader(false)
         }
 
-        getCategoryDetails(categoryid)
+        getCategoryDetails(categoryid, friendlyUrl)
     }
-    const getCategoryDetails = async (categoryid) => {
-        let action = constant.ACTION.CATEGORY + categoryid + '?store=' + defaultStore + '&lang=' + currentLanguageCode;
+    const getCategoryDetails = async (categoryid, friendlyUrl) => {
+        let action = constant.ACTION.CATEGORY + friendlyUrl + '?store=' + defaultStore + '&lang=' + currentLanguageCode;
         try {
             let response = await WebService.get(action);
             // console.log(response.children);
@@ -140,16 +143,16 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
             let response = await WebService.get(action);
             //console.log(JSON.stringify(response));
             if (response) {
-                setManufacture(response.sort())
+                setManufacture(response)
             }
         } catch (error) {
         }
         getVariants(categoryid)
     }
     const getVariants = async (categoryid) => {
-        let action = constant.ACTION.CATEGORY + categoryid + '/' + constant.ACTION.VARIANTS + '?store=' + defaultStore + '&lang=' + currentLanguageCode;
+        let action = constant.ACTION.CATEGORY + categoryid + '/' + constant.ACTION.VARIANTS;
         try {
-            let response = await WebService.get(action);
+            let response = await WebService.get(window._env_.APP_BASE_URL + '/api/v2/' + action);
             // console.log(response);
             if (response) {
                 response.forEach(variant => {
@@ -183,54 +186,55 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
 
                 <div className="shop-area pt-95 pb-100">
                     <div className="container">
-                        {
-                            productData.length > 0 ?
-                                (<div className="row">
+                        
+                            <div className="row">
                                     <div className="col-lg-3 order-2 order-lg-1">
                                         {/* shop sidebar */}
                                         {/* <ShopSidebar products={products} getSortParams={getSortParams} sideSpaceClass="mr-30" /> */}
                                         <ShopSidebar string={strings} getSortParams={getSortParams} getCategoryParams={getCategoryParams} uniqueCategories={subCategory} uniqueColors={color} uniqueSizes={size} uniqueManufacture={manufacture} sideSpaceClass="mr-30" />
                                     </div>
-                                    <div className="col-lg-9 order-1 order-lg-2">
-                                        {/* shop topbar default */}
-                                        {/* <ShopTopbar getLayout={getLayout} getFilterSortParams={getFilterSortParams} productCount={products.length} sortedProductCount={productData.length} /> */}
-                                        <ShopTopbar strings={strings} getLayout={getLayout} productCount={totalProduct} offset={offset + 1} pageLimit={pageLimit} sortedProductCount={productData.length} />
+                                    {
+                                        productData.length > 0 ?
+                                        (<div className="col-lg-9 order-1 order-lg-2">
+                                            {/* shop topbar default */}
+                                            {/* <ShopTopbar getLayout={getLayout} getFilterSortParams={getFilterSortParams} productCount={products.length} sortedProductCount={productData.length} /> */}
+                                            <ShopTopbar strings={strings} getLayout={getLayout} productCount={totalProduct} offset={offset + 1} pageLimit={pageLimit} sortedProductCount={productData.length} />
 
-                                        {/* shop page content default */}
-                                        <ShopProducts strings={strings} layout={layout} products={productData} />
+                                            {/* shop page content default */}
+                                            <ShopProducts strings={strings} layout={layout} products={productData} />
 
-                                        {/* shop product pagination */}
+                                            {/* shop product pagination */}
 
 
-                                        <div className="pro-pagination-style text-center mt-30">
-                                            <ReactPaginate
-                                                previousLabel={'«'}
-                                                nextLabel={'»'}
-                                                breakLabel={'...'}
-                                                breakClassName={'break-me'}
-                                                pageCount={currentPage}
-                                                onPageChange={(e) => setOffset(e.selected)}
-                                                containerClassName={'mb-0 mt-0'}
-                                                activeClassName={'page-item active'}
-                                            />
-                                        </div>
-
-                                    </div>
-                                </div>)
-                                :
-                                (
-                                    !isLoading && <div className="col-lg-12">
-                                        <div className="item-empty-area text-center">
-                                            <div className="item-empty-area__icon mb-30">
-                                                <i className="pe-7s-shopbag"></i>
+                                            <div className="pro-pagination-style text-center mt-30">
+                                                <ReactPaginate
+                                                    previousLabel={'«'}
+                                                    nextLabel={'»'}
+                                                    breakLabel={'...'}
+                                                    breakClassName={'break-me'}
+                                                    pageCount={currentPage}
+                                                    onPageChange={(e) => setOffset(e.selected)}
+                                                    containerClassName={'mb-0 mt-0'}
+                                                    activeClassName={'page-item active'}
+                                                />
                                             </div>
-                                            <div className="item-empty-area__text">
-                                                {strings["No items found in category"]}<br />{" "}
 
+                                        </div>)  
+                                    :
+                                    (!isLoading &&
+                                        <div className="col-lg-9 order-1 order-lg-2">
+                                            <div className="item-empty-area text-center">
+                                                <div className="item-empty-area__icon mb-30">
+                                                    <i className="pe-7s-shopbag"></i>
+                                                </div>
+                                                <div className="item-empty-area__text">
+                                                    {strings["No items found in category"]}<br />{" "}
+
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>)
-                        }
+                                        </div>)
+                                    }
+                                </div>
                     </div>
                 </div>
             </Layout>
@@ -249,6 +253,7 @@ const mapStateToProps = state => {
         currentLanguageCode: state.multilanguage.currentLanguageCode,
         defaultStore: state.merchantData.defaultStore,
         categoryID: state.productData.categoryid,
+        friendlyUrl: state.productData.friendlyUrl,
         isLoading: state.loading.isLoading
 
     }
@@ -261,6 +266,9 @@ const mapDispatchToProps = dispatch => {
         setCategoryID: (value) => {
             dispatch(setCategoryID(value));
         },
+        setCategoryFrindlyUrl: (value) => {
+            dispatch(setCategoryFrindlyUrl(value));
+        }
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(multilanguage(Category));

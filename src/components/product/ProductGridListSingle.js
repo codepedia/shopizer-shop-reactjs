@@ -5,7 +5,7 @@ import { useToasts } from "react-toast-notifications";
 // import { getDiscountPrice } from "../../helpers/product";
 // import Rating from "./sub-components/ProductRating";
 import ProductModal from "./ProductModal";
-import { setProductID } from "../../redux/actions/productActions";
+import { setProductID, setProductCode } from "../../redux/actions/productActions";
 import { connect } from "react-redux";
 import StarRatings from 'react-star-ratings';
 const ProductGridListSingle = ({
@@ -22,7 +22,8 @@ const ProductGridListSingle = ({
   setProductID,
   defaultStore,
   userData,
-  strings
+  strings,
+  setProductCode
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const { addToast } = useToasts();
@@ -30,8 +31,9 @@ const ProductGridListSingle = ({
   // const discountedPrice = getDiscountPrice(product.price, product.discount);
   const finalProductPrice = product.originalPrice;
   const finalDiscountedPrice = product.finalPrice;
-  const onClickProductDetails = (id) => {
-    setProductID(id)
+  const onClickProductDetails = (product) => {
+    setProductID(product?.id)
+    setProductCode(product?.sku)
   }
 
   return (
@@ -45,7 +47,7 @@ const ProductGridListSingle = ({
           className={`product-wrap ${spaceBottomClass ? spaceBottomClass : ""}`}
         >
           <div className="product-img">
-            <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
+            <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product)}>
               {
                 product.image && <img className="default-img" src={defaultImage(product)} alt="" />
               }
@@ -57,7 +59,7 @@ const ProductGridListSingle = ({
 
             <div className="product-action">
               <div className="pro-same-action pro-wishlist">
-                <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)} title="Select options">
+                <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product)} title="Select options">
                   <i className="fa fa-cog"></i>
                 </Link>
               </div>
@@ -91,7 +93,7 @@ const ProductGridListSingle = ({
           </div>
           <div className="product-content text-center">
             <h3>
-              <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
+              <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product)}>
                 {product.description.name}
               </Link>
             </h3>
@@ -125,7 +127,7 @@ const ProductGridListSingle = ({
             <div className="col-xl-4 col-md-5 col-sm-6">
               <div className="product-list-image-wrap">
                 <div className="product-img">
-                  <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
+                  <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product)}>
                     {
                       product.image && <img className="default-img img-fluid" src={product.image.imageUrl} alt="" />
                     }
@@ -152,7 +154,7 @@ const ProductGridListSingle = ({
             <div className="col-xl-8 col-md-7 col-sm-6">
               <div className="shop-list-content">
                 <h3>
-                  <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
+                  <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product)}>
                     {product.description.name}
                   </Link>
                 </h3>
@@ -216,19 +218,23 @@ const ProductGridListSingle = ({
         </div>
       </div>
       {/* product modal */}
-      <ProductModal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-        product={product}
-        defaultStore={defaultStore}
-        finalproductprice={finalProductPrice}
-        finaldiscountedprice={finalDiscountedPrice}
-        addtocart={addToCart}
+      {
+        modalShow && 
+        <ProductModal
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          product={product}
+          defaultStore={defaultStore}
+          finalproductprice={finalProductPrice}
+          finaldiscountedprice={finalDiscountedPrice}
+          addtocart={addToCart}
 
-        cartData={cartItem}
-        userData={userData}
-        addtoast={addToast}
-      />
+          cartData={cartItem}
+          userData={userData}
+          addtoast={addToast}
+        />
+      }
+      
     </Fragment>
   );
 };
@@ -265,6 +271,9 @@ const mapDispatchToProps = dispatch => {
   return {
     setProductID: (value) => {
       dispatch(setProductID(value));
+    },
+    setProductCode: (value) => {
+      dispatch(setProductCode(value));
     }
   };
 };

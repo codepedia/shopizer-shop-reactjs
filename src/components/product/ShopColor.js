@@ -5,7 +5,7 @@ import React from "react";
 const ShopColor = ({ string, colors, getSortParams }) => {
   return (
     <div className="sidebar-widget mt-30">
-      <h4 className="pro-sidebar-title">{string["Color"]}</h4>
+      <h4 className="pro-sidebar-title"><b>{string["Color"]}</b></h4>
       <div className="sidebar-widget-list mt-20">
         {colors.length > 0 ? (
           <ul>

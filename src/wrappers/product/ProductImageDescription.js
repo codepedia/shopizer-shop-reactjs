@@ -48,7 +48,10 @@ const ProductImageDescription = ({
               <ProductImageFixed product={product} />
             ) :
              ( */}
-            <ProductImageGallery product={product} />
+             {
+              product && product.images.length > 0 && <ProductImageGallery product={product} />
+             }
+            
             {/* )} */}
           </div>
           <div className="col-lg-6 col-md-6">

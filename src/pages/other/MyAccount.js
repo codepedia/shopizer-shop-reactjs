@@ -367,7 +367,7 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
   const onChangePassword = async (data) => {
     setLoader(true)
     try {
-      let action = constant.ACTION.CUSTOMER + constant.ACTION.PASSWORD;
+      let action = constant.ACTION.AUTH + constant.ACTION.CUSTOMER + constant.ACTION.PASSWORD;
       let param = {
         "password": data.password,
         "repeatPassword": data.repeatPassword,

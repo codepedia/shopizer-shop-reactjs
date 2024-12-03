@@ -174,7 +174,7 @@ const IconGroup = ({
 
       <div className="same-style account-setting d-none d-lg-block">
         {
-          pathname.url !== '/checkout' &&
+          // pathname.url !== '/checkout' &&
           <button
             className="account-setting-active"
             onClick={e => handleClick(e)}
@@ -243,7 +243,7 @@ const IconGroup = ({
         </Link>
       </div> */}
       {
-        pathname.url !== '/checkout' &&
+        // pathname.url !== '/checkout' &&
         <div className="same-style cart-wrap d-none d-lg-block">
           <button className="icon-cart" onClick={e => handleClick(e)}>
             <i className="pe-7s-shopbag" />

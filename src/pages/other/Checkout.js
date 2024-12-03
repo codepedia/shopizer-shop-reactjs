@@ -20,9 +20,9 @@ import {
 } from '@stripe/react-stripe-js';
 import { useToasts } from "react-toast-notifications";
 import { setLoader } from "../../redux/actions/loaderActions";
-// import {
-//   deleteAllFromCart
-// } from "../../redux/actions/cartActions";
+import {
+  deleteAllFromCart
+} from "../../redux/actions/cartActions";
 import Script from 'react-load-script';
 import { multilanguage } from "redux-multilanguage";
 
@@ -1189,7 +1189,7 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
 
                       </div>
                       {
-                        window._env_.APP_PAYMENT_TYPE === 'STRIPE3' &&
+                        window._env_.APP_PAYMENT_TYPE === 'STRIPE' &&
                         <div className="payment-method mt-25">
                           <Elements stripe={stripePromise} 
                             options={{locale: currentLanguageCode}}
@@ -1326,7 +1326,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(getShippingState(code));
     },
     deleteAllFromCart: (orderID) => {
-      //dispatch(deleteAllFromCart(orderID));
+      dispatch(deleteAllFromCart(orderID));
     },
   };
 };
