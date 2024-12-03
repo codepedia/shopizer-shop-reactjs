@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import { connect } from "react-redux";
@@ -25,8 +25,24 @@ const ProductGridSingleTwo = ({
   setProductCode
 }) => {
   const [modalShow, setModalShow] = useState(false);
+  const [defaultsOption, setDefaultsOption] = useState([]);
   const { addToast } = useToasts();
-
+  useEffect(() => {
+    if(product) {
+      // console.log(product)
+      if (product.options.length > 0) {
+        let temp = [];
+        product.options.map(async (item) => {
+          item.optionValues.map(async (data) => {
+            if (data.defaultValue) {
+              temp.push({ 'id': data.id });
+            }
+          })
+        })
+        setDefaultsOption(temp)
+      }
+    }
+  }, [product])
   // const discountedPrice = getDiscountPrice(product.price, product.discount);
   const finalProductPrice = product.originalPrice;
   const finalDiscountedPrice = product.finalPrice;
@@ -84,7 +100,7 @@ const ProductGridSingleTwo = ({
               {
                 product.available && product.canBePurchased && product.visible && product.quantity > 0 &&
                 <button
-                  onClick={() => addToCart(product, addToast, cartData, 1, defaultStore, userData)}
+                  onClick={() => addToCart(product, addToast, cartData, 1, defaultStore, userData, defaultsOption)}
                   className="active"
                   // disabled={cartItem !== undefined && cartItem.quantity > 0}
                   title="Add to cart">
