@@ -28,7 +28,7 @@ import { multilanguage } from "redux-multilanguage";
 
 
 
-const stripePromise = loadStripe(window._env_.APP_STRIPE_KEY, { stripeAccount: window._env_.APP_STRIPE_ACCOUNT});
+const stripePromise = loadStripe(window._env_.APP_STRIPE_KEY, { stripeAccount: window._env_.APP_STRIPE_ACCOUNT });
 const paymentForm = {
   firstName: {
     name: "firstName",
@@ -241,7 +241,7 @@ const CARD_ELEMENT_OPTIONS = {
     }
   }
 };
-const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, strings, location, cartID, defaultStore,getShippingCountry, getState,getShippingState,  shipCountryData, stateData, currentLocation, userData, setLoader, deleteAllFromCart }) => {
+const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, strings, location, cartID, defaultStore, getShippingCountry, getState, getShippingState, shipCountryData, stateData, currentLocation, userData, setLoader, deleteAllFromCart }) => {
   const { pathname } = location;
   const history = useHistory();
   const { addToast } = useToasts();
@@ -273,7 +273,7 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
     getShippingCountry(currentLanguageCode);
     getConfig()
     shippingQuoteChange('')
-    onChangeShipping()
+    // onChangeShipping()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -289,12 +289,12 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
         setCartItems(response)
       }
     } catch (error) {
-      setLoader(false) 
+      setLoader(false)
       deleteAllFromCart()
       setTimeout(() => {
         history.push('/')
       }, 200);
-      
+
     }
     if (userData) {
       getProfile()
@@ -303,11 +303,18 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
     }
   }
   const setDefaultsValue = () => {
-    if (currentLocation.length > 0) {
+    const shippingData = JSON.parse(localStorage.getItem('shippingAddress'));
+    console.log(shippingData)
+    if (shippingData === null) {
       setValue('country', currentLocation.find(i => i.types.some(i => i === "country")).address_components[0].short_name)
       setValue('city', currentLocation.find(i => i.types.some(i => i === "locality")).address_components[0].short_name)
       setValue('stateProvince', currentLocation.find(i => i.types.some(i => i === "administrative_area_level_1")).address_components[0].short_name)
+    } else {
+      setValue('country', shippingData.country)
+      setValue('postalCode', shippingData.postalCode)
+      onChangeShipping()
     }
+
   }
   const getProfile = async () => {
     let action = constant.ACTION.AUTH + constant.ACTION.CUSTOMER + constant.ACTION.PROFILE;
@@ -331,20 +338,20 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
 
         if (response.delivery) {
           setDeliveryData(response.delivery)
-        //   getShippingState(response.delivery.country)
-        //   setValue('shipFirstName', response.delivery.firstName)
-        //   setValue('shipLastName', response.delivery.lastName)
-        //   setValue('shipCompany', response.delivery.company)
-        //   setValue('shipAddress', response.delivery.address)
-        //   setValue('shipCountry', response.delivery.country)
-        //   setValue('shipCity', response.delivery.city)
-        //   setTimeout(() => {
-        //     setValue('shipStateProvince', response.delivery.zone)
-        //   }, 1000)
-        //   // setValue('shipStateProvince', response.delivery.stateProvince)
-        //   setValue('shipPostalCode', response.delivery.postalCode)
+          //   getShippingState(response.delivery.country)
+          //   setValue('shipFirstName', response.delivery.firstName)
+          //   setValue('shipLastName', response.delivery.lastName)
+          //   setValue('shipCompany', response.delivery.company)
+          //   setValue('shipAddress', response.delivery.address)
+          //   setValue('shipCountry', response.delivery.country)
+          //   setValue('shipCity', response.delivery.city)
+          //   setTimeout(() => {
+          //     setValue('shipStateProvince', response.delivery.zone)
+          //   }, 1000)
+          //   // setValue('shipStateProvince', response.delivery.stateProvince)
+          //   setValue('shipPostalCode', response.delivery.postalCode)
         }
-        
+
         onChangeShipping()
         // setConfig(response)
       }
@@ -370,22 +377,22 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
     // console.log(currentLocation.find(i => i.types.some(i => i == "country")).address_components[0].short_name)
     setTimeout(() => {
       if (userData) {
-            if(deliveryData){
-            getShippingState(deliveryData.country)
-            setValue('shipFirstName', deliveryData.firstName)
-            setValue('shipLastName', deliveryData.lastName)
-            setValue('shipCompany', deliveryData.company)
-            setValue('shipAddress', deliveryData.address)
-            setValue('shipCountry', deliveryData.country)
-            setValue('shipCity', deliveryData.city)
-            setTimeout(() => {
-              setValue('shipStateProvince', deliveryData.zone)
-            }, 1000)
-            // setValue('shipStateProvince', response.delivery.stateProvince)
-            setValue('shipPostalCode', deliveryData.postalCode)
-          }
-       } else{
-        if(currentLocation.length > 0) {
+        if (deliveryData) {
+          getShippingState(deliveryData.country)
+          setValue('shipFirstName', deliveryData.firstName)
+          setValue('shipLastName', deliveryData.lastName)
+          setValue('shipCompany', deliveryData.company)
+          setValue('shipAddress', deliveryData.address)
+          setValue('shipCountry', deliveryData.country)
+          setValue('shipCity', deliveryData.city)
+          setTimeout(() => {
+            setValue('shipStateProvince', deliveryData.zone)
+          }, 1000)
+          // setValue('shipStateProvince', response.delivery.stateProvince)
+          setValue('shipPostalCode', deliveryData.postalCode)
+        }
+      } else {
+        if (currentLocation.length > 0) {
           //console.log(currentLocation);
           setTimeout(() => {
             getShippingState(currentLocation.find(i => i.types.some(i => i === "country")).address_components[0].short_name)
@@ -394,13 +401,13 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
             setTimeout(() => {
               setValue('shipStateProvince', currentLocation.find(i => i.types.some(i => i === "administrative_area_level_1")).address_components[0].short_name)
             }, 1000)
-            
+
             onChangeShipping()
           }, 1000);
         }
       }
     }, 1000);
-     
+
   }
   const handleScriptLoad = () => {
     // Declare Options For Autocomplete
@@ -467,19 +474,19 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
     if (isShipping) {
       param = { 'postalCode': watch('shipPostalCode'), 'countryCode': watch('shipCountry') }
     } else {
-      param = { 'postalCode': watch('postalCode'), 'countryCode': watch('country'), "zpneCode": watch('shipStateProvince') }
+      param = { 'postalCode': watch('postalCode'), 'countryCode': watch('country'), "zoneCode": watch('shipStateProvince') }
     }
     try {
       let response = await WebService.post(action, param);
       if (response) {
-        if(response.shippingOptions === "null" || response.shippingOptions === null){
+        if (response.shippingOptions === "null" || response.shippingOptions === null) {
           shippingQuoteChange('')
-        }else{
+        } else {
           shippingQuoteChange(response.shippingOptions[response.shippingOptions.length - 1].shippingQuoteOptionId)
         }
         setShippingOptions(response.shippingOptions)
         setSelectedOptions(response.shippingOptions[response.shippingOptions.length - 1].shippingQuoteOptionId)
-        
+
       }
     } catch (error) {
     }
@@ -508,7 +515,7 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
   const onSubmitOrder = async (data, elements, stripe) => {
     setLoader(true)
 
-    if( !cartID ) {
+    if (!cartID) {
       history.push("/");
     }
 
@@ -672,7 +679,7 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
 
   }
 
-  const onAgreement = async() => {
+  const onAgreement = async () => {
     let action = constant.ACTION.CONTENT + constant.ACTION.BOXES + constant.ACTION.AGREEMENT;
     try {
       let response = await WebService.get(action);
@@ -686,60 +693,60 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
   function changeAddress() {
     var param = { 'postalCode': watch('postalCode'), 'countryCode': watch('country'), 'zoneCode': watch('stateProvince') }
     if (isShipping) {
-     param = { 'postalCode': watch('shipPostalCode'), 'countryCode': watch('shipCountry'), 'zoneCode': watch('shipStateProvince')  }
-    } 
+      param = { 'postalCode': watch('shipPostalCode'), 'countryCode': watch('shipCountry'), 'zoneCode': watch('shipStateProvince') }
+    }
 
     var p = '';
-    if(p !== param) {
+    if (p !== param) {
 
       p = param;
       //execute
 
-       
-       console.log('Required fields '+ JSON.stringify(param));
-       unity(p);
-  
+
+      console.log('Required fields ' + JSON.stringify(param));
+      unity(p);
+
     } else {
       return;
     }
 
   }
 
-  var unity = (function() {
+  var unity = (function () {
     var executed;
-    if(executed) {
+    if (executed) {
       return;
     }
-    return function() {
-            if (!executed) {
-                executed = true;
-                //if( param.postalCode == null && param.country == null && param.zoneCode == null) {
-                //  return;
-                //}
-                var millisecondsToWait = 5000;
-                setTimeout(function() {
-                    // Whatever you want to do after the wait
-                    console.log('Into execution');
+    return function () {
+      if (!executed) {
+        executed = true;
+        //if( param.postalCode == null && param.country == null && param.zoneCode == null) {
+        //  return;
+        //}
+        var millisecondsToWait = 5000;
+        setTimeout(function () {
+          // Whatever you want to do after the wait
+          console.log('Into execution');
 
 
-                    executed = false;
-                }, millisecondsToWait);
-            } 
-            return;
-            /**
-            console.log('The execution '+ executed);
-            var millisecondsToWait = 5000;
-            setTimeout(function() {
-                // Whatever you want to do after the wait
-                console.log('Into execution');
-                executed = false;
-            }, millisecondsToWait);
-            // do something
-            ?**/
+          executed = false;
+        }, millisecondsToWait);
+      }
+      return;
+      /**
+      console.log('The execution '+ executed);
+      var millisecondsToWait = 5000;
+      setTimeout(function() {
+          // Whatever you want to do after the wait
+          console.log('Into execution');
+          executed = false;
+      }, millisecondsToWait);
+      // do something
+      ?**/
 
     };
   })();
-  
+
   return (
     <Fragment>
       <MetaTags>
@@ -751,14 +758,14 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
       </MetaTags>
       <BreadcrumbsItem to={process.env.PUBLIC_URL + "/"}>{strings["Home"]}</BreadcrumbsItem>
       <BreadcrumbsItem to={process.env.PUBLIC_URL + pathname}>
-      {strings["Checkout"]}
+        {strings["Checkout"]}
       </BreadcrumbsItem>
       <Layout headerContainerClass="container-fluid"
         headerPaddingClass="header-padding-2"
         headerTop="visible">
         {/* breadcrumb */}
         <Breadcrumb />
-        <div className="checkout-area pt-95 pb-100">
+        <div className="checkout-area pt-40 pb-100">
 
           <div className="container">
             {
@@ -834,9 +841,9 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
                                     {
 
                                       shipCountryData.map((data, i) => {
-                                       //getShippingCountry(currentLanguageCode).map((data, i) => {
+                                        //getShippingCountry(currentLanguageCode).map((data, i) => {
                                         // shipCountryData.map((data, i) => {
-                                      
+
                                         return <option key={i} value={data.code}>{data.name}</option>
                                       })
                                     }
@@ -1027,7 +1034,7 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
                                       rules={paymentForm.shipStateProvince.validate}
                                       render={props => {
                                         return (
-                                          <select onChange={(a) => console.log('-----'+a)} value={props.value}>
+                                          <select onChange={(a) => console.log('-----' + a)} value={props.value}>
                                             <option>{strings["State / Province"]}</option>
                                             {
                                               shipStateData.map((data, i) => {
@@ -1094,8 +1101,8 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
                         <div className="your-order-product-info">
                           <div className="your-order-top">
                             <ul>
-                              <li>{strings["Product"]}</li>
-                              <li>{strings["Total"]}</li>
+                              <li><b>{strings["Product"]}</b></li>
+                              <li><b>{strings["Total"]}</b></li>
                             </ul>
                           </div>
                           <div className="your-order-middle">
@@ -1118,16 +1125,24 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
                               })}
                             </ul>
                           </div>
-                          <div className="your-order-sub-total">
+                          <div className="your-order-middle">
                             {
                               shippingQuote.length > 0 &&
                               shippingQuote.map((quote, i) => {
+                                console.log(quote)
                                 return (
-                                  quote.title !== 'Total' &&
-                                  <ul className="mb-20" key={i}>
-                                    <li className="order-total">{quote.title}</li>
-                                    <li>
-                                      {quote.total}
+                                  quote.title !== 'Total' || quote.title !== 'Shipping' &&
+                                  <ul key={i}>
+                                    <li key={i}>
+                                      <span className="order-middle-left" style={{ width: 220 }}>
+                                        <b>{strings["Subtotal"]}</b>
+                                      </span>{" "}
+                                      <span></span>
+                                      <span className="order-price">
+                                        {
+                                          quote.total
+                                        }
+                                      </span>
                                     </li>
                                   </ul>)
                               })
@@ -1135,53 +1150,46 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
 
                           </div>
                           {
-                            config.displayShipping && shippingOptions &&
-                          <div className="your-order-bottom">
-                            { 
-                              <div className="shippingRow">
-                                <ul><li className="your-order-shipping">Shipping Fees</li></ul>
 
-                                <ul>
-
+                            <div className="your-order-middle">
+                              <ul>
+                                <li>
+                                  <span className="order-middle-left" style={{ width: 220 }}>
+                                    <b>Shipping</b>
+                                  </span>{" "}
+                                  <span></span>
+                                  <span className="order-price">
+                                    {config.displayShipping && shippingOptions ?
+                                      shippingOptions.map((value, i) => {
+                                        return (<li key={i}>
+                                          <div className="login-toggle-btn">
+                                            <input type="radio" value={value.shippingQuoteOptionId} onChange={() => { setSelectedOptions(value.shippingQuoteOptionId); shippingQuoteChange(value.shippingQuoteOptionId) }} checked={selectedOptions === value.shippingQuoteOptionId} />
+                                            <label className="ml-10">{value.optionName} - <b>{value.optionPriceText}</b></label>
+                                          </div>
+                                        </li>)
+                                      })
+                                      : <>Enter your address to view shipping options.</>
+                                    }
+                                  </span>
+                                </li>
+                              </ul>
+                            </div>
+                          }
+                          <div className="your-order-middle">
+                            <ul>
+                              <li>
+                                <span className="order-middle-left" style={{ width: 220 }}>
+                                  <b>Total</b>
+                                </span>{" "}
+                                <span></span>
+                                <span className="order-price">
                                   {
-                                    shippingOptions.map((value, i) => {
-                                      return (<li key={i}>
-                                        <div className="login-toggle-btn">
-                                          <input type="radio" value={value.shippingQuoteOptionId} onChange={() => { setSelectedOptions(value.shippingQuoteOptionId); shippingQuoteChange(value.shippingQuoteOptionId) }} checked={selectedOptions === value.shippingQuoteOptionId} />
-                                          <label className="ml-10 mb-20">{value.optionName} - {value.optionPriceText}</label>
-                                        </div>
-                                      </li>)
+                                    shippingQuote.length > 0 &&
+                                    shippingQuote.map((quote, i) => {
+                                      return quote.title === 'Total' && quote.total
                                     })
                                   }
-                                  <li style={{ textAlign: 'center', fontSize: 12, color: 'grey' }}> This option let you reserve you order items through the online system and pick
-                                        up your order by yourself at the store. this option is also offered when no
-                                        other shipping option is available for your region.</li>
-                                </ul>
-                              </div>
-
-                            }
-
-                            {/* {
-                              config.displayShipping && !shippingOptions &&
-                              <ul>
-                                <li className="your-order-shipping">Shipping Fees</li>
-                                <li>Free shipping</li>
-                              </ul>
-                            } */}
-
-                          </div>
-                          }
-                          <div className="your-order-total">
-                            <ul>
-                              <li className="order-total">Total</li>
-                              <li>
-                                {
-                                  shippingQuote.length > 0 &&
-                                  shippingQuote.map((quote, i) => {
-                                    return quote.title === 'Total' && quote.total
-                                  })
-                                }
-                                {/* {cartItems.displayTotal} */}
+                                </span>
                               </li>
                             </ul>
                           </div>
@@ -1189,10 +1197,10 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
 
                       </div>
                       {
-                        window._env_.APP_PAYMENT_TYPE === 'STRIPE' &&
+                        window._env_.APP_PAYMENT_TYPE === 'STRIPE3' &&
                         <div className="payment-method mt-25">
-                          <Elements stripe={stripePromise} 
-                            options={{locale: currentLanguageCode}}
+                          <Elements stripe={stripePromise}
+                            options={{ locale: currentLanguageCode }}
                           >
                             <ElementsConsumer>
                               {({ stripe, elements }) => (
@@ -1208,22 +1216,22 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
 
                                   <div className="place-order mt-100">
                                     <div className="login-toggle-btn mb-20">
-                                      <input type="checkbox" name={paymentForm.isAgree.name} ref={register(paymentForm.isAgree.validate)} onChange={onAgreement}/>
+                                      <input type="checkbox" name={paymentForm.isAgree.name} ref={register(paymentForm.isAgree.validate)} onChange={onAgreement} />
                                       <label className="ml-10 ">{strings["I agree with the terms and conditions"]}</label>
                                       {errors[paymentForm.isAgree.name] && <p className="error-msg">{errors[paymentForm.isAgree.name].message}</p>}
                                     </div>
                                     <div>
                                       {
-                                          watch('isAgree') && 
-                                          <div className="agreement-info-wrap" dangerouslySetInnerHTML={{ __html: agreementData.replace(/>]]/g, "&gt;") }}>
-                                            {/* <textarea
+                                        watch('isAgree') &&
+                                        <div className="agreement-info-wrap" dangerouslySetInnerHTML={{ __html: agreementData.replace(/>]]/g, "&gt;") }}>
+                                          {/* <textarea
                                               readOnly={true}
                                               name="message"
                                               defaultValue={() => renderAgreementText(agreementData)}
                                             /> */}
-                                          </div>
+                                        </div>
                                       }
-                                    
+
                                     </div>
                                     <button type="button" onClick={handleSubmit((d) => onSubmitOrder(d, elements, stripe))} className="btn-hover">{strings["Place your order"]}</button>
                                   </div>
@@ -1259,28 +1267,28 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
                         background-color: #fb799c;"className="btn-hover">Pay now</button>
                       </form>'></iframe>
                       }
-                          </div>
+                    </div>
                   </div>
 
                 </div>
               </form>
             ) : (
-                !isLoading && <div className="row">
-                  <div className="col-lg-12">
-                    <div className="item-empty-area text-center">
-                      <div className="item-empty-area__icon mb-30">
-                        <i className="pe-7s-cash"></i>
-                      </div>
-                      <div className="item-empty-area__text">
+              !isLoading && <div className="row">
+                <div className="col-lg-12">
+                  <div className="item-empty-area text-center">
+                    <div className="item-empty-area__icon mb-30">
+                      <i className="pe-7s-cash"></i>
+                    </div>
+                    <div className="item-empty-area__text">
                       {strings["No items found in checkout"]} <br />{" "}
-                        <Link to={"/"}>
+                      <Link to={"/"}>
                         {strings["Shop now"]}
                       </Link>
-                      </div>
                     </div>
                   </div>
                 </div>
-              )}
+              </div>
+            )}
           </div>
         </div>
       </Layout>

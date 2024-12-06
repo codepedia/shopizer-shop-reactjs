@@ -4,9 +4,9 @@ import React from "react";
 
 const ShopManufacture = ({ string, manufactures, getSortParams }) => {
   return (
-    <div className="sidebar-widget mt-30">
-      <h4 className="pro-sidebar-title"><b>{string["Manufactures"]}</b></h4>
-      <div className="sidebar-widget-list mt-20">
+    <div className="sidebar-widget">
+      {/* <h4 className="pro-sidebar-title"><b>{string["Manufactures"]}</b></h4> */}
+      <div className="sidebar-widget-list">
         {manufactures.length > 0 ? (
           <ul>
             {manufactures.map((category, key) => {

@@ -26,19 +26,19 @@ const Home = ({ merchant, strings }) => {
         {/* hero slider */}
         <HeroSlider string={strings} />
         {/* promos */}
-        <Promo
+        {/* <Promo
           bgImg=""
           containerClass="container-fluid"
           gutterClass="padding-10-row-col"
           spaceTopClass="pt-50"
           spaceBottomClass="pb-40"
-        />
+        /> */}
         
         {/* tab product */}
         <TabProduct
           category="fashion"
           spaceBottomClass="pb-100"
-          spaceTopClass="pt-100"
+          spaceTopClass="pt-50"
         />
         {/* feature icon 
         <FeatureIcon
@@ -50,11 +50,11 @@ const Home = ({ merchant, strings }) => {
         />
         */}
         {/* newsletter */}
-        <Newsletter
+        {/* <Newsletter
           spaceTopClass="pt-100"
           spaceBottomClass="pb-100"
           subscribeBtnClass="dark-red-subscribe"
-        />
+        /> */}
       </Layout>
     </Fragment>
   );

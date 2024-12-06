@@ -72,7 +72,7 @@ const ProductDetails = ({ strings, location, productID, currentLanguageCode, set
         {
           productDetails &&
           <ProductImageDescription
-            spaceTopClass="pt-100"
+            spaceTopClass="pt-40"
             spaceBottomClass="pb-100"
             strings={strings}
             product={productDetails}

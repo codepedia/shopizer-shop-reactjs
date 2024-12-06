@@ -5,8 +5,8 @@ import React from "react";
 const ShopCategories = ({ categories, getCategoryParams, string }) => {
   return (
     <div className="sidebar-widget">
-      <h4 className="pro-sidebar-title">{string["Categories"]}</h4>
-      <div className="sidebar-widget-list mt-20">
+      {/* <h4 className="pro-sidebar-title">{string["Categories"]}</h4> */}
+      <div className="sidebar-widget-list">
         {categories.length > 0 ? (
           <ul>
 

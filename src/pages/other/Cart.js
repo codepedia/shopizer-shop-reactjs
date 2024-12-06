@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 // import { getDiscountPrice } from "../../helpers/product";
 import { isValidObject } from "../../util/helper";
 import { useForm } from "react-hook-form";
-import { getState, getCountry } from "../../redux/actions/userAction";
+import { getState, getShippingCountry } from "../../redux/actions/userAction";
 import { setLoader } from "../../redux/actions/loaderActions";
 import { Controller } from "react-hook-form";
 import {
@@ -24,7 +24,8 @@ import Layout from "../../layouts/Layout";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import constant from '../../util/constant';
 import WebService from '../../util/webService';
-
+import Collapse from 'react-bootstrap/Collapse';
+import Button from 'react-bootstrap/Button';
 const couponCode = {
   code: {
     name: 'code',
@@ -77,17 +78,17 @@ const Cart = ({
   defaultStore,
   decreaseQuantity,
   increaseQuantity,
-  getValue,
+  // getValue,
   deleteFromCart,
-  countryData,
-  stateData,
+  shipCountryData,
+  // stateData,
   getState,
   strings,
   merchant,
   isLoading,
   setLoader,
   cartCount,
-  getCountry
+  getShippingCountry
   // deleteAllFromCart,
 
 }) => {
@@ -96,10 +97,12 @@ const Cart = ({
   const history = useHistory();
   const [cartItems, setCartItems] = useState({})
   const [selectedOptions, setSelectedOptions] = useState('');
+  const [selectedShippingQuote, setSelectedShippingQuote] = useState('');
   const [shippingQuote, setShippingQuote] = useState([]);
+  const [open, setOpen] = useState(false);
   // const cartTotalPrice = cartItems.displaySubTotal;
   // const grandTotalPrice = cartItems.displaySubTotal;
-  const { register, handleSubmit, control, errors } = useForm({ mode: 'onChange' });
+  const { register, handleSubmit, control, errors, setValue } = useForm({ mode: 'onChange' });
   const {
     register: codeRef,
     handleSubmit: codeSubmit,
@@ -111,13 +114,23 @@ const Cart = ({
   // const [shippingOptions] = useState();
 
   useEffect(() => {
-    getCountry();
+    getShippingCountry();
     getCartData();
     // if (!isValidObject(cartItems)) {
     //   history.push('/')
     // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  useEffect(() => {
+    if (shipCountryData.length > 0) {
+      const shippingData = JSON.parse(localStorage.getItem('shippingAddress'));
+      if (shippingData) {
+        setValue('country', shippingData.country)
+        setValue('postalCode', shippingData.postalCode)
+        getQuote(shippingData)
+      }
+    }
+  }, [shipCountryData])
   useEffect(() => {
     console.log(cartCount)
     async function fetchData() {
@@ -181,14 +194,47 @@ const Cart = ({
   // }
 
   const getQuote = async (data) => {
+    console.log(data)
     let action = constant.ACTION.CART + cartID + '/' + constant.ACTION.SHIPPING;
     let param = {};
-    param = { 'postalCode': '11111', 'countryCode': 'US' }
+    param = { 'postalCode': data.postalCode, 'countryCode': data.country }
+    // param = {
+    //   "pricingOptions": [
+    //     {
+    //       "priceType": "COMMERCIAL",
+    //       "paymentAccount": {
+    //         "accountType": "EPS",
+    //         "accountNumber": "XXXXXXXXXX"
+    //       }
+    //     }
+    //   ],
+    //   "originZIPCode": "05485-8016",
+    //   "destinationZIPCode": "38746 0230",
+    //   "packageDescription": {
+    //     "weight": 1,
+    //     "length": 1,
+    //     "height": 1,
+    //     "width": 1,
+    //     "girth": 1,
+    //     "mailClass": "PARCEL_SELECT",
+    //     "extraServices": [
+    //       365
+    //     ],
+    //     "mailingDate": "2024-05-01",
+    //     "packageValue": 35
+    //   }
+    // }
     try {
       let response = await WebService.post(action, param);
       //console.log(response.shippingOptions);
       if (response) {
+        localStorage.setItem('shippingAddress', JSON.stringify(data))
+        setOpen(false)
+        if (response.shippingOptions) {
+          setSelectedOptions(response.shippingOptions[response.shippingOptions.length - 1].shippingQuoteOptionId)
+        }
         setShippingOptions(response.shippingOptions)
+        setSelectedShippingQuote(response.shippingQuote)
       }
     } catch (error) {
     }
@@ -251,7 +297,7 @@ const Cart = ({
         headerTop="visible">
         {/* breadcrumb */}
         <Breadcrumb />
-        <div className="cart-main-area pt-90 pb-100">
+        <div className="cart-main-area pt-40 pb-100">
           <div className="container">
             {isValidObject(cartItems) && cartItems.products.length > 0 ? (
               <Fragment>
@@ -336,10 +382,28 @@ const Cart = ({
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-lg-12">
+                  <div className="col-lg-6">
+                    {
+                      cartItems.promoCode ?
+                        <div className="discount-code">
+                          <p className="coupon-applied">Your coupon code {cartItems.promoCode} has been applied!</p>
+                          {/* <h1 className="promoCode">{cartItems.promoCode}</h1> */}
+                        </div>
+                        :
+                        <div className="discount-code coupon-code">
+                          <form onSubmit={codeSubmit(applyPromoCode)}>
+                            <input type="text" name={couponCode.code.name} placeholder="Enter your coupon code" ref={codeRef(couponCode.code.validate)} />
+                            {/* {codeErr[couponCode.code.name] && <p className="error-msg">{codeErr[couponCode.code.name].message}</p>} */}
+                            <button className="coupon-btn" type="submit">
+                              {strings["Apply Coupon"]}
+                            </button>
+                          </form>
+                        </div>
+                    }
+                  </div>
+                  <div className="col-lg-6">
                     <div className="cart-shiping-update-wrapper">
-
-                      <div className="cart-clear">
+                      <div className="cart-clear" style={{ marginRight: '10px' }}>
                         <button onClick={() => deleteAllFromCart()}>
                           {strings["Clear Shopping Cart"]}
                         </button>
@@ -351,13 +415,12 @@ const Cart = ({
                   </div>
                 </div>
 
-
                 <div className="row cart-custom-row">
                   {/* <div className="col-lg-4 col-md-6">
                     &nbsp;
                   </div> */}
-                  
-                  <div className="col-lg-4 col-md-6">
+
+                  {/* <div className="col-lg-4 col-md-6">
                     <div className="cart-tax">
                       <div className="title-wrap">
                         <h4 className="cart-bottom-title section-bg-gray">
@@ -390,8 +453,8 @@ const Cart = ({
                                 }}
                               />
                               {errors[quoteForm.country.name] && <p className="error-msg">{errors[quoteForm.country.name].message}</p>}
-                            </div>
-                            {/* <div className="tax-select">
+                            </div> */}
+                  {/* <div className="tax-select">
                               {
                                 stateData && stateData.length > 0 ?
                                   <Controller
@@ -415,7 +478,7 @@ const Cart = ({
                               }
                               {errors[quoteForm.stateProvince.name] && <p className="error-msg">{errors[quoteForm.stateProvince.name].message}</p>}
                             </div> */}
-                            <div className="tax-select">
+                  {/* <div className="tax-select">
                               
                               <input type="text" name={quoteForm.postalCode.name} ref={register(quoteForm.postalCode.validate)} placeholder={strings["Postcode"]} />
                               {errors[quoteForm.postalCode.name] && <p className="error-msg">{errors[quoteForm.postalCode.name].message}</p>}
@@ -428,12 +491,13 @@ const Cart = ({
                       </div>
                     </div>
                     
-                  </div>
-                   
+                  </div> */}
 
-                  <div className="col-lg-8 col-md-6 cart-total">
+
+                  <div className="col-lg-12 col-md-12 cart-total">
+                    <h3 className="cart-page-title">{strings["Cart Total"]}</h3>
                     <div className="box-custom">
-                      <div className="discount-code-wrapper coupon-code">
+                      {/* <div className="discount-code-wrapper coupon-code">
                         <div className="title-wrap">
                           <h4 className="cart-bottom-title section-bg-gray">
                             {strings["Use Coupon Code"]}
@@ -457,9 +521,98 @@ const Cart = ({
                             </div>
                         }
 
-                      </div>
+                      </div> */}
+                      <div class="cart-totals">
+                        <table>
+                          <tr>
+                            <th>{strings["Subtotal"]}</th>
+                            <td>{cartItems.displaySubTotal}</td>
+                          </tr>
+                          <tr>
+                            <th>Shipping</th>
+                            <td>
 
-                      <div className="grand-totall cart-total-box">
+                              {shippingOptions &&
+                                <ul>
+                                  {
+                                    shippingOptions.map((value, i) => {
+                                      return (<li key={i} style={{ marginTop: '5px', marginBottom: '5px' }}>
+                                        <input type="radio" style={{ width: '30px', height: '10%' }} value={value.shippingQuoteOptionId} onChange={() => { setSelectedOptions(value.shippingQuoteOptionId); shippingQuoteChange(value.shippingQuoteOptionId) }} checked={selectedOptions === value.shippingQuoteOptionId} />
+                                        <span style={{ width: '60px' }}>{value.optionName}: <b>{value.optionPriceText}</b></span>
+                                      </li>)
+                                    })
+                                  }
+                                </ul>
+                              }
+                              {
+                                selectedShippingQuote !== '' ?
+                                  <>
+                                    {selectedShippingQuote == false ? <p>Shipping option not avaiable <strong>New York, NY 10004</strong>.</p> : <p>Shipping to <strong>New York, NY 10004</strong>.</p>}
+                                    <Button
+                                      className="calculate-shipping"
+                                      onClick={() => setOpen(!open)}
+                                      aria-controls="example-collapse-text"
+                                      aria-expanded={open}
+                                    >
+                                      Change Address <i class="fa fa-truck" style={{ fontSize: '15px', marginLeft: '5px' }}></i>
+                                    </Button>
+                                  </>
+                                  :
+                                  <Button
+                                    className="calculate-shipping"
+                                    onClick={() => setOpen(!open)}
+                                    aria-controls="example-collapse-text"
+                                    aria-expanded={open}
+                                  >
+                                    Calculate shipping  <i class="fa fa-truck" style={{ fontSize: '15px', marginLeft: '5px' }}></i>
+                                  </Button>
+                              }
+                              <Collapse in={open}>
+                                <div id="example-collapse-text">
+                                  <form onSubmit={handleSubmit(getQuote)}>
+                                    <div className="tax-select">
+                                      <Controller
+                                        name={quoteForm.country.name}
+                                        control={control}
+                                        rules={quoteForm.country.validate}
+                                        render={props => {
+                                          return (
+                                            <select onChange={(e) => { props.onChange(e.target.value); getState(e.target.value) }} value={props.value}>
+                                              <option>{strings["Select a country"]}</option>
+                                              {
+
+                                                shipCountryData.map((data, i) => {
+                                                  return <option key={i} value={data.code}>{data.name}</option>
+                                                })
+                                              }
+                                            </select>
+                                          )
+                                        }}
+                                      />
+                                      {errors[quoteForm.country.name] && <p className="error-msg">{errors[quoteForm.country.name].message}</p>}
+                                    </div>
+                                    <div className="tax-select">
+                                      <input type="text" name={quoteForm.postalCode.name} ref={register(quoteForm.postalCode.validate)} placeholder={strings["Postcode"]} />
+                                      {errors[quoteForm.postalCode.name] && <p className="error-msg">{errors[quoteForm.postalCode.name].message}</p>}
+                                    </div>
+                                    <button className="shipping-button" type="submit" >
+                                      {strings["Update"]}
+                                    </button>
+                                  </form>
+                                </div>
+                              </Collapse>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th class="total">{strings["Total"]}</th>
+                            <td class="total">{shippingQuote.filter((a) => a.title === 'Total')[0]?.total}</td>
+                          </tr>
+                        </table>
+                        <Link to={process.env.PUBLIC_URL + "/checkout"} className="process-checkout">
+                          {strings["Proceed to Checkout"]}
+                        </Link>
+                      </div>
+                      {/* <div className="grand-totall cart-total-box">
                         <div className="title-wrap">
                           <h4 className="cart-bottom-title section-bg-gary-cart">
                             {strings["Cart Total"]}
@@ -498,13 +651,12 @@ const Cart = ({
                           {strings["Grand Total"]}{" "}
                           <span style={{width: '60px'}}>
                             {shippingQuote.filter((a) => a.title === 'Total')[0]?.total}
-                            {/* {cartItems.displaySubTotal} */}
                           </span>
                         </h4>
                         <Link to={process.env.PUBLIC_URL + "/checkout"}>
                           {strings["Proceed to Checkout"]}
                         </Link>
-                      </div>
+                      </div> */}
                     </div>
                     {/* {
                       shippingOptions &&
@@ -531,22 +683,22 @@ const Cart = ({
                 </div>
               </Fragment>
             ) : (
-                !isLoading && <div className="row">
-                  <div className="col-lg-12">
-                    <div className="item-empty-area text-center">
-                      <div className="item-empty-area__icon mb-30">
-                        <i className="pe-7s-cart"></i>
-                      </div>
-                      <div className="item-empty-area__text">
-                        {strings["No items found in cart"]} <br />{" "}
-                        <Link to="/">
-                          {strings["Shop now"]}
-                        </Link>
-                      </div>
+              !isLoading && <div className="row">
+                <div className="col-lg-12">
+                  <div className="item-empty-area text-center">
+                    <div className="item-empty-area__icon mb-30">
+                      <i className="pe-7s-cart"></i>
+                    </div>
+                    <div className="item-empty-area__text">
+                      {strings["No items found in cart"]} <br />{" "}
+                      <Link to="/">
+                        {strings["Shop now"]}
+                      </Link>
                     </div>
                   </div>
                 </div>
-              )}
+              </div>
+            )}
           </div>
         </div>
       </Layout>
@@ -571,10 +723,12 @@ const mapStateToProps = state => {
     cartCount: state.cartData.cartCount,
     cartID: state.cartData.cartID,
     defaultStore: state.merchantData.defaultStore,
-    countryData: state.userData.country,
+    // countryData: state.userData.country,
     stateData: state.userData.state,
     merchant: state.merchantData.merchant,
-    isLoading: state.loading.isLoading
+    isLoading: state.loading.isLoading,
+    shipCountryData: state.userData.shipCountry,
+
   };
 };
 
@@ -618,9 +772,13 @@ const mapDispatchToProps = dispatch => {
     getState: (code) => {
       dispatch(getState(code));
     },
-    getCountry: () => {
-      dispatch(getCountry());
+    // getCountry: () => {
+    //   dispatch(getCountry());
+    // },
+    getShippingCountry: (value) => {
+      dispatch(getShippingCountry(value));
     },
+
     // deleteAllFromCart: addToast => {
     //   dispatch(deleteAllFromCart(addToast));
     // }

@@ -52,7 +52,7 @@ const Content = ({ strings, contentID, setLoader, currentLanguageCode }) => {
                 headerTop="visible">
                 {/* breadcrumb */}
                 <Breadcrumb />
-                <div className="cart-main-area pt-90 pb-100">
+                <div className="cart-main-area pt-40 pb-100">
                     <div className="container">
                         {
                             contentDetails &&

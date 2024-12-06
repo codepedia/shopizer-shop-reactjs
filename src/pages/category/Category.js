@@ -184,7 +184,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
                 {/* breadcrumb */}
                 <Breadcrumb />
 
-                <div className="shop-area pt-95 pb-100">
+                <div className="shop-area pt-40 pb-100">
                     <div className="container">
                         
                             <div className="row">

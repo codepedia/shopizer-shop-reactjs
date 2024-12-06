@@ -221,9 +221,10 @@
   }
 
   .your-order-wrap {
-    padding: 38px 45px 44px;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
-    background: #f6f6f6;
+    // background: #f6f6f6;
 
     @media #{$lg-layout} {
       padding: 30px 20px 36px;
@@ -249,18 +250,25 @@
       }
 
       .your-order-middle {
-        margin: 22px 0;
-        padding: 19px 0 18px;
+        // margin: 22px 0;
+        padding: 12px 0 12px;
 
         border-top: 1px solid #dee0e4;
-        border-bottom: 1px solid #dee0e4;
+        // border-bottom: 1px solid #dee0e4;
 
         ul {
           li {
             display: flex;
             justify-content: space-between;
 
-            margin: 0 0 10px;
+            // margin: 0 0 10px;
+            input[type="radio"] {
+              height: 15px;
+              margin: 0;
+              position: relative;
+              top: 1px;
+              width: 17px;
+            }
           }
         }
       }

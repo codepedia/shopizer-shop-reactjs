@@ -109,7 +109,7 @@ const Header = ({
         className={`${headerPaddingClass ? headerPaddingClass : ""} ${
           top === "visible" ? "d-none d-lg-block" : "d-none"} header-top-area ${
           borderStyle === "fluid-border" ? "border-none" : ""}`}>
-        <div className={layout === "container-fluid" ? layout : "container"}>
+        <div className={layout === "container-fluid header-top" ? layout : "container header-top"}>
           {/* header top */}
           <HeaderTop borderStyle={borderStyle} />
         </div>

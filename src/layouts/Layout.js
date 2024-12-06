@@ -21,8 +21,8 @@ const Layout = ({
       {children}
       <Footer
         backgroundColorClass="bg-gray"
-        spaceTopClass="pt-100"
-        spaceBottomClass="pb-70"
+        spaceTopClass="pt-50"
+        spaceBottomClass="pb-50"
       />
     </Fragment>
   );

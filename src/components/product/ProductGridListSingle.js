@@ -29,7 +29,7 @@ const ProductGridListSingle = ({
   const [defaultsOption, setDefaultsOption] = useState([]);
   const { addToast } = useToasts();
   useEffect(() => {
-    if(product) {
+    if (product) {
       // console.log(product)
       if (product.options.length > 0) {
         let temp = [];
@@ -55,8 +55,7 @@ const ProductGridListSingle = ({
   return (
     <Fragment>
       <div
-        className={`col-xl-4 col-sm-6 ${
-          sliderClassName ? sliderClassName : ""
+        className={`col-xl-4 col-sm-6 ${sliderClassName ? sliderClassName : ""
           }`}
       >
         <div
@@ -133,8 +132,8 @@ const ProductGridListSingle = ({
                   </span>
                 </Fragment>
               ) : (
-                  <span>{finalProductPrice} </span>
-                )}
+                <span>{finalProductPrice} </span>
+              )}
             </div>
           </div>
         </div>
@@ -147,7 +146,7 @@ const ProductGridListSingle = ({
                     {
                       product.image && <img className="default-img img-fluid" src={product.image.imageUrl} alt="" />
                     }
-                    
+
                     {/*product.images.length > 1 ?
                       <img
                         className="hover-img img-fluid"
@@ -161,7 +160,7 @@ const ProductGridListSingle = ({
                         alt=""
                       />
                     */}
-                    
+
 
                   </Link>
                 </div>
@@ -185,8 +184,8 @@ const ProductGridListSingle = ({
                       </span>
                     </Fragment>
                   ) : (
-                      <span>{finalProductPrice} </span>
-                    )}
+                    <span>{finalProductPrice} </span>
+                  )}
                 </div>
                 <div className="rating-review">
                   <div className="product-list-rating">
@@ -235,7 +234,7 @@ const ProductGridListSingle = ({
       </div>
       {/* product modal */}
       {
-        modalShow && 
+        modalShow &&
         <ProductModal
           show={modalShow}
           onHide={() => setModalShow(false)}
@@ -250,7 +249,7 @@ const ProductGridListSingle = ({
           addtoast={addToast}
         />
       }
-      
+
     </Fragment>
   );
 };
@@ -269,12 +268,12 @@ ProductGridListSingle.propTypes = {
 };
 
 function defaultImage(product) {
-  if(product.images && product.images.length > 0) {
+  if (product.images && product.images.length > 0) {
     return product.images[0].imageUrl;
-  } else if(product.image != null) {
+  } else if (product.image != null) {
     return product.imageUrl;
   } else {
-    return null;
+    return '/assets/no-image.png';
   }
 }
 

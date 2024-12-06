@@ -4,9 +4,9 @@ import React from "react";
 
 const ShopSize = ({ string, sizes, getSortParams }) => {
   return (
-    <div className="sidebar-widget mt-30">
-      <h4 className="pro-sidebar-title"><b>{string["Size"]}</b></h4>
-      <div className="sidebar-widget-list mt-20">
+    <div className="sidebar-widget">
+      {/* <h4 className="pro-sidebar-title"><b>{string["Size"]}</b></h4> */}
+      <div className="sidebar-widget-list">
         {sizes.length > 0 ? (
           <ul>
             {sizes.map((size, key) => {
