@@ -1223,7 +1223,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                                     <div>
                                       {
                                         watch('isAgree') &&
-                                        <div className="agreement-info-wrap" dangerouslySetInnerHTML={{ __html: agreementData.replace(/>]]/g, "&gt;") }}>
+                                        <div className="agreement-info-wrap" dangerouslySetInnerHTML={{ __html: agreementData.replace("]]>", "").replace("<![CDATA[", "") }}>
                                           {/* <textarea
                                               readOnly={true}
                                               name="message"

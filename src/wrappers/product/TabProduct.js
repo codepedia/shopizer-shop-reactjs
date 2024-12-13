@@ -58,12 +58,11 @@ const TabProduct = ({
   }
   return (
     <div
-      className={`product-area ${spaceTopClass ? spaceTopClass : ""} ${
-        spaceBottomClass ? spaceBottomClass : ""
+      className={`product-area ${spaceTopClass ? spaceTopClass : ""} ${spaceBottomClass ? spaceBottomClass : ""
         } ${extraClass ? extraClass : ""}`}
     >
       <div className={`${containerClass ? containerClass : "container"}`}>
-        <SectionTitle titleText="Featured Products" positionClass="text-center" />
+        <SectionTitle titleText="Popular Products" positionClass="text-center" />
         <Tab.Container defaultActiveKey="all">
           <Nav variant="pills" className="product-tab-list pt-15 pb-15 text-center">
             {

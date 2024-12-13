@@ -67,6 +67,7 @@ export const addToCart = (item, addToast, cartId, quantityCount, defaultStore, u
 export const getCart = (cartID, userData) => {
   return async dispatch => {
     // if (cartID) {
+    console.log(userData)
     try {
       let action;
       if (userData) {

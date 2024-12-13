@@ -18,10 +18,9 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, cont
   }
   return (
     <div
-      className={` ${
-        sidebarMenu
-          ? "sidebar-menu"
-          : `main-menu ${menuWhiteClass ? menuWhiteClass : ""}`
+      className={` ${sidebarMenu
+        ? "sidebar-menu"
+        : `main-menu ${menuWhiteClass ? menuWhiteClass : ""}`
         } `}
     >
       <nav>
@@ -36,17 +35,20 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, cont
               return (
                 item.visible &&
                 <li key={index}>
-                  <Link to={"/category/" + item.description.friendlyUrl} onClick={() => onClickCategory(item)}>{item.description.name}
-                    {item.children && item.children.length > 0 ?
-                      sidebarMenu ? (
-                        <span>
-                          <i className="fa fa-angle-right"></i>
-                        </span>
-                      ) : (
+                  <Link to={"/category/" + item.description.friendlyUrl} onClick={() => onClickCategory(item)}>
+                    <span>
+                      {item.description.name}
+                      {item.children && item.children.length > 0 ?
+                        sidebarMenu ? (
+                          <span>
+                            <i className="fa fa-angle-right"></i>
+                          </span>
+                        ) : (
                           <i className="fa fa-angle-down" />
                         )
-                      : ''
-                    }
+                        : ''
+                      }
+                    </span>
 
                   </Link>
                   {

@@ -3,10 +3,11 @@ import React from "react";
 import ProductgridList from "./ProductgridList";
 
 const ShopProducts = ({ products, layout, strings }) => {
+  console.log(layout)
   return (
     <div className="shop-bottom-area mt-35">
       <div className={`row ${layout ? layout : ""}`}>
-        <ProductgridList products={products} strings={strings} spaceBottomClass="mb-25" />
+        <ProductgridList products={products} strings={strings} layout={layout} spaceBottomClass="mb-25" />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useRef } from 'react';
 import MetaTags from 'react-meta-tags';
 import { useHistory } from "react-router-dom";
 // import Paginator from 'react-hooks-paginator';
@@ -19,7 +19,7 @@ import { multilanguage } from "redux-multilanguage";
 import { setCategoryID, setCategoryFrindlyUrl } from "../../redux/actions/productActions";
 import ReactPaginate from 'react-paginate';
 
-const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader, friendlyUrl, setCategoryFrindlyUrl}) => {
+const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader, friendlyUrl, setCategoryFrindlyUrl }) => {
     const [layout, setLayout] = useState('grid three-column');
     const history = useHistory();
     // const [sortType, setSortType] = useState('');
@@ -41,12 +41,34 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
     const [selectedOption, setSelectedOption] = useState([]);
     const [selectedManufature, setSelectedManufature] = useState([]);
     // const [sortedProducts, setSortedProducts] = useState([]);
-
+    const [showFilter, setShowFilter] = useState(false);
+    const containerRef = useRef(null); // Reference to the container
+    const [height, setHeight] = useState(0); // State to store height
     const { pathname } = location;
 
     const getLayout = (layout) => {
         setLayout(layout)
     }
+    console.log(height, 'height')
+    useEffect(() => {
+        // Function to update the height
+        const updateHeight = () => {
+            if (containerRef.current) {
+                setHeight(containerRef.current.offsetHeight); // Get the height
+            }
+        };
+
+        // Call initially to set height
+        updateHeight();
+
+        // Update height on window resize
+        window.addEventListener("resize", updateHeight);
+
+        // Cleanup event listener on unmount
+        return () => {
+            window.removeEventListener("resize", updateHeight);
+        };
+    }); // Empty dependency array ensures this runs once
 
     const getSortParams = (sortType, sortValue) => {
         // console.log(sortType)
@@ -184,28 +206,33 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
                 {/* breadcrumb */}
                 <Breadcrumb />
 
-                <div className="shop-area pt-40 pb-100">
+                <div className="shop-area pt-40 pb-100" ref={containerRef}>
                     <div className="container">
-                        
-                            <div className="row">
-                                    <div className="col-lg-3 order-2 order-lg-1">
-                                        {/* shop sidebar */}
-                                        {/* <ShopSidebar products={products} getSortParams={getSortParams} sideSpaceClass="mr-30" /> */}
-                                        <ShopSidebar string={strings} getSortParams={getSortParams} getCategoryParams={getCategoryParams} uniqueCategories={subCategory} uniqueColors={color} uniqueSizes={size} uniqueManufacture={manufacture} sideSpaceClass="mr-30" />
-                                    </div>
-                                    {
-                                        productData.length > 0 ?
-                                        (<div className="col-lg-9 order-1 order-lg-2">
-                                            {/* shop topbar default */}
-                                            {/* <ShopTopbar getLayout={getLayout} getFilterSortParams={getFilterSortParams} productCount={products.length} sortedProductCount={productData.length} /> */}
-                                            <ShopTopbar strings={strings} getLayout={getLayout} productCount={totalProduct} offset={offset + 1} pageLimit={pageLimit} sortedProductCount={productData.length} />
-
-                                            {/* shop page content default */}
-                                            <ShopProducts strings={strings} layout={layout} products={productData} />
-
-                                            {/* shop product pagination */}
 
 
+                        <div className="row">
+                            {/* <div className="col-lg-3 order-2 order-lg-1"> */}
+                            {/* shop sidebar */}
+                            {/* <ShopSidebar products={products} getSortParams={getSortParams} sideSpaceClass="mr-30" /> */}
+                            {
+                                showFilter && <ShopSidebar height={height} string={strings} getSortParams={getSortParams} getCategoryParams={getCategoryParams} uniqueCategories={subCategory} uniqueColors={color} uniqueSizes={size} uniqueManufacture={manufacture} sideSpaceClass="mr-30" closeFilter={() => setShowFilter(false)} />
+                            }
+
+                            {/* </div> */}
+                            {
+                                productData.length > 0 ?
+                                    (<div className="col-lg-12 order-1 order-lg-2">
+                                        {/* shop topbar default */}
+                                        {/* <ShopTopbar getLayout={getLayout} getFilterSortParams={getFilterSortParams} productCount={products.length} sortedProductCount={productData.length} /> */}
+                                        <ShopTopbar strings={strings} getLayout={getLayout} productCount={totalProduct} offset={offset + 1} pageLimit={pageLimit} sortedProductCount={productData.length} togglePopup={() => setShowFilter(!showFilter)} />
+
+                                        {/* shop page content default */}
+                                        <ShopProducts strings={strings} layout={layout} products={productData} />
+
+                                        {/* shop product pagination */}
+
+                                        {
+                                            totalProduct > productData.length &&
                                             <div className="pro-pagination-style text-center mt-30">
                                                 <ReactPaginate
                                                     previousLabel={'«'}
@@ -218,8 +245,9 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
                                                     activeClassName={'page-item active'}
                                                 />
                                             </div>
+                                        }
 
-                                        </div>)  
+                                    </div>)
                                     :
                                     (!isLoading &&
                                         <div className="col-lg-9 order-1 order-lg-2">
@@ -233,8 +261,8 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
                                                 </div>
                                             </div>
                                         </div>)
-                                    }
-                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
             </Layout>

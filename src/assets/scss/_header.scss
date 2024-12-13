@@ -115,10 +115,24 @@
 
   @media #{$md-layout} {
     margin-top: 0;
+
+    img {
+      width: 50%;
+    }
+  }
+
+  @media #{$xs-layout} {
+    img {
+      min-width: 185px;
+    }
   }
 
   @media #{$xs-layout} {
     margin-top: 0;
+
+    // img {
+    //   width: 50%;
+    // }
   }
 
   &.logo-hm5 {
@@ -191,13 +205,14 @@
         ul.submenu {
           position: absolute;
           z-index: 999;
-          top: 100%;
-          left: 0;
+          top: 80%;
+          left: -50%;
 
           display: block;
-          visibility: hidden;
+          visibility: visible;
 
-          width: 210px;
+          width: 375%;
+          // height: 300px;
           padding: 20px 0 22px;
 
           transition: all 0.5s ease 0s;
@@ -208,14 +223,20 @@
           box-shadow: 0 0 7px 0.5px rgba(0, 0, 0, 0.15);
 
           li {
-            display: block;
+            // display: block;
 
-            margin-left: 0;
+            // margin-left: 0;
             padding: 0 20px;
+            display: inline-block;
+            float: left;
+
+            width: 25%;
+            margin-left: 0;
+            // padding: 0;
 
             a {
               font-size: 13px;
-              font-weight: 400;
+              font-weight: bold;
               line-height: 32px;
 
               display: block;
@@ -228,7 +249,10 @@
               color: #333;
 
               &:hover {
-                color: $theme-color;
+                background: $theme-color;
+                text-align: center;
+                color: #fff;
+                border-radius: 2px;
               }
 
               &::before {
@@ -241,7 +265,7 @@
                 height: 7px;
 
                 content: "";
-                transition: all 0.3s ease-in-out 0s;
+                // transition: all 0.3s ease-in-out 0s;
 
                 opacity: 0;
                 border-radius: 50%;
@@ -249,13 +273,13 @@
               }
             }
 
-            &:hover a::before {
-              opacity: 1;
-            }
+            // &:hover a::before {
+            //   opacity: 1;
+            // }
 
-            &:hover a {
-              padding-left: 12px;
-            }
+            // &:hover a {
+            //   // padding-left: 12px;
+            // }
           }
         }
 
@@ -413,7 +437,7 @@
 
         >a {
           font-size: 15px;
-          font-weight: 500;
+          font-weight: bold;
           line-height: 75px;
 
           display: inline-block;
@@ -426,14 +450,26 @@
             font-size: 15px;
 
             position: relative;
-            top: 0;
+            top: 1px;
 
-            margin-left: 1px;
+            margin-left: 5px;
           }
         }
 
         &:hover a {
           color: $theme-color;
+
+          span {
+            background: #d3d2d2;
+            padding: 10px;
+            color: #000;
+            border-radius: 2px;
+
+          }
+
+          .fa-angle-down {
+            transform: rotate(180deg)
+          }
         }
       }
     }
@@ -543,12 +579,16 @@
   margin-top: 22px;
 
   @media #{$md-layout} {
-    margin-top: 17px;
+    margin-top: 5%;
   }
 
-  @media #{$xs-layout} {
-    margin-top: 17px;
-  }
+  // @media #{$xs-layout} {
+  //   margin-top: 15px;
+  // }
+
+  // @media #{$sm-layout} {
+  //   margin-top: 20px;
+  // }
 
   .same-style {
     position: relative;

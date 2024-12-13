@@ -5,21 +5,22 @@ import { multilanguage } from "redux-multilanguage";
 const HeroSliderFifteenSingle = ({ data, sliderClass, strings, sliderText }) => {
   return (
     <div
-      className={`single-slider-2 slider-height-2 d-flex align-items-center bg-img ${
-        sliderClass ? sliderClass : ""
+      className={`single-slider-2 slider-height-2 d-flex align-items-center bg-img ${sliderClass ? sliderClass : ""
         }`}
-      style={{ backgroundImage: `url(${data.path + data.name})`, height: '500px' }}
+      style={{ marginTop: '10px' }}
     >
-      <div className="container">
-        <div className="row">
-          <div className="col-xl-6 col-lg-7 col-md-8 col-12 ml-auto">
-            <div className="slider-content-2 slider-animated-1">
-              {/* <h3 className="animated no-style">Enjoy This Offer Today</h3> */}
-              <h1
-                className="animated"
-                dangerouslySetInnerHTML={{ __html: sliderText?.description?.description.replace("]]>", "").replace("<![CDATA[", "") }}
-              />
-              {/* <div className="slider-btn btn-hover">
+
+      {/* <div className="container"> */}
+      <img src={data.path + data.name} style={{ width: '100%' }} />
+      <div className="row">
+        <div className="col-xl-6 col-lg-7 col-md-8 col-12 ml-auto">
+          <div className="slider-content-2 slider-animated-1">
+            {/* <h3 className="animated no-style">Enjoy This Offer Today</h3> */}
+            <h1
+              className="animated"
+              dangerouslySetInnerHTML={{ __html: sliderText?.description?.description.replace("]]>", "").replace("<![CDATA[", "") }}
+            />
+            {/* <div className="slider-btn btn-hover">
                 <Link
                   className="animated rounden-btn"
                   to={process.env.PUBLIC_URL + data.url}
@@ -27,10 +28,10 @@ const HeroSliderFifteenSingle = ({ data, sliderClass, strings, sliderText }) => 
                   {strings["Shop Now"]}
                 </Link>
               </div> */}
-            </div>
           </div>
         </div>
       </div>
+      {/* </div> */}
     </div>
   );
 };

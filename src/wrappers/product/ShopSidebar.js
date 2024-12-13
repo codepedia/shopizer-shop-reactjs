@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 // import {
 //   getIndividualCategories,
 //   getIndividualTags,
@@ -15,25 +15,49 @@ import ShopManufacture from "../../components/product/ShopManufacture";
 import Accordion from 'react-bootstrap/Accordion';
 import Card from "react-bootstrap/Card";
 
-const ShopSidebar = ({ string, getCategoryParams, getSortParams, sideSpaceClass, uniqueCategories, uniqueColors, uniqueSizes, uniqueManufacture }) => {
+const ShopSidebar = ({ height, string, getCategoryParams, getSortParams, sideSpaceClass, uniqueCategories, uniqueColors, uniqueSizes, uniqueManufacture, closeFilter }) => {
+  const [minValue, setMinValue] = useState(0);
+  const [maxValue, setMaxValue] = useState(100);
+  const minRange = 0;
+  const maxRange = 100;
+
+  const handleMinChange = (e) => {
+    const value = Math.min(Number(e.target.value), maxValue - 1);
+    setMinValue(value);
+  };
+
+  const handleMaxChange = (e) => {
+    const value = Math.max(Number(e.target.value), minValue + 1);
+    setMaxValue(value);
+  };
+
   // const uniqueCategories = getIndividualCategories(products);
   // const uniqueColors = getIndividualColors(products);
   // const uniqueSizes = getProductsIndividualSizes(products);
   // const uniqueTags = getIndividualTags(products);
   // debugger
   return (
-    <div className={`sidebar-style ${sideSpaceClass ? sideSpaceClass : ""}`}>
+    <div className={`offcanvas-filter-menu sidebar-style`} style={{ height: height - 80 }}>
       {/* shop search */}
       {/* <ShopSearch strings={strings} /> */}
-      <h4 className="pro-sidebar-title"><b>Filters</b></h4> 
-      <Accordion defaultActiveKey="1">
+      <div>
+        <h4 className="pro-sidebar-title" style={{ padding: '15px 0px 0px 17px' }}><b>Filters & Sort</b></h4>
+        <button
+          className="offcanvas-filter-close"
+          id="mobile-menu-close-trigger"
+          onClick={() => closeFilter()}
+        >
+          <i className="pe-7s-close"></i>
+        </button>
+      </div>
+      {/* <Accordion defaultActiveKey="1">
         {
           uniqueCategories.length > 0 &&
           <Card className="filter-my-account">
             <Card.Header className="panel-heading">
               <Accordion.Toggle variant="link" eventKey="1">
                 <h3 className="panel-title">
-                {string["Categories"]}
+                  {string["Categories"]}
                 </h3>
               </Accordion.Toggle>
             </Card.Header>
@@ -50,7 +74,7 @@ const ShopSidebar = ({ string, getCategoryParams, getSortParams, sideSpaceClass,
             <Card.Header className="panel-heading">
               <Accordion.Toggle variant="link" eventKey="2">
                 <h3 className="panel-title">
-                 {string["Manufactures"]}
+                  {string["Manufactures"]}
                 </h3>
               </Accordion.Toggle>
             </Card.Header>
@@ -67,7 +91,7 @@ const ShopSidebar = ({ string, getCategoryParams, getSortParams, sideSpaceClass,
             <Card.Header className="panel-heading">
               <Accordion.Toggle variant="link" eventKey="3">
                 <h3 className="panel-title">
-                {string["Color"]}
+                  {string["Color"]}
                 </h3>
               </Accordion.Toggle>
             </Card.Header>
@@ -84,7 +108,7 @@ const ShopSidebar = ({ string, getCategoryParams, getSortParams, sideSpaceClass,
             <Card.Header className="panel-heading">
               <Accordion.Toggle variant="link" eventKey="4">
                 <h3 className="panel-title">
-                {string["Size"]}
+                  {string["Size"]}
                 </h3>
               </Accordion.Toggle>
             </Card.Header>
@@ -95,26 +119,73 @@ const ShopSidebar = ({ string, getCategoryParams, getSortParams, sideSpaceClass,
             </Accordion.Collapse>
           </Card>
         }
-      </Accordion>
+      </Accordion> */}
+      <div className="sidebar-widget" style={{ padding: '20px', borderTop: '1px solid lightgrey' }}>
+        <h4 className="pro-sidebar-title" style={{ marginBottom: '10px' }}><b>{"Sort"}</b></h4>
+        <div className="sidebar-widget-list">
+          <select className="filter-select">
+            <option value="default">Default</option>
+            <option value="priceHighToLow">Price - High to Low</option>
+            <option value="priceLowToHigh">Price - Low to High</option>
+          </select>
+        </div>
+      </div>
+      <div className="sidebar-widget" style={{ padding: '20px', borderTop: '1px solid lightgrey' }}>
+        <h4 className="pro-sidebar-title"><b>{"Price"}</b></h4>
+        <div className="sidebar-widget-list">
+          <div className="slider-container position-relative">
+            {/* Slider track */}
+            <div
+              className="slider-track"
+              style={{
+                left: `${((minValue - minRange) / (maxRange - minRange)) * 100}%`,
+                right: `${100 - ((maxValue - minRange) / (maxRange - minRange)) * 100}%`,
+              }}
+            />
+            {/* Min range input */}
+            <input
+              type="range"
+              min={minRange}
+              max={maxRange}
+              value={minValue}
+              onChange={handleMinChange}
+              className="range-input"
+            />
+            {/* Max range input */}
+            <input
+              type="range"
+              min={minRange}
+              max={maxRange}
+              value={maxValue}
+              onChange={handleMaxChange}
+              className="range-input"
+            />
+          </div>
+          <div className="d-flex justify-content-between mt-2">
+            <span>${minValue}</span>
+            <span>${maxValue}</span>
+          </div>
+        </div>
+      </div>
       {/* filter by categories */}
-      {/* {
+      {
         uniqueCategories.length > 0 &&
         <ShopCategories string={string} categories={uniqueCategories} getCategoryParams={getCategoryParams} />
-      } */}
+      }
 
 
       {/* filter by manufacture */}
-      {/* {
+      {
         uniqueManufacture.length > 0 &&
         <ShopManufacture string={string} manufactures={uniqueManufacture} getSortParams={getSortParams} />
-      } */}
+      }
 
 
       {/* filter by color */}
-      {/* {
+      {
         uniqueColors.length > 0 &&
         <ShopColor string={string} colors={uniqueColors} getSortParams={getSortParams} />
-      } */}
+      }
 
 
       {/* filter by size */}
@@ -126,7 +197,7 @@ const ShopSidebar = ({ string, getCategoryParams, getSortParams, sideSpaceClass,
 
       {/* filter by tag */}
       {/* <ShopTag tags={uniqueTags} getSortParams={getSortParams} /> */}
-    </div>
+    </div >
   );
 };
 

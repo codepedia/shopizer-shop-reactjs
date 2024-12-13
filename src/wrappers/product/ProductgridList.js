@@ -11,7 +11,8 @@ const ProductGrid = ({
   sliderClassName,
   spaceBottomClass,
   userData,
-  strings
+  strings,
+  layout
 }) => {
   return (
     <Fragment>
@@ -26,6 +27,7 @@ const ProductGrid = ({
             cartItem={cartItems}
             userData={userData}
             key={product.id}
+            layout={layout}
           />
         );
       })}
@@ -38,7 +40,8 @@ ProductGrid.propTypes = {
   cartItems: PropTypes.object,
   products: PropTypes.array,
   sliderClassName: PropTypes.string,
-  spaceBottomClass: PropTypes.string
+  spaceBottomClass: PropTypes.string,
+  layout: PropTypes.string
 };
 
 const mapStateToProps = state => {

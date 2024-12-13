@@ -78,7 +78,7 @@ const OrderDetails = ({
                 {/* breadcrumb */}
                 <Breadcrumb />
 
-                <div className="cart-main-area pt-90 pb-100" ref={componentRef}>
+                <div className="cart-main-area pt-40 pb-40" ref={componentRef}>
                     <div className="container">
                         {isValidObject(orderDetails) ? (
                             <Fragment>
@@ -192,22 +192,22 @@ const OrderDetails = ({
                                 </div>
                             </Fragment>
                         ) : (
-                                !isLoading && <div className="row">
-                                    <div className="col-lg-12">
-                                        <div className="item-empty-area text-center">
-                                            <div className="item-empty-area__icon mb-30">
-                                                <i className="pe-7s-shopbag"></i>
-                                            </div>
-                                            <div className="item-empty-area__text">
-                                                {strings["No items found"]} <br />{" "}
-                                                <Link to={"/"}>
-                                                    {strings["Shop Now"]}
-                                                </Link>
-                                            </div>
+                            !isLoading && <div className="row">
+                                <div className="col-lg-12">
+                                    <div className="item-empty-area text-center">
+                                        <div className="item-empty-area__icon mb-30">
+                                            <i className="pe-7s-shopbag"></i>
+                                        </div>
+                                        <div className="item-empty-area__text">
+                                            {strings["No items found"]} <br />{" "}
+                                            <Link to={"/"}>
+                                                {strings["Shop Now"]}
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
-                            )}
+                            </div>
+                        )}
                     </div>
                 </div>
             </Layout>

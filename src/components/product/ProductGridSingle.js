@@ -28,7 +28,7 @@ const ProductGridSingleTwo = ({
   const [defaultsOption, setDefaultsOption] = useState([]);
   const { addToast } = useToasts();
   useEffect(() => {
-    if(product) {
+    if (product) {
       // console.log(product)
       if (product.options.length > 0) {
         let temp = [];
@@ -58,9 +58,13 @@ const ProductGridSingleTwo = ({
           className={`product-wrap-2 ${spaceBottomClass ? spaceBottomClass : ""} ${colorClass ? colorClass : ""} `}>
           <div className="product-img">
             <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product)}>
-              {product.images && product.images.length > 0}
+              {product.images && product.images.length > 0 ?
                 <img src={product?.images[0]?.imageUrl} alt="" />
-              
+                :
+                <img src={'/assets/img/no-image.png'} alt="" />
+
+              }
+
 
             </Link>
             {/* {
@@ -150,8 +154,8 @@ const ProductGridSingleTwo = ({
                     </span>
                   </Fragment>
                 ) : (
-                    <span>{finalProductPrice} </span>
-                  )}
+                  <span>{finalProductPrice} </span>
+                )}
               </div>
             </div>
             {/* <div className="pro-wishlist-2">
@@ -173,7 +177,7 @@ const ProductGridSingleTwo = ({
       </div>
       {/* product modal */}
       {
-        modalShow && 
+        modalShow &&
         <ProductModal
           show={modalShow}
           onHide={() => setModalShow(false)}

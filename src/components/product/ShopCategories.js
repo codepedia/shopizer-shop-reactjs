@@ -4,8 +4,8 @@ import React from "react";
 
 const ShopCategories = ({ categories, getCategoryParams, string }) => {
   return (
-    <div className="sidebar-widget">
-      {/* <h4 className="pro-sidebar-title">{string["Categories"]}</h4> */}
+    <div className="sidebar-widget" style={{ padding: '20px', borderTop: '1px solid lightgrey' }}>
+      <h4 className="pro-sidebar-title"><b>{string["Categories"]}</b></h4>
       <div className="sidebar-widget-list">
         {categories.length > 0 ? (
           <ul>
@@ -38,8 +38,8 @@ const ShopCategories = ({ categories, getCategoryParams, string }) => {
             })}
           </ul>
         ) : (
-            "No categories found"
-          )}
+          "No categories found"
+        )}
       </div>
     </div>
   );

@@ -38,44 +38,48 @@ const HeroSlider = ({ }) => {
   }
   const params = {
     effect: "fade",
-    loop: false,
+    loop: true,
     speed: 1000,
+    // spaceBetween: 30,
+    centeredSlides: true,
     autoplay: {
-      delay: 5000,
+      delay: 1000,
       disableOnInteraction: false
     },
-    watchSlidesVisibility: true,
+    // watchSlidesVisibility: true,
     navigation: {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev"
     },
-    renderPrevButton: () => (
-      <button className="swiper-button-prev ht-swiper-button-nav">
-        <i className="pe-7s-angle-left" />
-      </button>
-    ),
-    renderNextButton: () => (
-      <button className="swiper-button-next ht-swiper-button-nav">
-        <i className="pe-7s-angle-right" />
-      </button>
-    )
+    // renderPrevButton: () => (
+    //   <button className="swiper-button-prev ht-swiper-button-nav">
+    //     <i className="pe-7s-angle-left" />
+    //   </button>
+    // ),
+    // renderNextButton: () => (
+    //   <button className="swiper-button-next ht-swiper-button-nav">
+    //     <i className="pe-7s-angle-right" />
+    //   </button>
+    // )
   };
   return (
     <div className="slider-area">
       <div className="slider-active nav-style-1">
-        <Swiper {...params}>
-          {sliderData &&
-            sliderData.map((single, key) => {
-              return (
-                <HeroSliderSingle
-                  data={single}
-                  key={key}
-                  sliderText={sliderText}
-                  sliderClass="swiper-slide"
-                />
-              );
-            })}
-        </Swiper>
+        <div className="container">
+          <Swiper {...params}>
+            {sliderData &&
+              sliderData.map((single, key) => {
+                return (
+                  <HeroSliderSingle
+                    data={single}
+                    key={key}
+                    sliderText={sliderText}
+                    sliderClass="swiper-slide"
+                  />
+                );
+              })}
+          </Swiper>
+        </div>
       </div>
     </div>
   );

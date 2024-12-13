@@ -672,7 +672,7 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
         headerTop="visible">
         {/* breadcrumb */}
         <Breadcrumb />
-        <div className="myaccount-area pb-80 pt-100">
+        <div className="myaccount-area pb-40 pt-40">
           <div className="container">
             <div className="row">
               <div className="ml-auto mr-auto col-lg-9">
@@ -689,9 +689,9 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
                       <Accordion.Collapse eventKey="3">
                         <Card.Body>
                           <div className="myaccount-info-wrapper">
-                            <div className="account-info-wrapper">
+                            {/* <div className="account-info-wrapper">
                               <h4>{strings["Your account"]}</h4>
-                            </div>
+                            </div> */}
                             <form onSubmit={accountSubmit(onChangeAccount)}>
                               <div className="row">
                                 <div className="col-lg-12 col-md-12">
@@ -733,10 +733,10 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
                       <Accordion.Collapse eventKey="0">
                         <Card.Body>
                           <div className="myaccount-info-wrapper">
-                            <div className="account-info-wrapper">
-                              <h4>{strings["Billing Information"]}</h4>
-                              {/* <h5>Your Personal Details</h5> */}
-                            </div>
+                            {/* <div className="account-info-wrapper">
+                              <h4>{strings["Billing Information"]}</h4> */}
+                            {/* <h5>Your Personal Details</h5> */}
+                            {/* </div> */}
                             <form onSubmit={billingSubmit(onUpdateBilling)}>
                               <div className="row">
                                 <div className="col-lg-6 col-md-6">
@@ -880,10 +880,10 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
                       <Accordion.Collapse eventKey="1">
                         <Card.Body>
                           <div className="myaccount-info-wrapper">
-                            <div className="account-info-wrapper">
-                              <h4>{strings["Delivery Information"]}</h4>
-                              {/* <h5>Your Personal Details</h5> */}
-                            </div>
+                            {/* <div className="account-info-wrapper">
+                              <h4>{strings["Delivery Information"]}</h4> */}
+                            {/* <h5>Your Personal Details</h5> */}
+                            {/* </div> */}
                             <form onSubmit={deliverySubmit(onUpdateDelivery)}>
                               <div className="row">
                                 <div className="col-lg-6 col-md-6">
@@ -1027,9 +1027,9 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
                       <Accordion.Collapse eventKey="2">
                         <Card.Body>
                           <div className="myaccount-info-wrapper">
-                            <div className="account-info-wrapper">
+                            {/* <div className="account-info-wrapper">
                               <h4>{strings["Change Password"]}</h4>
-                            </div>
+                            </div> */}
                             <form onSubmit={handleSubmit(onChangePassword)}>
                               <div className="row">
                                 <div className="col-lg-12 col-md-12">
@@ -1126,7 +1126,7 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
             title="Are you sure?"
           >
             Are you sure that you want to permanently delete this account
-        </SweetAlert>
+          </SweetAlert>
         }
       </Layout>
     </Fragment >
@@ -1175,4 +1175,4 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(multilanguage(MyAccount));
 
-  // export default MyAccount;
+// export default MyAccount;

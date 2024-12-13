@@ -1,4 +1,50 @@
 /*---- 18. Shop page  -------*/
+.offcanvas-filter-menu {
+  position: absolute;
+  z-index: 999999999999;
+  width: 300px;
+  left: 0;
+  animation: slideIn 0.3s ease-in-out;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.20) 10px 10px 47px 0px;
+  margin: 0
+}
+
+@keyframes fadeIn {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  to {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.offcanvas-filter-close {
+  font-size: 30px;
+  line-height: 50px;
+  position: absolute;
+  z-index: 9;
+  top: 0;
+  right: 0;
+  width: 45px;
+  height: 47px;
+  padding: 0;
+  text-align: center;
+  color: #000;
+  border: none;
+  background: #f7f7f7;
+}
 
 .shop-top-bar {
   display: flex;
@@ -6,7 +52,7 @@
   justify-content: space-between;
 
   @media #{$xs-layout} {
-    display: block;
+    // display: block;
   }
 
   @media #{$sm-layout} {
@@ -15,6 +61,16 @@
 
   .select-shoing-wrap {
     display: flex;
+
+    button {
+      font-size: 18px;
+      margin-left: 20px;
+      padding: 0;
+      color: #606060;
+      border: none;
+      background: none;
+      border-bottom: 1px solid lightgrey;
+    }
 
     @media #{$xs-layout} {
       display: block;
@@ -522,6 +578,7 @@
     }
   }
 }
+
 .filter-my-account {
   // margin-bottom: 20px;
   border: 1px solid #ebebeb;

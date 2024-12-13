@@ -1,7 +1,20 @@
 /*----- 12. image slider style  -----*/
 
+.slider-area {
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: #fff !important;
+
+    &:after {
+      font-size: 25px !important
+    }
+  }
+}
+
 .single-image {
   overflow: hidden;
+
   a {
     img {
       width: 100%;
@@ -9,6 +22,7 @@
       transform: scale(1);
     }
   }
+
   &:hover a img {
     transform: scale(1.1);
   }

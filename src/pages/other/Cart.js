@@ -392,7 +392,7 @@ const Cart = ({
                         :
                         <div className="discount-code coupon-code">
                           <form onSubmit={codeSubmit(applyPromoCode)}>
-                            <input type="text" name={couponCode.code.name} placeholder="Enter your coupon code" ref={codeRef(couponCode.code.validate)} />
+                            <input type="text" name={couponCode.code.name} placeholder={strings["Enter your coupon code"]} ref={codeRef(couponCode.code.validate)} />
                             {/* {codeErr[couponCode.code.name] && <p className="error-msg">{codeErr[couponCode.code.name].message}</p>} */}
                             <button className="coupon-btn" type="submit">
                               {strings["Apply Coupon"]}
@@ -738,7 +738,7 @@ function defaultImage(product) {
   } else if (product.image != null) {
     return product.imageUrl;
   } else {
-    return null;
+    return '/assets/img/no-image.png';
   }
 }
 

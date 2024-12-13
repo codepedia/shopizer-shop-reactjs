@@ -106,9 +106,7 @@ const Header = ({
     <header
       className={`header-area clearfix ${headerBgClass ? headerBgClass : ""} ${headerPositionClass ? headerPositionClass : ""}`}>
       <div
-        className={`${headerPaddingClass ? headerPaddingClass : ""} ${
-          top === "visible" ? "d-none d-lg-block" : "d-none"} header-top-area ${
-          borderStyle === "fluid-border" ? "border-none" : ""}`}>
+        className={`${headerPaddingClass ? headerPaddingClass : ""} ${top === "visible" ? "d-none d-lg-block" : "d-none"} header-top-area ${borderStyle === "fluid-border" ? "border-none" : ""}`}>
         <div className={layout === "container-fluid header-top" ? layout : "container header-top"}>
           {/* header top */}
           <HeaderTop borderStyle={borderStyle} />
@@ -116,10 +114,10 @@ const Header = ({
       </div>
 
       <div
-        className={`${
-          headerPaddingClass ? headerPaddingClass : ""
-          } sticky-bar header-res-padding clearfix ${
-          scroll > headerTop ? "stick" : ""
+
+        style={{ boxShadow: '0 8px 8px 0 rgb(0 0 0 / 14%)' }}
+        className={`${headerPaddingClass ? headerPaddingClass : ""
+          } sticky-bar header-res-padding clearfix ${scroll > headerTop ? "stick" : ""
           }`}
       >
         <div className={layout === "container-fluid" ? layout : "container"}>

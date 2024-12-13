@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import { setActiveLayout } from "../../helpers/product";
 
+import ShopTopFilter from "./ShopTopFilter";
 const ShopTopAction = ({
   getLayout,
   getFilterSortParams,
@@ -9,11 +10,18 @@ const ShopTopAction = ({
   sortedProductCount,
   strings,
   offset,
-  pageLimit
+  pageLimit,
+  togglePopup
 }) => {
   return (
     <div className="shop-top-bar mb-35">
       <div className="select-shoing-wrap">
+        <button
+          data-toggle="modal" data-target=".bd-example-modal-lg"
+          onClick={togglePopup}
+        >
+          <i className="fa fa-filter" /> Filter & Sort
+        </button>
         {/* <div className="shop-select">
           <select
             onChange={e => getFilterSortParams("filterSort", e.target.value)}
@@ -23,20 +31,20 @@ const ShopTopAction = ({
             <option value="priceLowToHigh">Price - Low to High</option>
           </select>
         </div> */}
-        <p>
+        {/* <p>
           {strings["Showing"]} {sortedProductCount < pageLimit ? productCount : sortedProductCount * offset} of {productCount} {strings["result"]}
-        </p>
+        </p> */}
       </div>
 
       <div className="shop-tab">
-        <button
+        {/* <button
           onClick={e => {
             getLayout("grid two-column");
             setActiveLayout(e);
           }}
         >
           <i className="fa fa-th-large" />
-        </button>
+        </button> */}
         <button
           onClick={e => {
             getLayout("grid three-column");

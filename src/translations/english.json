@@ -9,6 +9,7 @@
   "Call Us": "Call Us",
   "Free delivery on order over": "Free delivery on order over",
   "Featured Products": "Featured Products",
+  "Popular Products": "Popular Products",
   "View Cart": "View Cart",
   "Checkout": "Checkout",
   "Total": "Total",
@@ -157,5 +158,6 @@
   "Message": "Message",
   "Submit": "Submit",
   "No items found in reviews": "No items found in reviews",
-  "Update": "Update"
+  "Update": "Update",
+  "Enter your coupon code": "Enter your coupon code"
 }

@@ -160,7 +160,9 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
       let param = { "username": data.username, "password": data.loginPassword }
       let response = await WebService.post(action, param);
       if (response) {
+        console.log(isValidObject(cartItems), '--------------')
         if (isValidObject(cartItems)) {
+          console.log('if')
           // getCart('', response)
           // setTimeout(() => {
           // console.log(cartItems);
@@ -171,6 +173,7 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
           // }, 5000);
 
         } else {
+          console.log('if')
           getCart('', response)
         }
         if (getLocalData('isRemember') === 'true') {
@@ -287,7 +290,7 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
         headerTop="visible">
         {/* breadcrumb */}
         <Breadcrumb />
-        <div className="login-register-area pt-100 pb-100">
+        <div className="login-register-area pt-40 pb-40">
           <div className="container">
             <div className="row">
               <div className="col-lg-7 col-md-12 ml-auto mr-auto">
@@ -493,7 +496,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(setUser(data));
     },
     getCountry: () => {
-       dispatch(getCountry());
+      dispatch(getCountry());
     },
     getShippingCountry: (value) => {
       dispatch(getShippingCountry(value));

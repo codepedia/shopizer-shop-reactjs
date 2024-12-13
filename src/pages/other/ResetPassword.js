@@ -136,7 +136,7 @@ const ResetPassword = ({ merchant, strings, props, location, setLoader, defaultS
                 <Breadcrumb />
                 {
                     isValid &&
-                    <div className="login-register-area pt-100 pb-100">
+                    <div className="login-register-area pt-40 pb-40">
                         <div className="container">
                             <div className="row">
                                 <div className="col-lg-7 col-md-12 ml-auto mr-auto">
@@ -242,4 +242,4 @@ const mapDispatchToProps = dispatch => {
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(multilanguage(ResetPassword));
-            // export default LoginRegister;
+// export default LoginRegister;

@@ -4,8 +4,8 @@ import React from "react";
 
 const ShopManufacture = ({ string, manufactures, getSortParams }) => {
   return (
-    <div className="sidebar-widget">
-      {/* <h4 className="pro-sidebar-title"><b>{string["Manufactures"]}</b></h4> */}
+    <div className="sidebar-widget" style={{ padding: '20px', borderTop: '1px solid lightgrey' }}>
+      <h4 className="pro-sidebar-title"><b>{string["Manufactures"]}</b></h4>
       <div className="sidebar-widget-list">
         {manufactures.length > 0 ? (
           <ul>
@@ -40,8 +40,8 @@ const ShopManufacture = ({ string, manufactures, getSortParams }) => {
             })}
           </ul>
         ) : (
-            "No manufactures found"
-          )}
+          "No manufactures found"
+        )}
       </div>
     </div>
   );

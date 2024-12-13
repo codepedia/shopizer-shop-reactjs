@@ -23,7 +23,8 @@ const ProductGridListSingle = ({
   defaultStore,
   userData,
   strings,
-  setProductCode
+  setProductCode,
+  layout
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const [defaultsOption, setDefaultsOption] = useState([]);
@@ -51,11 +52,11 @@ const ProductGridListSingle = ({
     setProductID(product?.id)
     setProductCode(product?.sku)
   }
-
+  console.log(layout)
   return (
     <Fragment>
       <div
-        className={`col-xl-4 col-sm-6 ${sliderClassName ? sliderClassName : ""
+        className={`${layout === 'list' ? 'col-xl-4 col-sm-6' : 'col-sm-6 col-xl-3 col-md-4'}  ${sliderClassName ? sliderClassName : ""
           }`}
       >
         <div
@@ -64,11 +65,11 @@ const ProductGridListSingle = ({
           <div className="product-img">
             <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product)}>
               {
-                product.image && <img className="default-img" src={defaultImage(product)} alt="" />
+                <img className="default-img" src={defaultImage(product)} alt="" />
               }
-              {
+              {/* {
                 product.images.length > 1 ? <img className="hover-img-A" src={defaultImage(product)} alt="" /> : ''
-              }
+              } */}
             </Link>
 
 
@@ -200,7 +201,7 @@ const ProductGridListSingle = ({
                     {/* <Rating ratingValue={product.rating} /> */}
                   </div>
                 </div>
-                <p dangerouslySetInnerHTML={{ __html: product.description.description }}></p>
+                {/* <p dangerouslySetInnerHTML={{ __html: product.description.description }}></p> */}
                 <div className="shop-list-actions d-flex align-items-center">
                   <div className="shop-list-btn btn-hover">
 
@@ -264,6 +265,7 @@ ProductGridListSingle.propTypes = {
   product: PropTypes.object,
   sliderClassName: PropTypes.string,
   spaceBottomClass: PropTypes.string,
+  layout: PropTypes.string,
   // wishlistItem: PropTypes.object
 };
 
@@ -273,7 +275,7 @@ function defaultImage(product) {
   } else if (product.image != null) {
     return product.imageUrl;
   } else {
-    return '/assets/no-image.png';
+    return '/assets/img/no-image.png';
   }
 }
 

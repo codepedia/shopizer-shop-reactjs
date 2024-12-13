@@ -9,7 +9,8 @@ const ShopTopbar = ({
   sortedProductCount,
   strings,
   offset,
-  pageLimit
+  pageLimit,
+  togglePopup
 }) => {
   return (
     <Fragment>
@@ -22,6 +23,7 @@ const ShopTopbar = ({
         offset={offset}
         pageLimit={pageLimit}
         sortedProductCount={sortedProductCount}
+        togglePopup={togglePopup}
       />
     </Fragment>
   );
