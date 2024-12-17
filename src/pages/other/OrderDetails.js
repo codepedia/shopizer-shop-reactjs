@@ -112,7 +112,7 @@ const OrderDetails = ({
                                                             <tr key={key} className="customTrRow">
                                                                 <td className="product-thumbnail">
                                                                     <Link onClick={() => onClickItem(orderItem.product)} to={"/product/" + orderItem.product.description.friendlyUrl}>
-                                                                        <img className="img-fluid" src={orderItem.product.image.imageUrl} alt="" />
+                                                                        <img className="img-fluid" src={orderItem?.product?.image?.imageUrl} alt="" />
                                                                     </Link>
                                                                 </td>
 
