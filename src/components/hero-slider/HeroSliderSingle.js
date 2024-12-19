@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { multilanguage } from "redux-multilanguage";
 const HeroSliderFifteenSingle = ({ data, sliderClass, strings, sliderText }) => {
   return (
@@ -11,7 +11,7 @@ const HeroSliderFifteenSingle = ({ data, sliderClass, strings, sliderText }) => 
     >
 
       {/* <div className="container"> */}
-      <img src={data.path + data.name} style={{ width: '100%' }} />
+      <img src={data.path + data.name} style={{ width: '100%' }} alt={data.name} />
       <div className="row">
         <div className="col-xl-6 col-lg-7 col-md-8 col-12 ml-auto">
           <div className="slider-content-2 slider-animated-1">

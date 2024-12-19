@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React from "react";
 import { setActiveLayout } from "../../helpers/product";
 
-import ShopTopFilter from "./ShopTopFilter";
+// import ShopTopFilter from "./ShopTopFilter";
 const ShopTopAction = ({
   getLayout,
   getFilterSortParams,

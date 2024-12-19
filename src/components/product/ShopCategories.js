@@ -4,8 +4,8 @@ import React from "react";
 
 const ShopCategories = ({ categories, getCategoryParams, string }) => {
   return (
-    <div className="sidebar-widget" style={{ padding: '20px', borderTop: '1px solid lightgrey' }}>
-      <h4 className="pro-sidebar-title"><b>{string["Categories"]}</b></h4>
+    <div className="sidebar-widget" style={{ padding: '15px', borderTop: '1px solid lightgrey' }}>
+      <h4 className="pro-sidebar-title" style={{ marginBottom: '10px' }}><b>{string["Categories"]}</b></h4>
       <div className="sidebar-widget-list">
         {categories.length > 0 ? (
           <ul>

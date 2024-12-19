@@ -9,7 +9,6 @@ import { setContent } from "../../redux/actions/contentAction";
 const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, contents, setCategoryID, setContent, setCategoryFrindlyUrl }) => {
 
   const onClickCategory = (item) => {
-    console.log(item)
     setCategoryID(item.id)
     setCategoryFrindlyUrl(item.description.friendlyUrl)
   }

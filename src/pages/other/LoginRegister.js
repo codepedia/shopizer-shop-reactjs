@@ -17,6 +17,7 @@ import { setUser, getCountry, getShippingCountry, getState } from "../../redux/a
 import { addToCart, getCart } from "../../redux/actions/cartActions";
 import { connect } from "react-redux";
 import { multilanguage } from "redux-multilanguage";
+import Select from 'react-select';
 const loginForm = {
   username: {
     name: "username",
@@ -160,9 +161,7 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
       let param = { "username": data.username, "password": data.loginPassword }
       let response = await WebService.post(action, param);
       if (response) {
-        console.log(isValidObject(cartItems), '--------------')
         if (isValidObject(cartItems)) {
-          console.log('if')
           // getCart('', response)
           // setTimeout(() => {
           // console.log(cartItems);
@@ -173,7 +172,6 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
           // }, 5000);
 
         } else {
-          console.log('if')
           getCart('', response)
         }
         if (getLocalData('isRemember') === 'true') {
@@ -197,13 +195,10 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
     try {
       let action = constant.ACTION.AUTH + constant.ACTION.CUSTOMER + constant.ACTION.CARTS + '?&lang=' + JSON.parse(getLocalData('redux_localstorage_simple')).multilanguage.currentLanguageCode;
       let response = await WebService.get(action);
-      console.log(response)
       if (response) {
 
         setTimeout(() => {
-          console.log(response.code);
           cartItems.products.forEach((element) => {
-            console.log(response.code);
             addToCart(element, '', response, element.quantity, defaultStore, data)
           });
         }, 2000);
@@ -295,7 +290,7 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
             <div className="row">
               <div className="col-lg-7 col-md-12 ml-auto mr-auto">
                 <div className="login-register-wrapper">
-                  <Tab.Container defaultActiveKey={pathname.split("/")[1]}>
+                  <Tab.Container activeKey={pathname.split("/")[1]}>
                     <Nav variant="pills" className="login-register-tab-list">
                       <Nav.Item>
                         <Nav.Link eventKey="login">
@@ -388,14 +383,24 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
                                   rules={registerForm.country.validate}
                                   render={props => {
                                     return (
-                                      <select onChange={(e) => { props.onChange(e.target.value); getState(e.target.value) }} value={props.value}>
-                                        <option>{strings["Select a country"]}</option>
-                                        {
-                                          shipCountryData.map((data, i) => {
-                                            return <option key={i} value={data.code}>{data.name}</option>
-                                          })
-                                        }
-                                      </select>
+                                      <Select
+                                        defaultValue={props.value}
+                                        isSearchable={true}
+                                        placeholder="Select a country"
+                                        className="register-select"
+                                        onChange={(e) => { props.onChange(e.value); getState(e.value) }}
+                                        options={shipCountryData.map((data) => {
+                                          return { value: data.code, label: data.name }
+                                        })}
+                                      />
+                                      // <select onChange={(e) => { props.onChange(e.target.value); getState(e.target.value) }} value={props.value}>
+                                      //   <option>{strings["Select a country"]}</option>
+                                      //   {
+                                      //     shipCountryData.map((data, i) => {
+                                      //       return <option key={i} value={data.code}>{data.name}</option>
+                                      //     })
+                                      //   }
+                                      // </select>
                                     )
                                   }}
                                 />
@@ -411,14 +416,25 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
                                       rules={registerForm.stateProvince.validate}
                                       render={props => {
                                         return (
-                                          <select onChange={(e) => { props.onChange(e.target.value) }} value={props.value}>
-                                            <option>{strings["Select a state"]}</option>
-                                            {
-                                              stateData.map((data, i) => {
-                                                return <option key={i} value={data.code}>{data.name}</option>
-                                              })
-                                            }
-                                          </select>)
+                                          <Select
+                                            defaultValue={props.value}
+                                            isSearchable={true}
+                                            placeholder="Select a state"
+                                            className="register-select"
+                                            onChange={(e) => { props.onChange(e.value); }}
+                                            options={stateData.map((data) => {
+                                              return { value: data.code, label: data.name }
+                                            })}
+                                          />
+                                          // <select onChange={(e) => { props.onChange(e.target.value) }} value={props.value}>
+                                          //   <option>{strings["Select a state"]}</option>
+                                          //   {
+                                          //     stateData.map((data, i) => {
+                                          //       return <option key={i} value={data.code}>{data.name}</option>
+                                          //     })
+                                          //   }
+                                          // </select>
+                                        )
                                       }}
                                     />
                                     :

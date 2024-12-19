@@ -4,8 +4,8 @@ import React from "react";
 
 const ShopSize = ({ string, sizes, getSortParams }) => {
   return (
-    <div className="sidebar-widget" style={{ padding: '20px', borderTop: '1px solid lightgrey' }}>
-      <h4 className="pro-sidebar-title"><b>{string["Size"]}</b></h4>
+    <div className="sidebar-widget" style={{ padding: '15px', borderTop: '1px solid lightgrey' }}>
+      <h4 className="pro-sidebar-title" style={{ marginBottom: '10px' }}><b>{string["Size"]}</b></h4>
       <div className="sidebar-widget-list">
         {sizes.length > 0 ? (
           <ul>

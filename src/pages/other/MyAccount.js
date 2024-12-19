@@ -14,12 +14,13 @@ import { setLoader } from "../../redux/actions/loaderActions";
 import { useToasts } from "react-toast-notifications";
 import { connect } from "react-redux";
 import { getState, getCountry, getShippingState } from "../../redux/actions/userAction";
-import Script from 'react-load-script';
+// import Script from 'react-load-script';
 import { multilanguage } from "redux-multilanguage";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { deleteAllFromCart } from "../../redux/actions/cartActions";
 import { setUser } from "../../redux/actions/userAction";
 import { setLocalData } from '../../util/helper';
+import Select from 'react-select';
 const changePasswordForm = {
   userName: {
     name: "userName",
@@ -335,8 +336,8 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
         setValue('city', response.billing.city)
         // setValue('stateProvince', response.billing.stateProvince)
         setTimeout(() => {
-          setValue('stateProvince', response.billing.zone)
-        }, 2000)
+          setValue('stateProvince', response.billing.stateProvince)
+        }, 1000)
         setValue('postalCode', response.billing.postalCode)
         setValue('phone', response.billing.phone)
         setValue('email', response.emailAddress)
@@ -351,7 +352,7 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
           // setValue('stateProvince', response.billing.stateProvince)
           setTimeout(() => {
             setDeliveryValue('shipStateProvince', response.delivery.zone)
-          }, 2000)
+          }, 1000)
 
           setDeliveryValue('shipPostalCode', response.delivery.postalCode)
           setDeliveryValue('shipPhone', response.delivery.phone)
@@ -413,115 +414,115 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
 
   }
 
-  const handleScriptLoad = () => {
-    // Declare Options For Autocomplete
-    const options = {
-      types: ['address'],
-    };
-    // console.log('fsdfsdfsdfdsf')
-    // Initialize Google Autocomplete
-    /*global google*/ // To disable any eslint 'google not defined' errors
-    let autocomplete = new google.maps.places.Autocomplete(
-      document.getElementById('autocomplete'),
-      options,
-    );
-    // console.log(autocomplete)
-    // Avoid paying for data that you don't need by restricting the set of
-    // place fields that are returned to just the address components and formatted
-    // address.
-    // this.autocomplete.setFields(['address_components', 'formatted_address']);
+  // const handleScriptLoad = () => {
+  //   // Declare Options For Autocomplete
+  //   const options = {
+  //     types: ['address'],
+  //   };
+  //   // console.log('fsdfsdfsdfdsf')
+  //   // Initialize Google Autocomplete
+  //   /*global google*/ // To disable any eslint 'google not defined' errors
+  //   let autocomplete = new google.maps.places.Autocomplete(
+  //     document.getElementById('autocomplete'),
+  //     options,
+  //   );
+  //   // console.log(autocomplete)
+  //   // Avoid paying for data that you don't need by restricting the set of
+  //   // place fields that are returned to just the address components and formatted
+  //   // address.
+  //   // this.autocomplete.setFields(['address_components', 'formatted_address']);
 
-    // Fire Event when a suggested name is selected
-    autocomplete.addListener('place_changed', () => {
-      let p = autocomplete.getPlace();
-      // console.log(p);
-      setValue('country', p.address_components.find(i => i.types.some(i => i === "country")).short_name)
-      getState(p.address_components.find(i => i.types.some(i => i === "country")).short_name)
+  //   // Fire Event when a suggested name is selected
+  //   autocomplete.addListener('place_changed', () => {
+  //     let p = autocomplete.getPlace();
+  //     // console.log(p);
+  //     setValue('country', p.address_components.find(i => i.types.some(i => i === "country")).short_name)
+  //     getState(p.address_components.find(i => i.types.some(i => i === "country")).short_name)
 
-      let city = p.address_components.find(i => i.types.some(i => i === "locality"))
-      if (city !== undefined) {
-        setValue('city', city.short_name)
-      }
-      let pCode = p.address_components.find(i => i.types.some(i => i === "postal_code"))
-      if (pCode !== undefined) {
-        setValue('postalCode', pCode.long_name)
-      }
+  //     let city = p.address_components.find(i => i.types.some(i => i === "locality"))
+  //     if (city !== undefined) {
+  //       setValue('city', city.short_name)
+  //     }
+  //     let pCode = p.address_components.find(i => i.types.some(i => i === "postal_code"))
+  //     if (pCode !== undefined) {
+  //       setValue('postalCode', pCode.long_name)
+  //     }
 
-      var componentForm = {
-        street_number: 'short_name',
-        route: 'long_name',
-        sublocality: 'sublocality'
-      };
-      let array = [];
-      for (var i = 0; i < p.address_components.length; i++) {
-        var addressType = p.address_components[i].types[0];
-        if (componentForm[addressType]) {
-          var val = p.address_components[i][componentForm[addressType]];
-          array.push(val);
+  //     var componentForm = {
+  //       street_number: 'short_name',
+  //       route: 'long_name',
+  //       sublocality: 'sublocality'
+  //     };
+  //     let array = [];
+  //     for (var i = 0; i < p.address_components.length; i++) {
+  //       var addressType = p.address_components[i].types[0];
+  //       if (componentForm[addressType]) {
+  //         var val = p.address_components[i][componentForm[addressType]];
+  //         array.push(val);
 
-        }
-      }
-      setValue('address', array.toString())
-      setTimeout(() => {
-        setValue('stateProvince', p.address_components.find(i => i.types.some(i => i === "administrative_area_level_1")).short_name)
-      }, 2000);
+  //       }
+  //     }
+  //     setValue('address', array.toString())
+  //     setTimeout(() => {
+  //       setValue('stateProvince', p.address_components.find(i => i.types.some(i => i === "administrative_area_level_1")).short_name)
+  //     }, 2000);
 
-    });
-  }
-  const handleDeliveryScriptLoad = () => {
-    // Declare Options For Autocomplete
-    const options = {
-      types: ['address'],
-    };
-    // console.log('fsdfsdfsdfdsf')
-    // Initialize Google Autocomplete
+  //   });
+  // }
+  // const handleDeliveryScriptLoad = () => {
+  //   // Declare Options For Autocomplete
+  //   const options = {
+  //     types: ['address'],
+  //   };
+  //   // console.log('fsdfsdfsdfdsf')
+  //   // Initialize Google Autocomplete
 
-    let autocomplete = new google.maps.places.Autocomplete(
-      document.getElementById('autocomplete1'),
-      options,
-    );
-    // console.log(autocomplete)
-    // Avoid paying for data that you don't need by restricting the set of
-    // place fields that are returned to just the address components and formatted
-    // address.
-    // this.autocomplete.setFields(['address_components', 'formatted_address']);
+  //   let autocomplete = new google.maps.places.Autocomplete(
+  //     document.getElementById('autocomplete1'),
+  //     options,
+  //   );
+  //   // console.log(autocomplete)
+  //   // Avoid paying for data that you don't need by restricting the set of
+  //   // place fields that are returned to just the address components and formatted
+  //   // address.
+  //   // this.autocomplete.setFields(['address_components', 'formatted_address']);
 
-    // Fire Event when a suggested name is selected
-    autocomplete.addListener('place_changed', () => {
-      let p = autocomplete.getPlace();
-      //console.log(p);
-      setDeliveryValue('shipCountry', p.address_components.find(i => i.types.some(i => i === "country")).short_name)
-      getShippingState(p.address_components.find(i => i.types.some(i => i === "country")).short_name)
+  //   // Fire Event when a suggested name is selected
+  //   autocomplete.addListener('place_changed', () => {
+  //     let p = autocomplete.getPlace();
+  //     //console.log(p);
+  //     setDeliveryValue('shipCountry', p.address_components.find(i => i.types.some(i => i === "country")).short_name)
+  //     getShippingState(p.address_components.find(i => i.types.some(i => i === "country")).short_name)
 
-      let city = p.address_components.find(i => i.types.some(i => i === "locality"))
-      if (city !== undefined) {
-        setDeliveryValue('shipCity', city.short_name)
-      }
-      let pCode = p.address_components.find(i => i.types.some(i => i === "postal_code"))
-      if (pCode !== undefined) {
-        setDeliveryValue('shipPostalCode', pCode.long_name)
-      }
+  //     let city = p.address_components.find(i => i.types.some(i => i === "locality"))
+  //     if (city !== undefined) {
+  //       setDeliveryValue('shipCity', city.short_name)
+  //     }
+  //     let pCode = p.address_components.find(i => i.types.some(i => i === "postal_code"))
+  //     if (pCode !== undefined) {
+  //       setDeliveryValue('shipPostalCode', pCode.long_name)
+  //     }
 
-      var componentForm = {
-        street_number: 'short_name',
-        route: 'long_name',
-        sublocality: 'sublocality'
-      };
-      let array = [];
-      for (var i = 0; i < p.address_components.length; i++) {
-        var addressType = p.address_components[i].types[0];
-        if (componentForm[addressType]) {
-          var val = p.address_components[i][componentForm[addressType]];
-          array.push(val);
+  //     var componentForm = {
+  //       street_number: 'short_name',
+  //       route: 'long_name',
+  //       sublocality: 'sublocality'
+  //     };
+  //     let array = [];
+  //     for (var i = 0; i < p.address_components.length; i++) {
+  //       var addressType = p.address_components[i].types[0];
+  //       if (componentForm[addressType]) {
+  //         var val = p.address_components[i][componentForm[addressType]];
+  //         array.push(val);
 
-        }
-      }
-      setDeliveryValue('shipAddress', array.toString())
-      setTimeout(() => {
-        setDeliveryValue('shipStateProvince', p.address_components.find(i => i.types.some(i => i === "administrative_area_level_1")).short_name)
-      }, 2000);
-    });
-  }
+  //       }
+  //     }
+  //     setDeliveryValue('shipAddress', array.toString())
+  //     setTimeout(() => {
+  //       setDeliveryValue('shipStateProvince', p.address_components.find(i => i.types.some(i => i === "administrative_area_level_1")).short_name)
+  //     }, 2000);
+  //   });
+  // }
 
   const onUpdateBilling = async (data) => {
     // console.log(data)
@@ -631,7 +632,6 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
     }
   }
   const onDeleteConfirm = () => {
-    console.log('confrim')
     setIsDeleted(!isDeleted)
   }
   const onDelete = async () => {
@@ -761,10 +761,10 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
                                 </div>
                                 <div className="col-lg-12">
                                   <div className="billing-info mb-20">
-                                    <Script
+                                    {/* <Script
                                       url={"https://maps.googleapis.com/maps/api/js?key=" + window._env_.APP_MAP_API_KEY + "&libraries=places"}
                                       onLoad={handleScriptLoad}
-                                    />
+                                    /> */}
                                     <label>{strings["Street Address"]}</label>
                                     <input
                                       className="billing-info"
@@ -786,15 +786,35 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
                                       rules={billingForm.country.validate}
                                       render={props => {
                                         return (
-                                          <select onChange={(e) => { props.onChange(e.target.value); getState(e.target.value); }} value={props.value}>
-                                            <option>{strings["Select a country"]}</option>
-                                            {
-
-                                              countryData.map((data, i) => {
-                                                return <option key={i} value={data.code}>{data.name}</option>
-                                              })
+                                          <Select
+                                            // defaultValue={props?.value || ""}
+                                            value={
+                                              props.value ?
+                                                countryData
+                                                  .filter(option => option.code === props.value)
+                                                  .map(item => ({                // Map to new structure
+                                                    value: item.code,
+                                                    label: item.name
+                                                  }))[0]
+                                                : ''
                                             }
-                                          </select>
+                                            isSearchable={true}
+                                            placeholder="Select a country"
+                                            className="my-account-select"
+                                            onChange={(e) => { props.onChange(e.value); getState(e.value) }}
+                                            options={countryData.map((data) => {
+                                              return { value: data.code, label: data.name }
+                                            })}
+                                          />
+                                          // <select onChange={(e) => { props.onChange(e.target.value); getState(e.target.value); }} value={props.value}>
+                                          //   <option>{strings["Select a country"]}</option>
+                                          //   {
+
+                                          //     countryData.map((data, i) => {
+                                          //       return <option key={i} value={data.code}>{data.name}</option>
+                                          //     })
+                                          //   }
+                                          // </select>
                                         )
                                       }}
                                     />
@@ -812,14 +832,34 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
                                           rules={billingForm.stateProvince.validate}
                                           render={props => {
                                             return (
-                                              <select onChange={(e) => props.onChange(e.target.value)} value={props.value}>
-                                                <option>{strings["Select a state"]}</option>
-                                                {
-                                                  stateData.map((data, i) => {
-                                                    return <option key={i} value={data.code}>{data.name}</option>
-                                                  })
+                                              <Select
+                                                value={
+                                                  props.value ?
+                                                    stateData
+                                                      .filter(option => option.code === props.value)
+                                                      .map(item => ({                // Map to new structure
+                                                        value: item.code,
+                                                        label: item.name
+                                                      }))[0]
+                                                    : ''
                                                 }
-                                              </select>)
+                                                isSearchable={true}
+                                                placeholder="Select a state"
+                                                className="my-account-select"
+                                                onChange={(e) => { props.onChange(e.value); }}
+                                                options={stateData.map((data) => {
+                                                  return { value: data.code, label: data.name }
+                                                })}
+                                              />
+                                              // <select onChange={(e) => props.onChange(e.target.value)} value={props.value}>
+                                              //   <option>{strings["Select a state"]}</option>
+                                              //   {
+                                              //     stateData.map((data, i) => {
+                                              //       return <option key={i} value={data.code}>{data.name}</option>
+                                              //     })
+                                              //   }
+                                              // </select>
+                                            )
                                           }}
                                         />
                                         :
@@ -908,10 +948,10 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
                                 </div>
                                 <div className="col-lg-12">
                                   <div className="billing-info mb-20">
-                                    <Script
+                                    {/* <Script
                                       url={"https://maps.googleapis.com/maps/api/js?key=" + window._env_.APP_MAP_API_KEY + "&libraries=places"}
                                       onLoad={handleDeliveryScriptLoad}
-                                    />
+                                    /> */}
                                     <label>{strings["Street Address"]}</label>
                                     <input
                                       className="billing-info"
@@ -933,15 +973,34 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
                                       rules={billingForm.shipCountry.validate}
                                       render={props => {
                                         return (
-                                          <select onChange={(e) => { props.onChange(e.target.value); getShippingState(e.target.value); }} value={props.value}>
-                                            <option>{strings["Select a country"]}</option>
-                                            {
-
-                                              countryData.map((data, i) => {
-                                                return <option key={i} value={data.code}>{data.name}</option>
-                                              })
+                                          <Select
+                                            value={
+                                              props.value ?
+                                                countryData
+                                                  .filter(option => option.code === props.value)
+                                                  .map(item => ({                // Map to new structure
+                                                    value: item.code,
+                                                    label: item.name
+                                                  }))[0]
+                                                : ''
                                             }
-                                          </select>
+                                            isSearchable={true}
+                                            placeholder="Select a country"
+                                            className="my-account-select"
+                                            onChange={(e) => { props.onChange(e.value); getShippingState(e.value) }}
+                                            options={countryData.map((data) => {
+                                              return { value: data.code, label: data.name }
+                                            })}
+                                          />
+                                          // <select onChange={(e) => { props.onChange(e.target.value); getShippingState(e.target.value); }} value={props.value}>
+                                          //   <option>{strings["Select a country"]}</option>
+                                          //   {
+
+                                          //     countryData.map((data, i) => {
+                                          //       return <option key={i} value={data.code}>{data.name}</option>
+                                          //     })
+                                          //   }
+                                          // </select>
                                         )
                                       }}
                                     />
@@ -952,6 +1011,7 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
                                   <div className="billing-info mb-20">
                                     <label>{strings["State"]}</label>
                                     {
+
                                       shipStateData && shipStateData.length > 0 ?
                                         <Controller
                                           name={billingForm.shipStateProvince.name}
@@ -959,14 +1019,34 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
                                           rules={billingForm.shipStateProvince.validate}
                                           render={props => {
                                             return (
-                                              <select onChange={(e) => props.onChange(e.target.value)} value={props.value}>
-                                                <option>{strings["Select a state"]}</option>
-                                                {
-                                                  shipStateData.map((data, i) => {
-                                                    return <option key={i} value={data.code}>{data.name}</option>
-                                                  })
+                                              <Select
+                                                value={
+                                                  props.value ?
+                                                    shipStateData
+                                                      .filter(option => option.code === props.value)
+                                                      .map(item => ({                // Map to new structure
+                                                        value: item.code,
+                                                        label: item.name
+                                                      }))[0]
+                                                    : ''
                                                 }
-                                              </select>)
+                                                isSearchable={true}
+                                                placeholder="Select a state"
+                                                className="my-account-select"
+                                                onChange={(e) => { props.onChange(e.value); }}
+                                                options={shipStateData.map((data) => {
+                                                  return { value: data.code, label: data.name }
+                                                })}
+                                              />
+                                              // <select onChange={(e) => props.onChange(e.target.value)} value={props.value}>
+                                              //   <option>{strings["Select a state"]}</option>
+                                              //   {
+                                              //     shipStateData.map((data, i) => {
+                                              //       return <option key={i} value={data.code}>{data.name}</option>
+                                              //     })
+                                              //   }
+                                              // </select>
+                                            )
                                           }}
                                         />
                                         :

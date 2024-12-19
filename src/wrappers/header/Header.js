@@ -13,6 +13,7 @@ import constant from '../../util/constant';
 // import { setLocalData } from '../../util/helper';
 import { setMerchant } from "../../redux/actions/storeAction";
 import { getCurrentLocation } from "../../redux/actions/userAction";
+import { setCategorys } from "../../redux/actions/productActions";
 const Header = ({
   setMerchant,
   merchant,
@@ -24,7 +25,8 @@ const Header = ({
   headerBgClass,
   defaultStore,
   getCurrentLocation,
-  currentLanguageCode
+  currentLanguageCode,
+  setCategorys
 }) => {
   const history = useHistory();
   const [scroll, setScroll] = useState(0);
@@ -78,6 +80,7 @@ const Header = ({
       let response = await WebService.get(action);
       if (response) {
         setCategoryData(response.categories);
+        setCategorys(response.categories)
       }
     } catch (error) {
       // console.log(error.messages)
@@ -171,6 +174,9 @@ const mapDispatchToProps = dispatch => {
     },
     getCurrentLocation: () => {
       dispatch(getCurrentLocation())
+    },
+    setCategorys: (data) => {
+      dispatch(setCategorys(data))
     }
   };
 };

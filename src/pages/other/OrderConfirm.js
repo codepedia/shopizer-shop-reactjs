@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useCallback } from "react";
 // import { Link } from "react-router-dom";
 import MetaTags from "react-meta-tags";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
@@ -18,12 +18,8 @@ const OrderConfirm = ({ location, orderID, strings, merchant, setLoader }) => {
   const [subTotal, setSubTotal] = useState(0);
   const [shipping, setShipping] = useState(0);
   const [total, setTotal] = useState(0);
-  useEffect(() => {
-    // if (orderID) {
-    getOrderDetails()
-    // }
-  }, [orderID])
-  const getOrderDetails = async () => {
+
+  const getOrderDetails = useCallback(async () => {
     setLoader(true)
     let action = constant.ACTION.AUTH + constant.ACTION.ORDERS + orderID;
     try {
@@ -31,13 +27,13 @@ const OrderConfirm = ({ location, orderID, strings, merchant, setLoader }) => {
       if (response) {
         // console.log(response)
         setorderDetails(response)
-        response.totals.map((val) => {
-          if (val.module == 'subtotal') {
-            setSubTotal(val.value)
-          } else if (val.module == 'shipping') {
-            setShipping(val.value)
-          } else if (val.module == 'total') {
-            setTotal(val.value)
+        response.totals.forEach(element => {
+          if (element.module === 'subtotal') {
+            setSubTotal(element.value)
+          } else if (element.module === 'shipping') {
+            setShipping(element.value)
+          } else if (element.module === 'total') {
+            setTotal(element.value)
           }
         })
         // // setConfig(response)
@@ -47,7 +43,12 @@ const OrderConfirm = ({ location, orderID, strings, merchant, setLoader }) => {
       setLoader(false)
       console.log(error, '------------')
     }
-  }
+  }, [orderID, setLoader])
+
+  useEffect(() => {
+    getOrderDetails()
+  }, [getOrderDetails])
+
   return (
     <Fragment>
       <MetaTags>
@@ -71,7 +72,7 @@ const OrderConfirm = ({ location, orderID, strings, merchant, setLoader }) => {
             <div className="container confirm-details-container">
               <div class="thank-you-section">
 
-                <h1><img src="assets/img/confirm.gif" /> Thank you, your order has been placed.</h1>
+                <h1><img src="assets/img/confirm.gif" alt="confirm-gif" /> Thank you, your order has been placed.</h1>
                 <div style={{ padding: '20px 0' }}><p>Your order will be processed within 24 hours during working days. We will notify you by email once your order has been shipped.</p></div>
                 <div class="billing-info">
                   <h3>Billing address</h3>

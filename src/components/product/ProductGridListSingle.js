@@ -52,7 +52,6 @@ const ProductGridListSingle = ({
     setProductID(product?.id)
     setProductCode(product?.sku)
   }
-  console.log(layout)
   return (
     <Fragment>
       <div

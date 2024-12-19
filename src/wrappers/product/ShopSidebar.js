@@ -12,8 +12,8 @@ import ShopColor from "../../components/product/ShopColor";
 import ShopSize from "../../components/product/ShopSize";
 // import ShopTag from "../../components/product/ShopTag";
 import ShopManufacture from "../../components/product/ShopManufacture";
-import Accordion from 'react-bootstrap/Accordion';
-import Card from "react-bootstrap/Card";
+// import Accordion from 'react-bootstrap/Accordion';
+// import Card from "react-bootstrap/Card";
 
 const ShopSidebar = ({ height, string, getCategoryParams, getSortParams, sideSpaceClass, uniqueCategories, uniqueColors, uniqueSizes, uniqueManufacture, closeFilter }) => {
   const [minValue, setMinValue] = useState(0);
@@ -120,7 +120,7 @@ const ShopSidebar = ({ height, string, getCategoryParams, getSortParams, sideSpa
           </Card>
         }
       </Accordion> */}
-      <div className="sidebar-widget" style={{ padding: '20px', borderTop: '1px solid lightgrey' }}>
+      <div className="sidebar-widget" style={{ padding: '15px', borderTop: '1px solid lightgrey' }}>
         <h4 className="pro-sidebar-title" style={{ marginBottom: '10px' }}><b>{"Sort"}</b></h4>
         <div className="sidebar-widget-list">
           <select className="filter-select">
@@ -130,7 +130,7 @@ const ShopSidebar = ({ height, string, getCategoryParams, getSortParams, sideSpa
           </select>
         </div>
       </div>
-      <div className="sidebar-widget" style={{ padding: '20px', borderTop: '1px solid lightgrey' }}>
+      <div className="sidebar-widget" style={{ padding: '15px', borderTop: '1px solid lightgrey' }}>
         <h4 className="pro-sidebar-title"><b>{"Price"}</b></h4>
         <div className="sidebar-widget-list">
           <div className="slider-container position-relative">

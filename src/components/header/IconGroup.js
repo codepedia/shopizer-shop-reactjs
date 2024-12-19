@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
-import { Link, useRouteMatch, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import MenuCart from "./sub-components/MenuCart";
 import { deleteFromCart, deleteAllFromCart } from "../../redux/actions/cartActions";
@@ -25,7 +25,7 @@ const IconGroup = ({
   strings,
   getCart
 }) => {
-  const pathname = useRouteMatch();
+  // const pathname = useRouteMatch();
   const history = useHistory();
   const timeout = 1000 * 60 * 30;
   // const [idleTimer, setIdleTimer] = useState(null);
@@ -133,7 +133,7 @@ const IconGroup = ({
         timeout={timeout} />
 
       {/*  search as configurable component */}
-      
+
       <div className="same-style header-search">
 
         < button className="search-active" onClick={e => handleClick(e)}>
@@ -170,7 +170,7 @@ const IconGroup = ({
           }
         </div>
       </div>
-     
+
 
       <div className="same-style account-setting d-none d-lg-block">
         {

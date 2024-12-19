@@ -266,7 +266,7 @@ h3.cart-page-title {
 
 .cart-shiping-update-wrapper {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 
   padding: 25px 0 25px;
 
@@ -279,13 +279,14 @@ h3.cart-page-title {
   .cart-shiping-update>a,
   .cart-clear>button,
   .cart-clear>a {
+    width: 100%;
     font-size: 14px;
     font-weight: 500;
-    line-height: 1;
-
+    // line-height: 1;
+    text-align: center;
     display: inline-block;
 
-    padding: 18px 35px 17px;
+    padding: 13px 20px 12px;
 
     text-transform: uppercase;
 
@@ -296,12 +297,12 @@ h3.cart-page-title {
     @media #{$md-layout} {
       font-size: 13px;
 
-      padding: 18px 25px 17px;
+      // padding: 18px 25px 17px;
     }
 
     @media #{$xs-layout} {
       margin: 0 0 15px;
-      padding: 18px 40px 17px;
+      // padding: 18px 40px 17px;
     }
 
     &:hover {
@@ -347,7 +348,19 @@ h3.cart-page-title {
     height: 45px;
     padding: 0 15px;
     border-radius: 5px;
-    width: 45%;
+    width: 55%;
+
+    @media #{$md-layout} {
+      width: 76%;
+    }
+
+    @media #{$sm-layout} {
+      width: 68%;
+    }
+
+    @media #{$xxs-layout} {
+      width: 59%;
+    }
   }
 
   .coupon-btn {
@@ -363,6 +376,10 @@ h3.cart-page-title {
     border-radius: 50px;
     background-color: red;
     background-color: var(--theme-color);
+
+    &:hover {
+      background-color: #333;
+    }
   }
 }
 
@@ -415,22 +432,34 @@ h3.cart-page-title {
   }
 
   .process-checkout {
-    width: 20%;
+    width: 25%;
     float: right;
     font-size: 14px;
     font-weight: 500;
-    line-height: 1;
+    // line-height: 1;
 
     display: block;
 
-    padding: 18px 10px 17px;
+    padding: 13px 20px 12px;
 
     text-align: center;
     text-transform: uppercase;
-
     color: #fff;
     border-radius: 50px;
     background-color: $theme-color;
+
+
+    @media #{$md-layout} {
+      width: 35%;
+    }
+
+    @media #{$xs-layout} {
+      width: 55%;
+    }
+
+    @media #{$xxs-layout} {
+      width: 100%;
+    }
 
     &:hover {
       background-color: #333;
@@ -442,15 +471,15 @@ h3.cart-page-title {
   }
 
   .shipping-button {
-    width: 20%;
+    width: 25%;
     float: right;
     font-size: 14px;
     font-weight: 500;
-    line-height: 1;
+    // line-height: 1;
     margin-top: 20px;
     display: block;
     border: none;
-    padding: 18px 10px 17px;
+    padding: 13px 20px 12px;
 
     text-align: center;
     text-transform: uppercase;
@@ -458,6 +487,18 @@ h3.cart-page-title {
     color: #fff;
     border-radius: 50px;
     background-color: $theme-color;
+
+    @media #{$md-layout} {
+      width: 35%;
+    }
+
+    @media #{$xs-layout} {
+      width: 50%;
+    }
+
+    @media #{$xxs-layout} {
+      width: 100%;
+    }
 
     &:hover {
       background-color: #333;
@@ -473,6 +514,18 @@ h3.cart-page-title {
     padding: 0 15px;
     border-radius: 5px;
     width: 60%;
+
+    @media #{$md-layout} {
+      width: 75%;
+    }
+
+    @media #{$xs-layout} {
+      width: 80%;
+    }
+
+    @media #{$xxs-layout} {
+      width: 100%;
+    }
   }
 
   select {
@@ -484,6 +537,18 @@ h3.cart-page-title {
     padding: 0 15px;
     border-radius: 5px;
     width: 60%;
+
+    @media #{$md-layout} {
+      width: 75%;
+    }
+
+    @media #{$xs-layout} {
+      width: 80%;
+    }
+
+    @media #{$xxs-layout} {
+      width: 100%;
+    }
   }
 
 }

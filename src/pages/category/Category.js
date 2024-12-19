@@ -49,7 +49,6 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
     const getLayout = (layout) => {
         setLayout(layout)
     }
-    console.log(height, 'height')
     useEffect(() => {
         // Function to update the height
         const updateHeight = () => {
@@ -102,7 +101,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
 
     const getCategoryParams = (sortType, sortValue) => {
         // console.log(sortType)
-        console.log(sortValue)
+        // console.log(sortValue)
         // setCategoryValue(sortValue)
         setCategoryID(sortValue.id)
         setCategoryFrindlyUrl(sortValue.description.friendlyUrl)

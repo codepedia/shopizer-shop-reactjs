@@ -23,9 +23,9 @@ import { setLoader } from "../../redux/actions/loaderActions";
 import {
   deleteAllFromCart
 } from "../../redux/actions/cartActions";
-import Script from 'react-load-script';
+// import Script from 'react-load-script';
 import { multilanguage } from "redux-multilanguage";
-
+import Select from 'react-select';
 
 
 const stripePromise = loadStripe(window._env_.APP_STRIPE_KEY, { stripeAccount: window._env_.APP_STRIPE_ACCOUNT });
@@ -279,7 +279,6 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
 
   const getSummaryOrder = async () => {
     setLoader(true)
-    console.log('GET SUMMARY')
     let action = constant.ACTION.CART + cartID + '?store=' + defaultStore;
     try {
       let response = await WebService.get(action);
@@ -304,7 +303,6 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
   }
   const setDefaultsValue = () => {
     const shippingData = JSON.parse(localStorage.getItem('shippingAddress'));
-    console.log(shippingData)
     if (shippingData === null) {
       setValue('country', currentLocation.find(i => i.types.some(i => i === "country")).address_components[0].short_name)
       setValue('city', currentLocation.find(i => i.types.some(i => i === "locality")).address_components[0].short_name)
@@ -330,7 +328,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
         setValue('country', response.billing.country)
         setValue('city', response.billing.city)
         setTimeout(() => {
-          setValue('stateProvince', response.billing.zone)
+          setValue('stateProvince', response.billing.stateProvince)
         }, 1000)
         setValue('postalCode', response.billing.postalCode)
         setValue('phone', response.billing.phone)
@@ -409,62 +407,62 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
     }, 1000);
 
   }
-  const handleScriptLoad = () => {
-    // Declare Options For Autocomplete
-    const options = {
-      types: ['address'],
-    };
-    // console.log('fsdfsdfsdfdsf')
-    // Initialize Google Autocomplete
-    /*global google*/ // To disable any eslint 'google not defined' errors
-    let autocomplete = new google.maps.places.Autocomplete(
-      document.getElementById('autocomplete'),
-      options,
-    );
-    // console.log(autocomplete)
-    // Avoid paying for data that you don't need by restricting the set of
-    // place fields that are returned to just the address components and formatted
-    // address.
-    // this.autocomplete.setFields(['address_components', 'formatted_address']);
+  // const handleScriptLoad = () => {
+  //   // Declare Options For Autocomplete
+  //   const options = {
+  //     types: ['address'],
+  //   };
+  //   // console.log('fsdfsdfsdfdsf')
+  //   // Initialize Google Autocomplete
+  //   /*global google*/ // To disable any eslint 'google not defined' errors
+  //   let autocomplete = new google.maps.places.Autocomplete(
+  //     document.getElementById('autocomplete'),
+  //     options,
+  //   );
+  //   // console.log(autocomplete)
+  //   // Avoid paying for data that you don't need by restricting the set of
+  //   // place fields that are returned to just the address components and formatted
+  //   // address.
+  //   // this.autocomplete.setFields(['address_components', 'formatted_address']);
 
-    // Fire Event when a suggested name is selected
-    autocomplete.addListener('place_changed', () => {
-      let p = autocomplete.getPlace();
-      // console.log(p);
-      setValue('country', p.address_components.find(i => i.types.some(i => i === "country")).short_name)
-      getState(p.address_components.find(i => i.types.some(i => i === "country")).short_name)
+  //   // Fire Event when a suggested name is selected
+  //   autocomplete.addListener('place_changed', () => {
+  //     let p = autocomplete.getPlace();
+  //     // console.log(p);
+  //     setValue('country', p.address_components.find(i => i.types.some(i => i === "country")).short_name)
+  //     getState(p.address_components.find(i => i.types.some(i => i === "country")).short_name)
 
-      let city = p.address_components.find(i => i.types.some(i => i === "locality"))
-      if (city !== undefined) {
-        setValue('city', city.short_name)
-      }
-      let pCode = p.address_components.find(i => i.types.some(i => i === "postal_code"))
-      if (pCode !== undefined) {
-        setValue('postalCode', pCode.long_name)
-      }
+  //     let city = p.address_components.find(i => i.types.some(i => i === "locality"))
+  //     if (city !== undefined) {
+  //       setValue('city', city.short_name)
+  //     }
+  //     let pCode = p.address_components.find(i => i.types.some(i => i === "postal_code"))
+  //     if (pCode !== undefined) {
+  //       setValue('postalCode', pCode.long_name)
+  //     }
 
-      var componentForm = {
-        street_number: 'short_name',
-        route: 'long_name',
-        sublocality: 'sublocality'
-      };
-      let array = [];
-      for (var i = 0; i < p.address_components.length; i++) {
-        var addressType = p.address_components[i].types[0];
-        if (componentForm[addressType]) {
-          var val = p.address_components[i][componentForm[addressType]];
-          array.push(val);
+  //     var componentForm = {
+  //       street_number: 'short_name',
+  //       route: 'long_name',
+  //       sublocality: 'sublocality'
+  //     };
+  //     let array = [];
+  //     for (var i = 0; i < p.address_components.length; i++) {
+  //       var addressType = p.address_components[i].types[0];
+  //       if (componentForm[addressType]) {
+  //         var val = p.address_components[i][componentForm[addressType]];
+  //         array.push(val);
 
-        }
-      }
-      setValue('address', array.toString())
-      setTimeout(() => {
-        setValue('stateProvince', p.address_components.find(i => i.types.some(i => i === "administrative_area_level_1")).short_name)
-      }, 2000);
+  //       }
+  //     }
+  //     setValue('address', array.toString())
+  //     setTimeout(() => {
+  //       setValue('stateProvince', p.address_components.find(i => i.types.some(i => i === "administrative_area_level_1")).short_name)
+  //     }, 2000);
 
-      onChangeShipping()
-    });
-  }
+  //     onChangeShipping()
+  //   });
+  // }
   const onChangeShipping = async () => {
     let action = constant.ACTION.CART + cartID + '/' + constant.ACTION.SHIPPING;
     let param = {};
@@ -703,7 +701,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
       //execute
 
 
-      console.log('Required fields ' + JSON.stringify(param));
+      // console.log('Required fields ' + JSON.stringify(param));
       unity(p);
 
     } else {
@@ -726,7 +724,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
         var millisecondsToWait = 5000;
         setTimeout(function () {
           // Whatever you want to do after the wait
-          console.log('Into execution');
+          // console.log('Into execution');
 
 
           executed = false;
@@ -810,10 +808,10 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                         <div className="col-lg-12">
                           <div className="billing-info mb-20">
                             <label>{strings["Street Address"]}</label>
-                            <Script
+                            {/* <Script
                               url={"https://maps.googleapis.com/maps/api/js?key=" + window._env_.APP_MAP_API_KEY + "&libraries=places"}
                               onLoad={handleScriptLoad}
-                            />
+                            /> */}
                             <input
                               className="billing-address"
                               placeholder={strings["House number and street name"]}
@@ -836,18 +834,37 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                               rules={paymentForm.country.validate}
                               render={props => {
                                 return (
-                                  <select onChange={(e) => { props.onChange(e.target.value); getState(e.target.value); onChangeShipping() }} value={props.value}>
-                                    <option>{strings["Select a country"]}</option>
-                                    {
-
-                                      shipCountryData.map((data, i) => {
-                                        //getShippingCountry(currentLanguageCode).map((data, i) => {
-                                        // shipCountryData.map((data, i) => {
-
-                                        return <option key={i} value={data.code}>{data.name}</option>
-                                      })
+                                  <Select
+                                    value={
+                                      props.value ?
+                                        shipCountryData
+                                          .filter(option => option.code === props.value)
+                                          .map(item => ({                // Map to new structure
+                                            value: item.code,
+                                            label: item.name
+                                          }))[0]
+                                        : ''
                                     }
-                                  </select>
+                                    isSearchable={true}
+                                    placeholder=""
+                                    className="register-select"
+                                    onChange={(e) => { props.onChange(e.value); getState(e.value); onChangeShipping() }}
+                                    options={shipCountryData.map((data) => {
+                                      return { value: data.code, label: data.name }
+                                    })}
+                                  />
+                                  // <select onChange={(e) => { props.onChange(e.target.value); getState(e.target.value); onChangeShipping() }} value={props.value}>
+                                  //   <option>{strings["Select a country"]}</option>
+                                  //   {
+
+                                  //     shipCountryData.map((data, i) => {
+                                  //       //getShippingCountry(currentLanguageCode).map((data, i) => {
+                                  //       // shipCountryData.map((data, i) => {
+
+                                  //       return <option key={i} value={data.code}>{data.name}</option>
+                                  //     })
+                                  //   }
+                                  // </select>
                                 )
                               }}
                             />
@@ -873,14 +890,34 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                                   rules={paymentForm.stateProvince.validate}
                                   render={props => {
                                     return (
-                                      <select onBlur={changeAddress()} onChange={(e) => props.onChange(e.target.value)} value={props.value}>
-                                        <option>{strings["State / province"]}</option>
-                                        {
-                                          stateData.map((data, i) => {
-                                            return <option key={i} value={data.code}>{data.name}</option>
-                                          })
+                                      <Select
+                                        value={
+                                          props.value ?
+                                            stateData
+                                              .filter(option => option.code === props.value)
+                                              .map(item => ({                // Map to new structure
+                                                value: item.code,
+                                                label: item.name
+                                              }))[0]
+                                            : ''
                                         }
-                                      </select>)
+                                        isSearchable={true}
+                                        placeholder=""
+                                        className="register-select"
+                                        onChange={(e) => { props.onChange(e.value); changeAddress() }}
+                                        options={stateData.map((data) => {
+                                          return { value: data.code, label: data.name }
+                                        })}
+                                      />
+                                      // <select onBlur={changeAddress()} onChange={(e) => props.onChange(e.target.value)} value={props.value}>
+                                      //   <option>{strings["State / province"]}</option>
+                                      //   {
+                                      //     stateData.map((data, i) => {
+                                      //       return <option key={i} value={data.code}>{data.name}</option>
+                                      //     })
+                                      //   }
+                                      // </select>
+                                    )
                                   }}
                                 />
                                 :
@@ -1000,15 +1037,34 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                                   rules={paymentForm.shipCountry.validate}
                                   render={props => {
                                     return (
-                                      <select onChange={(e) => { props.onChange(e.target.value); getShippingState(e.target.value); onChangeShipping() }} value={props.value}>
-                                        <option>{strings["Select a country"]}</option>
-                                        {
-
-                                          shipCountryData.map((data, i) => {
-                                            return <option key={i} value={data.code}>{data.name}</option>
-                                          })
+                                      <Select
+                                        value={
+                                          props.value ?
+                                            shipCountryData
+                                              .filter(option => option.code === props.value)
+                                              .map(item => ({                // Map to new structure
+                                                value: item.code,
+                                                label: item.name
+                                              }))[0]
+                                            : ''
                                         }
-                                      </select>
+                                        isSearchable={true}
+                                        placeholder=""
+                                        className="register-select"
+                                        onChange={(e) => { props.onChange(e.value); getShippingState(e.value); onChangeShipping() }}
+                                        options={shipCountryData.map((data) => {
+                                          return { value: data.code, label: data.name }
+                                        })}
+                                      />
+                                      // <select onChange={(e) => { props.onChange(e.target.value); getShippingState(e.target.value); onChangeShipping() }} value={props.value}>
+                                      //   <option>{strings["Select a country"]}</option>
+                                      //   {
+
+                                      //     shipCountryData.map((data, i) => {
+                                      //       return <option key={i} value={data.code}>{data.name}</option>
+                                      //     })
+                                      //   }
+                                      // </select>
                                     )
                                   }}
                                 />
@@ -1034,14 +1090,34 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                                       rules={paymentForm.shipStateProvince.validate}
                                       render={props => {
                                         return (
-                                          <select onChange={(a) => console.log('-----' + a)} value={props.value}>
-                                            <option>{strings["State / Province"]}</option>
-                                            {
-                                              shipStateData.map((data, i) => {
-                                                return <option key={i} value={data.code}>{data.name}</option>
-                                              })
+                                          <Select
+                                            value={
+                                              props.value ?
+                                                shipStateData
+                                                  .filter(option => option.code === props.value)
+                                                  .map(item => ({                // Map to new structure
+                                                    value: item.code,
+                                                    label: item.name
+                                                  }))[0]
+                                                : ''
                                             }
-                                          </select>)
+                                            isSearchable={true}
+                                            placeholder=""
+                                            className="register-select"
+                                            onChange={(e) => { props.onChange(e.value); }}
+                                            options={shipStateData.map((data) => {
+                                              return { value: data.code, label: data.name }
+                                            })}
+                                          />
+                                          // <select onChange={(a) => { }} value={props.value}>
+                                          //   <option>{strings["State / Province"]}</option>
+                                          //   {
+                                          //     shipStateData.map((data, i) => {
+                                          //       return <option key={i} value={data.code}>{data.name}</option>
+                                          //     })
+                                          //   }
+                                          // </select>
+                                        )
                                       }}
                                     />
                                     :
@@ -1129,9 +1205,8 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                             {
                               shippingQuote.length > 0 &&
                               shippingQuote.map((quote, i) => {
-                                console.log(quote)
                                 return (
-                                  quote.title !== 'Total' || quote.title !== 'Shipping' &&
+                                  (quote.title !== 'Total' || quote.title !== 'Shipping') &&
                                   <ul key={i}>
                                     <li key={i}>
                                       <span className="order-middle-left" style={{ width: 220 }}>

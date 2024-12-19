@@ -16,6 +16,9 @@ If it fails run the following
 
 ### `npm install --legacy-peer-deps`
 
+### npm install -g sass-migrator
+### sass-migrator division **/*.scss
+
 ### `npm run dev`
 
 http://localhost:3000

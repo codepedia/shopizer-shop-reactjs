@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 // import featureIconData from "../../data/feature-icons/feature-icon-four.json";
 // import FeatureIconSingle from "../../components/feature-icon/FeatureIconSingle.js";
 import WebService from '../../util/webService';
@@ -28,7 +28,6 @@ const FeatureIcon = ({
     let action = constant.ACTION.PRODUCT_GROUP + 'PROMO_CODE?store=' + defaultStore + '&lang=' + currentLanguageCode;
     try {
       let response = await WebService.get(action);
-      console.log(response);
       if (response) {
         setPromoData(response?.products)
       }
@@ -37,12 +36,11 @@ const FeatureIcon = ({
     }
   }
 
+
   return (
     <div
-      className={`support-area hm9-section-padding ${
-        spaceTopClass ? spaceTopClass : ""
-        } ${spaceBottomClass ? spaceBottomClass : ""} ${
-        responsiveClass ? responsiveClass : ""
+      className={`support-area hm9-section-padding ${spaceTopClass ? spaceTopClass : ""
+        } ${spaceBottomClass ? spaceBottomClass : ""} ${responsiveClass ? responsiveClass : ""
         }`}
       style={
         bgImg
@@ -54,11 +52,11 @@ const FeatureIcon = ({
         <div className="row">
           {
             promoData.map((promo) => {
-              return  <div style={{textAlign: 'center'}} className={promoData.length === 1 ? "col-lg-12" : promoData.length === 2 ? "col-lg-6" : promoData.length === 3 ? "col-lg-4" : "col-lg-3" }>
-                <img src="/assets/img/promo/promo20.jpg" alt="promo20" style={{margin: '12px', boxShadow: '5px 5px 5px lightgrey'}}/>
-                </div>
+              return <div style={{ textAlign: 'center' }} className={promoData.length === 1 ? "col-lg-12" : promoData.length === 2 ? "col-lg-6" : promoData.length === 3 ? "col-lg-4" : "col-lg-3"}>
+                <img src="/assets/img/promo/promo20.jpg" alt="promo20" style={{ margin: '12px', boxShadow: '5px 5px 5px lightgrey' }} />
+              </div>
             })
-            
+
           }
 
         </div>
@@ -85,7 +83,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    
+
   };
 };
 

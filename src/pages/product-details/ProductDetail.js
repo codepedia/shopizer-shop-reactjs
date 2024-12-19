@@ -5,7 +5,7 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { connect } from "react-redux";
 import Layout from "../../layouts/Layout";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-import RelatedProductSlider from "../../wrappers/product/RelatedProductSlider";
+// import RelatedProductSlider from "../../wrappers/product/RelatedProductSlider";
 import ProductDescriptionTab from "../../wrappers/product/ProductDescriptionTab";
 import ProductImageDescription from "../../wrappers/product/ProductImageDescription";
 import WebService from '../../util/webService';
@@ -29,7 +29,7 @@ const ProductDetails = ({ strings, location, productID, currentLanguageCode, set
     try {
       let response = await WebService.get(window._env_.APP_BASE_URL + '/api/v2/' + action);
       if (response) {
-        console.log(response)
+        // console.log(response)
         setProductDetails(response)
         setLoader(false)
       }

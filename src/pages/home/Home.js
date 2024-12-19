@@ -4,8 +4,8 @@ import Layout from "../../layouts/Layout";
 import HeroSlider from "../../wrappers/hero-slider/HeroSlider";
 import TabProduct from "../../wrappers/product/TabProduct";
 // import FeatureIcon from "../../wrappers/feature-icon/FeatureIcon";
-import Promo from "../../wrappers/promos/Promos";
-import Newsletter from "../../wrappers/newsletter/Newsletter";
+// import Promo from "../../wrappers/promos/Promos";
+// import Newsletter from "../../wrappers/newsletter/Newsletter";
 import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
 const Home = ({ merchant, strings }) => {
@@ -33,7 +33,7 @@ const Home = ({ merchant, strings }) => {
           spaceTopClass="pt-50"
           spaceBottomClass="pb-40"
         /> */}
-        
+
         {/* tab product */}
         <TabProduct
           category="fashion"

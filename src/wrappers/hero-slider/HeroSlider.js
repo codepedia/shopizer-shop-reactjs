@@ -4,7 +4,7 @@ import Swiper from "react-id-swiper";
 import HeroSliderSingle from "../../components/hero-slider/HeroSliderSingle.js";
 import WebService from '../../util/webService';
 import constant from '../../util/constant';
-const HeroSlider = ({ }) => {
+const HeroSlider = () => {
 
   const [sliderText, setSliderText] = useState('')
   const [sliderData, setSliderData] = useState([])
@@ -18,7 +18,6 @@ const HeroSlider = ({ }) => {
     let action = constant.ACTION.CONTENT + constant.ACTION.IMAGES;
     try {
       let response = await WebService.get(action);
-      console.log(response);
       if (response) {
         setSliderData(response.content);
       }

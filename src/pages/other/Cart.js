@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useCallback } from "react";
 import { multilanguage } from "redux-multilanguage";
 import { Link, useHistory } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
@@ -106,7 +106,7 @@ const Cart = ({
   const {
     register: codeRef,
     handleSubmit: codeSubmit,
-    errors: codeErr
+    // errors: codeErr
   } =
     useForm({ mode: 'onChange' });
 
@@ -121,6 +121,52 @@ const Cart = ({
     // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const getQuote = useCallback(async (data) => {
+    let action = constant.ACTION.CART + cartID + '/' + constant.ACTION.SHIPPING;
+    let param = {};
+    param = { 'postalCode': data.postalCode, 'countryCode': data.country }
+    // param = {
+    //   "pricingOptions": [
+    //     {
+    //       "priceType": "COMMERCIAL",
+    //       "paymentAccount": {
+    //         "accountType": "EPS",
+    //         "accountNumber": "XXXXXXXXXX"
+    //       }
+    //     }
+    //   ],
+    //   "originZIPCode": "05485-8016",
+    //   "destinationZIPCode": "38746 0230",
+    //   "packageDescription": {
+    //     "weight": 1,
+    //     "length": 1,
+    //     "height": 1,
+    //     "width": 1,
+    //     "girth": 1,
+    //     "mailClass": "PARCEL_SELECT",
+    //     "extraServices": [
+    //       365
+    //     ],
+    //     "mailingDate": "2024-05-01",
+    //     "packageValue": 35
+    //   }
+    // }
+    try {
+      let response = await WebService.post(action, param);
+      //console.log(response.shippingOptions);
+      if (response) {
+        localStorage.setItem('shippingAddress', JSON.stringify(data))
+        setOpen(false)
+        if (response.shippingOptions) {
+          setSelectedOptions(response.shippingOptions[response.shippingOptions.length - 1].shippingQuoteOptionId)
+        }
+        setShippingOptions(response.shippingOptions)
+        setSelectedShippingQuote(response.shippingQuote)
+      }
+    } catch (error) {
+    }
+  }, [cartID])
   useEffect(() => {
     if (shipCountryData.length > 0) {
       const shippingData = JSON.parse(localStorage.getItem('shippingAddress'));
@@ -130,9 +176,9 @@ const Cart = ({
         getQuote(shippingData)
       }
     }
-  }, [shipCountryData])
+  }, [shipCountryData, getQuote, setValue])
+
   useEffect(() => {
-    console.log(cartCount)
     async function fetchData() {
       let action = constant.ACTION.CART + cartID + '?store=' + defaultStore;
       try {
@@ -141,7 +187,6 @@ const Cart = ({
           setCartItems(response)
         }
       } catch (error) {
-        console.log(error, 'jaimin')
         setTimeout(() => {
           history.push('/')
         }, 200);
@@ -193,52 +238,7 @@ const Cart = ({
 
   // }
 
-  const getQuote = async (data) => {
-    console.log(data)
-    let action = constant.ACTION.CART + cartID + '/' + constant.ACTION.SHIPPING;
-    let param = {};
-    param = { 'postalCode': data.postalCode, 'countryCode': data.country }
-    // param = {
-    //   "pricingOptions": [
-    //     {
-    //       "priceType": "COMMERCIAL",
-    //       "paymentAccount": {
-    //         "accountType": "EPS",
-    //         "accountNumber": "XXXXXXXXXX"
-    //       }
-    //     }
-    //   ],
-    //   "originZIPCode": "05485-8016",
-    //   "destinationZIPCode": "38746 0230",
-    //   "packageDescription": {
-    //     "weight": 1,
-    //     "length": 1,
-    //     "height": 1,
-    //     "width": 1,
-    //     "girth": 1,
-    //     "mailClass": "PARCEL_SELECT",
-    //     "extraServices": [
-    //       365
-    //     ],
-    //     "mailingDate": "2024-05-01",
-    //     "packageValue": 35
-    //   }
-    // }
-    try {
-      let response = await WebService.post(action, param);
-      //console.log(response.shippingOptions);
-      if (response) {
-        localStorage.setItem('shippingAddress', JSON.stringify(data))
-        setOpen(false)
-        if (response.shippingOptions) {
-          setSelectedOptions(response.shippingOptions[response.shippingOptions.length - 1].shippingQuoteOptionId)
-        }
-        setShippingOptions(response.shippingOptions)
-        setSelectedShippingQuote(response.shippingQuote)
-      }
-    } catch (error) {
-    }
-  }
+
   const applyPromoCode = async (data) => {
     // console.log(data)
     setLoader(true)
@@ -382,7 +382,7 @@ const Cart = ({
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-lg-6">
+                  <div className="col-lg-6 col-ms-12">
                     {
                       cartItems.promoCode ?
                         <div className="discount-code">
@@ -401,7 +401,7 @@ const Cart = ({
                         </div>
                     }
                   </div>
-                  <div className="col-lg-6">
+                  <div className="col-lg-6 col-ms-12">
                     <div className="cart-shiping-update-wrapper">
                       <div className="cart-clear" style={{ marginRight: '10px' }}>
                         <button onClick={() => deleteAllFromCart()}>
@@ -547,7 +547,7 @@ const Cart = ({
                               {
                                 selectedShippingQuote !== '' ?
                                   <>
-                                    {selectedShippingQuote == false ? <p>Shipping option not avaiable <strong>New York, NY 10004</strong>.</p> : <p>Shipping to <strong>New York, NY 10004</strong>.</p>}
+                                    {selectedShippingQuote === false ? <p>Shipping option not avaiable <strong>New York, NY 10004</strong>.</p> : <p>Shipping to <strong>New York, NY 10004</strong>.</p>}
                                     <Button
                                       className="calculate-shipping"
                                       onClick={() => setOpen(!open)}
