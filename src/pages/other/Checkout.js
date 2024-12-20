@@ -328,7 +328,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
         setValue('country', response.billing.country)
         setValue('city', response.billing.city)
         setTimeout(() => {
-          setValue('stateProvince', response.billing.stateProvince)
+          setValue('stateProvince', response.billing.zone)
         }, 1000)
         setValue('postalCode', response.billing.postalCode)
         setValue('phone', response.billing.phone)
@@ -829,6 +829,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                             <label>{strings["Country"]}</label>
 
                             <Controller
+                              defaultValue=""
                               name={paymentForm.country.name}
                               control={control}
                               rules={paymentForm.country.validate}
@@ -885,6 +886,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                             {
                               stateData && stateData.length > 0 ?
                                 <Controller
+                                  defaultValue=""
                                   name={paymentForm.stateProvince.name}
                                   control={control}
                                   rules={paymentForm.stateProvince.validate}
@@ -1032,6 +1034,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                                 <label>{strings["Country"]}</label>
 
                                 <Controller
+                                  defaultValue=""
                                   name={paymentForm.shipCountry.name}
                                   control={control}
                                   rules={paymentForm.shipCountry.validate}
@@ -1085,6 +1088,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                                 {
                                   shipStateData && shipStateData.length > 0 ?
                                     <Controller
+                                      defaultValue=""
                                       name={paymentForm.shipStateProvince.name}
                                       control={control}
                                       rules={paymentForm.shipStateProvince.validate}
@@ -1206,7 +1210,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                               shippingQuote.length > 0 &&
                               shippingQuote.map((quote, i) => {
                                 return (
-                                  (quote.title !== 'Total' || quote.title !== 'Shipping') &&
+                                  (quote.title !== 'Total' && quote.title !== 'Shipping') &&
                                   <ul key={i}>
                                     <li key={i}>
                                       <span className="order-middle-left" style={{ width: 220 }}>
@@ -1234,17 +1238,20 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                                   </span>{" "}
                                   <span></span>
                                   <span className="order-price">
-                                    {config.displayShipping && shippingOptions ?
-                                      shippingOptions.map((value, i) => {
-                                        return (<li key={i}>
-                                          <div className="login-toggle-btn">
-                                            <input type="radio" value={value.shippingQuoteOptionId} onChange={() => { setSelectedOptions(value.shippingQuoteOptionId); shippingQuoteChange(value.shippingQuoteOptionId) }} checked={selectedOptions === value.shippingQuoteOptionId} />
-                                            <label className="ml-10">{value.optionName} - <b>{value.optionPriceText}</b></label>
-                                          </div>
-                                        </li>)
-                                      })
-                                      : <>Enter your address to view shipping options.</>
-                                    }
+                                    <ul>
+                                      {config.displayShipping && shippingOptions ?
+                                        shippingOptions.map((value, i) => {
+                                          return (
+                                            <li key={i}>
+                                              <div className="login-toggle-btn">
+                                                <input type="radio" value={value.shippingQuoteOptionId} onChange={() => { setSelectedOptions(value.shippingQuoteOptionId); shippingQuoteChange(value.shippingQuoteOptionId) }} checked={selectedOptions === value.shippingQuoteOptionId} />
+                                                <label className="ml-10">{value.optionName} - <b>{value.optionPriceText}</b></label>
+                                              </div>
+                                            </li>)
+                                        })
+                                        : <>Enter your address to view shipping options.</>
+                                      }
+                                    </ul>
                                   </span>
                                 </li>
                               </ul>

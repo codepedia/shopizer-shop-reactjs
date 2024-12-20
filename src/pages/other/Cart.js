@@ -522,91 +522,94 @@ const Cart = ({
                         }
 
                       </div> */}
-                      <div class="cart-totals">
+                      <div className="cart-totals">
                         <table>
-                          <tr>
-                            <th>{strings["Subtotal"]}</th>
-                            <td>{cartItems.displaySubTotal}</td>
-                          </tr>
-                          <tr>
-                            <th>Shipping</th>
-                            <td>
+                          <tbody>
+                            <tr>
+                              <th>{strings["Subtotal"]}</th>
+                              <td>{cartItems.displaySubTotal}</td>
+                            </tr>
+                            <tr>
+                              <th>Shipping</th>
+                              <td>
 
-                              {shippingOptions &&
-                                <ul>
-                                  {
-                                    shippingOptions.map((value, i) => {
-                                      return (<li key={i} style={{ marginTop: '5px', marginBottom: '5px' }}>
-                                        <input type="radio" style={{ width: '30px', height: '10%' }} value={value.shippingQuoteOptionId} onChange={() => { setSelectedOptions(value.shippingQuoteOptionId); shippingQuoteChange(value.shippingQuoteOptionId) }} checked={selectedOptions === value.shippingQuoteOptionId} />
-                                        <span style={{ width: '60px' }}>{value.optionName}: <b>{value.optionPriceText}</b></span>
-                                      </li>)
-                                    })
-                                  }
-                                </ul>
-                              }
-                              {
-                                selectedShippingQuote !== '' ?
-                                  <>
-                                    {selectedShippingQuote === false ? <p>Shipping option not avaiable <strong>New York, NY 10004</strong>.</p> : <p>Shipping to <strong>New York, NY 10004</strong>.</p>}
+                                {shippingOptions &&
+                                  <ul>
+                                    {
+                                      shippingOptions.map((value, i) => {
+                                        return (<li key={i} style={{ marginTop: '5px', marginBottom: '5px' }}>
+                                          <input type="radio" style={{ width: '30px', height: '10%' }} value={value.shippingQuoteOptionId} onChange={() => { setSelectedOptions(value.shippingQuoteOptionId); shippingQuoteChange(value.shippingQuoteOptionId) }} checked={selectedOptions === value.shippingQuoteOptionId} />
+                                          <span style={{ width: '60px' }}>{value.optionName}: <b>{value.optionPriceText}</b></span>
+                                        </li>)
+                                      })
+                                    }
+                                  </ul>
+                                }
+                                {
+                                  selectedShippingQuote !== '' ?
+                                    <>
+                                      {selectedShippingQuote === false ? <p>Shipping option not avaiable <strong>New York, NY 10004</strong>.</p> : <p>Shipping to <strong>New York, NY 10004</strong>.</p>}
+                                      <Button
+                                        className="calculate-shipping"
+                                        onClick={() => setOpen(!open)}
+                                        aria-controls="example-collapse-text"
+                                        aria-expanded={open}
+                                      >
+                                        Change Address <i className="fa fa-truck" style={{ fontSize: '15px', marginLeft: '5px' }}></i>
+                                      </Button>
+                                    </>
+                                    :
                                     <Button
                                       className="calculate-shipping"
                                       onClick={() => setOpen(!open)}
                                       aria-controls="example-collapse-text"
                                       aria-expanded={open}
                                     >
-                                      Change Address <i class="fa fa-truck" style={{ fontSize: '15px', marginLeft: '5px' }}></i>
+                                      Calculate shipping  <i className="fa fa-truck" style={{ fontSize: '15px', marginLeft: '5px' }}></i>
                                     </Button>
-                                  </>
-                                  :
-                                  <Button
-                                    className="calculate-shipping"
-                                    onClick={() => setOpen(!open)}
-                                    aria-controls="example-collapse-text"
-                                    aria-expanded={open}
-                                  >
-                                    Calculate shipping  <i class="fa fa-truck" style={{ fontSize: '15px', marginLeft: '5px' }}></i>
-                                  </Button>
-                              }
-                              <Collapse in={open}>
-                                <div id="example-collapse-text">
-                                  <form onSubmit={handleSubmit(getQuote)}>
-                                    <div className="tax-select">
-                                      <Controller
-                                        name={quoteForm.country.name}
-                                        control={control}
-                                        rules={quoteForm.country.validate}
-                                        render={props => {
-                                          return (
-                                            <select onChange={(e) => { props.onChange(e.target.value); getState(e.target.value) }} value={props.value}>
-                                              <option>{strings["Select a country"]}</option>
-                                              {
+                                }
+                                <Collapse in={open}>
+                                  <div id="example-collapse-text">
+                                    <form onSubmit={handleSubmit(getQuote)}>
+                                      <div className="tax-select">
+                                        <Controller
+                                          defaultValue=""
+                                          name={quoteForm.country.name}
+                                          control={control}
+                                          rules={quoteForm.country.validate}
+                                          render={props => {
+                                            return (
+                                              <select onChange={(e) => { props.onChange(e.target.value); getState(e.target.value) }} value={props.value}>
+                                                <option>{strings["Select a country"]}</option>
+                                                {
 
-                                                shipCountryData.map((data, i) => {
-                                                  return <option key={i} value={data.code}>{data.name}</option>
-                                                })
-                                              }
-                                            </select>
-                                          )
-                                        }}
-                                      />
-                                      {errors[quoteForm.country.name] && <p className="error-msg">{errors[quoteForm.country.name].message}</p>}
-                                    </div>
-                                    <div className="tax-select">
-                                      <input type="text" name={quoteForm.postalCode.name} ref={register(quoteForm.postalCode.validate)} placeholder={strings["Postcode"]} />
-                                      {errors[quoteForm.postalCode.name] && <p className="error-msg">{errors[quoteForm.postalCode.name].message}</p>}
-                                    </div>
-                                    <button className="shipping-button" type="submit" >
-                                      {strings["Update"]}
-                                    </button>
-                                  </form>
-                                </div>
-                              </Collapse>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th class="total">{strings["Total"]}</th>
-                            <td class="total">{shippingQuote.filter((a) => a.title === 'Total')[0]?.total}</td>
-                          </tr>
+                                                  shipCountryData.map((data, i) => {
+                                                    return <option key={i} value={data.code}>{data.name}</option>
+                                                  })
+                                                }
+                                              </select>
+                                            )
+                                          }}
+                                        />
+                                        {errors[quoteForm.country.name] && <p className="error-msg">{errors[quoteForm.country.name].message}</p>}
+                                      </div>
+                                      <div className="tax-select">
+                                        <input type="text" name={quoteForm.postalCode.name} ref={register(quoteForm.postalCode.validate)} placeholder={strings["Postcode"]} />
+                                        {errors[quoteForm.postalCode.name] && <p className="error-msg">{errors[quoteForm.postalCode.name].message}</p>}
+                                      </div>
+                                      <button className="shipping-button" type="submit" >
+                                        {strings["Update"]}
+                                      </button>
+                                    </form>
+                                  </div>
+                                </Collapse>
+                              </td>
+                            </tr>
+                            <tr>
+                              <th className="total">{strings["Total"]}</th>
+                              <td className="total">{shippingQuote.filter((a) => a.title === 'Total')[0]?.total}</td>
+                            </tr>
+                          </tbody>
                         </table>
                         <Link to={process.env.PUBLIC_URL + "/checkout"} className="process-checkout">
                           {strings["Proceed to Checkout"]}

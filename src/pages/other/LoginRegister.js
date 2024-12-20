@@ -120,6 +120,7 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
   const { addToast } = useToasts();
   const history = useHistory();
   const [isRemember, setIsRemember] = useState(false);
+  const [activeTab, setActiveTab] = useState('login');
   const { register, handleSubmit, errors, setValue: setLoginValue } = useForm({
     mode: "onChange",
     defaultValues: { username: "", password: "" },
@@ -133,6 +134,11 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
     mode: "onChange",
     criteriaMode: "all"
   });
+  useEffect(() => {
+    if (pathname) {
+      setActiveTab(pathname.split("/")[1])
+    }
+  }, [pathname])
   useEffect(() => {
     // console.log(cartItems);
     if (getLocalData('isRemember') === 'true') {
@@ -267,6 +273,12 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
       setLoader(false)
     }
   }
+  const onChangeTab = (key) => {
+    // console.log(key)
+    setActiveTab(key);
+    history.push(key)
+
+  }
   return (
     <Fragment>
       <MetaTags>
@@ -290,7 +302,7 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
             <div className="row">
               <div className="col-lg-7 col-md-12 ml-auto mr-auto">
                 <div className="login-register-wrapper">
-                  <Tab.Container activeKey={pathname.split("/")[1]}>
+                  <Tab.Container activeKey={activeTab} onSelect={(key) => onChangeTab(key)}>
                     <Nav variant="pills" className="login-register-tab-list">
                       <Nav.Item>
                         <Nav.Link eventKey="login">

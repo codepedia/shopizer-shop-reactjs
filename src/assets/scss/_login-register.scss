@@ -19,6 +19,7 @@
           margin: 0 20px;
           text-transform: capitalize;
           transition: all 0.3s ease 0s;
+          color: $theme-color;
         }
 
         &:last-child::before {
@@ -27,7 +28,7 @@
       }
 
       a.active h4 {
-        color: $theme-color;
+        color: $bg-black;
       }
 
       &:before {
