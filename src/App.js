@@ -44,7 +44,6 @@ const OrderConfirm = lazy(() => import("./pages/other/OrderConfirm"));
 const Content = lazy(() => import("./pages/content/Content"));
 const SearchProduct = lazy(() => import("./pages/search-product/SearchProduct"));
 
-
 //export default function App = (props) => {
 const App = (props) => {
 

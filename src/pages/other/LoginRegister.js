@@ -299,7 +299,7 @@ const LoginRegister = ({ merchant, strings, props, location, setLoader, setUser,
         <Breadcrumb />
         <div className="login-register-area pt-40 pb-40">
           <div className="container">
-            <div className="row">
+            <div className="row" style={{ justifyContent: 'center' }}>
               <div className="col-lg-7 col-md-12 ml-auto mr-auto">
                 <div className="login-register-wrapper">
                   <Tab.Container activeKey={activeTab} onSelect={(key) => onChangeTab(key)}>

@@ -49,6 +49,16 @@ const OrderConfirm = ({ location, orderID, strings, merchant, setLoader }) => {
     getOrderDetails()
   }, [getOrderDetails])
 
+  function defaultImage(product) {
+    if (product.images && product.images.length > 0) {
+      return product.images[0].imageUrl;
+    } else if (product.image != null) {
+      return product.imageUrl;
+    } else {
+      return '/assets/img/no-image.png';
+    }
+  }
+
   return (
     <Fragment>
       <MetaTags>
@@ -115,7 +125,7 @@ const OrderConfirm = ({ location, orderID, strings, merchant, setLoader }) => {
                     {
                       orderDetails?.products?.map((orderItem, key) => {
                         return (<div class="product">
-                          <img src={orderItem?.product?.image?.imageUrl} alt="All In One Chocolate Combo" />
+                          <img src={defaultImage(orderItem?.product)} alt="All In One Chocolate Combo" />
                           <div class="product-details">
                             <p><strong>{orderItem?.productName}</strong></p>
                             <p>Qty: {orderItem?.orderedQuantity}</p>

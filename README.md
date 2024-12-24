@@ -6,7 +6,7 @@ In the project directory, you can run the commands below
 
 Configure shopizer backend in public/env-config.js
 
-## Tested with node  v16.13.0
+## Tested with node  v18.20.5
 
 ### USING NPM
 
@@ -15,9 +15,6 @@ Configure shopizer backend in public/env-config.js
 If it fails run the following
 
 ### `npm install --legacy-peer-deps`
-
-### npm install -g sass-migrator
-### sass-migrator division **/*.scss
 
 ### `npm run dev`
 

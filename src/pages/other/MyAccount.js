@@ -674,7 +674,7 @@ const MyAccount = ({ language, setUser, deleteAllFromCart, merchant, strings, lo
         <Breadcrumb />
         <div className="myaccount-area pb-40 pt-40">
           <div className="container">
-            <div className="row">
+            <div className="row" style={{ justifyContent: 'center' }}>
               <div className="ml-auto mr-auto col-lg-9">
                 <div className="myaccount-wrapper">
                   <Accordion defaultActiveKey="3">

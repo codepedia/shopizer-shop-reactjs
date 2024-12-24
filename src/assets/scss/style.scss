@@ -1,8 +1,8 @@
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~swiper/css/swiper.css";
 @import "~animate.css/animate.min.css";
-@import "~lightgallery.js/dist/css/lightgallery.css";
-@import "~react-modal-video/scss/modal-video.scss";
+// @import "~lightgallery.js/dist/css/lightgallery.css";
+// @import "~react-modal-video/scss/modal-video.scss";
 @import "../css/icons.min.css";
 
 @import "variables";
@@ -36,7 +36,7 @@
 @import "my-account";
 @import "404";
 @import "video-popup";
-
+@import "lightgallery.js/dist/css/lightgallery.css";
 
 :root {
     --theme-color: red;
