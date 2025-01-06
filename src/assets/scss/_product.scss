@@ -592,7 +592,7 @@
     display: flex;
     align-items: center;
 
-    margin: 15px 0 26px;
+    margin: 15px 0 15px;
 
     span {
       font-size: 24px;
@@ -673,10 +673,11 @@
   }
 
   .pro-details-list {
-    margin: 20px 0 34px;
-    padding: 0 0 37px;
+    margin: 20px 0 20px;
+    padding: 15px 0;
 
     border-bottom: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
 
     ul {
       li {
@@ -704,6 +705,7 @@
 
     .pro-details-color-wrap {
       margin-right: 20px;
+      margin-bottom: 15px;
 
       @media #{$xs-layout} {
         margin-bottom: 20px;
@@ -714,8 +716,8 @@
       }
 
       span {
-        font-size: 15px;
-        font-weight: 500;
+        font-size: 17px;
+        font-weight: 700;
 
         display: block;
 
@@ -897,20 +899,83 @@
           }
         }
       }
+
+      .options-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        .selected {
+          border: 1px solid #000 !important;
+        }
+        .option {
+          display: flex;
+          align-items: center;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          width: 80px;
+          padding: 10px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          background-color: #fff;
+          justify-content: center;
+
+          &:hover {
+            border-color: #aaa;
+          }
+
+          input[type="radio"] {
+            display: none;
+          }
+         .color-option{
+          width: 20px;
+          height: 20px;
+          border-radius: 50px;
+          margin-right: 15px;
+         }
+          img {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            margin-right: 15px;
+          }
+          .details {
+            display: flex;
+            flex-direction: column;
+            label {
+              font-size: 16px;
+              font-weight: bold;
+              text-align: center;
+              // margin-bottom: 5px;
+            }
+            span {
+              font-size: 14px;
+              color: gray;
+              margin: 0 !important
+            }
+          }
+          // input[type="radio"]:checked + .content {
+          //   border: 2px solid #f00;
+          //   background-color: #ffe5e5;
+          //   color: #f00;
+          // }
+        }
+      }
     }
 
     .pro-details-size {
-      margin: 15px;
+      margin: 15px 0px;
 
       span {
-        font-size: 15px;
-        font-weight: 500;
+        font-size: 17px;
+        font-weight: 700;
 
         display: block;
 
         margin: 0 0 10px;
       }
-
+      .selected {
+        border: 1px solid #000 !important;
+      }
       .pro-details-size-content {
         select {
           font-size: 14px;
@@ -921,7 +986,10 @@
           box-shadow: none;
           height: 45px;
           padding: 0px 15px;
-          border: 1px solid #e6e6e6;
+          // border: 1px solid #e6e6e6;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          font-weight: 700;
         }
 
         ul {
@@ -966,11 +1034,14 @@
           text-transform: uppercase;
 
           color: #000;
-          background-color: #f1f2f6;
-
+          // background-color: #f1f2f6;
+          border: 1px solid #ddd;
+          padding: 10px;
+          // border-radius: 60px;
           &:hover {
-            color: #fff;
-            background-color: $theme-color;
+            // color: #fff;
+            // background-color: $theme-color;
+            border-color: #aaa;
           }
 
           input {
@@ -984,21 +1055,22 @@
 
             opacity: 0;
 
-            &:checked {
-              &~.size-name {
-                color: $white;
-                background-color: $theme-color;
-              }
-            }
+            // &:checked {
+            //   &~.size-name {
+            //     color: $white;
+            //     background-color: $theme-color;
+            //   }
+            // }
           }
 
           .size-name {
-            font-size: 12px;
-            font-weight: 400;
+            font-size: 18px;
+            font-weight: 600;
 
             width: 100%;
             margin-bottom: 0;
             padding: 8px;
+            text-align: center;
           }
         }
       }

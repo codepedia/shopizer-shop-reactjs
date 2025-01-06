@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React from "react";
 // import {
 //   getIndividualCategories,
 //   getIndividualTags,
@@ -16,20 +16,20 @@ import ShopManufacture from "../../components/product/ShopManufacture";
 // import Card from "react-bootstrap/Card";
 
 const ShopSidebar = ({ height, string, getCategoryParams, getSortParams, sideSpaceClass, uniqueCategories, uniqueColors, uniqueSizes, uniqueManufacture, closeFilter }) => {
-  const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(100);
-  const minRange = 0;
-  const maxRange = 100;
+  // const [minValue, setMinValue] = useState(0);
+  // const [maxValue, setMaxValue] = useState(100);
+  // const minRange = 0;
+  // const maxRange = 100;
 
-  const handleMinChange = (e) => {
-    const value = Math.min(Number(e.target.value), maxValue - 1);
-    setMinValue(value);
-  };
+  // const handleMinChange = (e) => {
+  //   const value = Math.min(Number(e.target.value), maxValue - 1);
+  //   setMinValue(value);
+  // };
 
-  const handleMaxChange = (e) => {
-    const value = Math.max(Number(e.target.value), minValue + 1);
-    setMaxValue(value);
-  };
+  // const handleMaxChange = (e) => {
+  //   const value = Math.max(Number(e.target.value), minValue + 1);
+  //   setMaxValue(value);
+  // };
 
   // const uniqueCategories = getIndividualCategories(products);
   // const uniqueColors = getIndividualColors(products);
@@ -120,7 +120,7 @@ const ShopSidebar = ({ height, string, getCategoryParams, getSortParams, sideSpa
           </Card>
         }
       </Accordion> */}
-      <div className="sidebar-widget" style={{ padding: '15px', borderTop: '1px solid lightgrey' }}>
+      {/* <div className="sidebar-widget" style={{ padding: '15px', borderTop: '1px solid lightgrey' }}>
         <h4 className="pro-sidebar-title" style={{ marginBottom: '10px' }}><b>{"Sort"}</b></h4>
         <div className="sidebar-widget-list">
           <select className="filter-select">
@@ -129,12 +129,11 @@ const ShopSidebar = ({ height, string, getCategoryParams, getSortParams, sideSpa
             <option value="priceLowToHigh">Price - Low to High</option>
           </select>
         </div>
-      </div>
-      <div className="sidebar-widget" style={{ padding: '15px', borderTop: '1px solid lightgrey' }}>
+      </div> */}
+      {/* <div className="sidebar-widget" style={{ padding: '15px', borderTop: '1px solid lightgrey' }}>
         <h4 className="pro-sidebar-title"><b>{"Price"}</b></h4>
         <div className="sidebar-widget-list">
           <div className="slider-container position-relative">
-            {/* Slider track */}
             <div
               className="slider-track"
               style={{
@@ -142,7 +141,6 @@ const ShopSidebar = ({ height, string, getCategoryParams, getSortParams, sideSpa
                 right: `${100 - ((maxValue - minRange) / (maxRange - minRange)) * 100}%`,
               }}
             />
-            {/* Min range input */}
             <input
               type="range"
               min={minRange}
@@ -151,7 +149,6 @@ const ShopSidebar = ({ height, string, getCategoryParams, getSortParams, sideSpa
               onChange={handleMinChange}
               className="range-input"
             />
-            {/* Max range input */}
             <input
               type="range"
               min={minRange}
@@ -166,7 +163,7 @@ const ShopSidebar = ({ height, string, getCategoryParams, getSortParams, sideSpa
             <span>${maxValue}</span>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* filter by categories */}
       {
         uniqueCategories.length > 0 &&

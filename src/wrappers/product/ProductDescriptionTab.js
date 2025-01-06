@@ -90,22 +90,52 @@ const ProductDescriptionTab = ({ strings, spaceBottomClass, product, review, use
                 </div>
               </Tab.Pane> */}
               <Tab.Pane eventKey="productDescription">
-                <p dangerouslySetInnerHTML={{ __html: product.description.description }}></p>
+                {/* <p dangerouslySetInnerHTML={{ __html: product.description.description }}></p> */}
                 <div className="product-anotherinfo-wrapper">
                   <ul>
+                    <li>
+                      <span>{strings["SKU"]}</span> {product.sku}
+                    </li>
+                    <li>
+                      <span>{strings["Manufacturer"]}</span> {product?.manufacturer?.description?.name}
+                    </li>
+                    <li>
+                      <span>{strings["Categories"]}</span> {product.categories.map(product => product.description.name).join(", ")}
+                    </li>
+                    <li>
+                      <span>{strings["Product Type"]}</span> {product?.type?.description?.name}
+                    </li>
                     {
                       product.productSpecifications.weight &&
                       <li>
-                        <span>{strings["Weight"]}</span> {product.productSpecifications.weight}
+                        <span>{strings["Weight"]}</span> {product.productSpecifications.weight} grams 
                       </li>
                     }
                     {
+                      product.productSpecifications.length &&
+                      <li>
+                        <span>{strings["Length"]}</span> {product.productSpecifications.length} Inch
+                      </li>
+                    }
+                    {
+                      product.productSpecifications.width &&
+                      <li>
+                        <span>{strings["Width"]}</span> {product.productSpecifications.width}
+                      </li>
+                    }
+                    {
+                      product.productSpecifications.height &&
+                      <li>
+                        <span>{strings["Height"]}</span> {product.productSpecifications.height}
+                      </li>
+                    }
+                    {/* {
                       product.productSpecifications.length && product.productSpecifications.width && product.productSpecifications.height &&
                       <li>
                         <span>{strings["Package size"]}</span>{product.productSpecifications.length || 0}{" "} x {product.productSpecifications.width || 0}{" "}
                         x {product.productSpecifications.height || 0}
                       </li>
-                    }
+                    } */}
                     {
                       product.properties.map((value, i) => {
                         return <li key={i}>

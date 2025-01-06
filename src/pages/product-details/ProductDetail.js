@@ -73,7 +73,7 @@ const ProductDetails = ({ strings, location, productID, currentLanguageCode, set
           productDetails &&
           <ProductImageDescription
             spaceTopClass="pt-40"
-            spaceBottomClass="pb-100"
+            spaceBottomClass="pb-60"
             strings={strings}
             product={productDetails}
           />

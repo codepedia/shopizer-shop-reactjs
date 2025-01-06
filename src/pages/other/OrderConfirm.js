@@ -7,20 +7,22 @@ import Layout from "../../layouts/Layout";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import { connect } from "react-redux";
 import { multilanguage } from "redux-multilanguage";
-import { setLoader } from "../../redux/actions/loaderActions";
+// import { setLoader } from "../../redux/actions/loaderActions";
 import constant from '../../util/constant';
 import WebService from '../../util/webService';
 import { isValidObject } from "../../util/helper";
+import { useHistory } from "react-router-dom";
 
-const OrderConfirm = ({ location, orderID, strings, merchant, setLoader }) => {
+const OrderConfirm = ({ location, orderID, strings, merchant }) => {
   const { pathname } = location;
   const [orderDetails, setorderDetails] = useState({});
   const [subTotal, setSubTotal] = useState(0);
   const [shipping, setShipping] = useState(0);
   const [total, setTotal] = useState(0);
+  const history = useHistory();
 
   const getOrderDetails = useCallback(async () => {
-    setLoader(true)
+    // setLoader(true)
     let action = constant.ACTION.AUTH + constant.ACTION.ORDERS + orderID;
     try {
       let response = await WebService.get(action);
@@ -38,12 +40,12 @@ const OrderConfirm = ({ location, orderID, strings, merchant, setLoader }) => {
         })
         // // setConfig(response)
       }
-      setLoader(false)
+      // setLoader(false)
     } catch (error) {
-      setLoader(false)
-      console.log(error, '------------')
+      // setLoader(false)
+      history.push('/')
     }
-  }, [orderID, setLoader])
+  }, [orderID, history])
 
   useEffect(() => {
     getOrderDetails()
@@ -149,7 +151,21 @@ const OrderConfirm = ({ location, orderID, strings, merchant, setLoader }) => {
               </div>
             </div>
             :
-            <>Plese Wait</>
+            <div className="row">
+              <div className="col-lg-12">
+                <div className="item-empty-area text-center order-confirm-loadingscreen">
+                  <div className="item-empty-area__icon mb-30">
+                    <div class="spinner"></div>
+                  </div>
+                  <div className="item-empty-area__text">
+                    {"Processing your order..."} <br />{" "}
+                    {/* <Link to="/">
+                      {strings["Shop now"]}
+                    </Link> */}
+                  </div>
+                </div>
+              </div>
+            </div>
           }
         </div>
       </Layout>
@@ -169,9 +185,9 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    setLoader: (value) => {
-      dispatch(setLoader(value));
-    }
+    // setLoader: (value) => {
+    //   dispatch(setLoader(value));
+    // }
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(multilanguage(OrderConfirm));

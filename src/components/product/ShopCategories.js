@@ -13,25 +13,25 @@ const ShopCategories = ({ categories, getCategoryParams, string }) => {
             {categories.map((category, key) => {
               return (
                 <li key={key}>
-                  <div>
+                  <div className="sidebar-widget-list-left">
 
-                    {/* <label>
+                    <label>
                       <input
                         type="checkbox"
                         value={category.id}
                         name="category"
                         // checked={checkedOrNot(singleSize)}
                         onChange={(e) => {
-                          getCategoryParams("category", category.id);
+                          getCategoryParams("category", category);
                         }}
                       />
                       <span className="checkmark" />{category.description.name}{" "}
-                    </label> */}
-                    <button
+                    </label>
+                    {/* <button
                       onClick={e => {
                         getCategoryParams("category", category);
                       }}> {category.description.name}
-                    </button>
+                    </button> */}
                   </div>
                 </li>
               );

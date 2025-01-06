@@ -298,7 +298,9 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
     if (userData) {
       getProfile()
     } else {
-      setDefaultsValue()
+      setTimeout(() => {
+        setDefaultsValue()
+      }, 2000);
     }
   }
   const setDefaultsValue = () => {
@@ -310,7 +312,11 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
     } else {
       setValue('country', shippingData.country)
       setValue('postalCode', shippingData.postalCode)
-      onChangeShipping()
+
+      setTimeout(() => {
+        onChangeShipping()
+      }, 2000);
+
     }
 
   }
@@ -466,8 +472,6 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
   const onChangeShipping = async () => {
     let action = constant.ACTION.CART + cartID + '/' + constant.ACTION.SHIPPING;
     let param = {};
-
-    //console.log('CHANGE SHIPPING');
 
     if (isShipping) {
       param = { 'postalCode': watch('shipPostalCode'), 'countryCode': watch('shipCountry') }
@@ -1229,7 +1233,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
 
                           </div>
                           {
-
+                            config.displayShipping &&
                             <div className="your-order-middle">
                               <ul>
                                 <li>
@@ -1239,7 +1243,7 @@ const Checkout = ({ shipStateData, isLoading, currentLanguageCode, merchant, str
                                   <span></span>
                                   <span className="order-price">
                                     <ul>
-                                      {config.displayShipping && shippingOptions ?
+                                      {shippingOptions ?
                                         shippingOptions.map((value, i) => {
                                           return (
                                             <li key={i}>

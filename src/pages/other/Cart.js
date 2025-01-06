@@ -102,13 +102,11 @@ const Cart = ({
   const [open, setOpen] = useState(false);
   // const cartTotalPrice = cartItems.displaySubTotal;
   // const grandTotalPrice = cartItems.displaySubTotal;
-  const { register, handleSubmit, control, errors, setValue } = useForm({ mode: 'onChange' });
+  const { register, handleSubmit, control, errors, setValue } = useForm({ mode: 'onChange', criteriaMode: "all" });
   const {
     register: codeRef,
-    handleSubmit: codeSubmit,
-    // errors: codeErr
-  } =
-    useForm({ mode: 'onChange' });
+    handleSubmit: codeSubmit
+  } = useForm({ mode: 'onChange' });
 
   const [shippingOptions, setShippingOptions] = useState();
   // const [shippingOptions] = useState();
@@ -171,9 +169,11 @@ const Cart = ({
     if (shipCountryData.length > 0) {
       const shippingData = JSON.parse(localStorage.getItem('shippingAddress'));
       if (shippingData) {
-        setValue('country', shippingData.country)
-        setValue('postalCode', shippingData.postalCode)
-        getQuote(shippingData)
+        setTimeout(() => {
+          setValue('country', shippingData.country)
+          setValue('postalCode', shippingData.postalCode)
+          getQuote(shippingData)
+        }, 2000);
       }
     }
   }, [shipCountryData, getQuote, setValue])

@@ -108,6 +108,7 @@ const ProductDescriptionInfo = ({
   }
   const checkedOrNot = (value) => {
     let index = selectedProductColor.findIndex(a => a.id === value.id);
+    console.log(index)
     if (index === -1) {
       return false
     } else {
@@ -126,20 +127,22 @@ const ProductDescriptionInfo = ({
             </span>
           </Fragment>
         ) : (
-            <span>{productPrice} </span>
-          )}
+          <span>{productPrice} </span>
+        )}
       </div>
       {/* {product.rating && product.rating > 0 ? ( */}
       <div className="pro-details-rating-wrap">
         <div className="pro-details-rating">
+          {product?.rating > 0 && <span style={{fontWeight: 600, marginRight: '10px'}}>{product?.rating}</span>}
           <StarRatings
-            rating={product.rating}
+            rating={product?.rating}
             starRatedColor="#ffa900"
             starDimension="17px"
             starSpacing="1px"
             numberOfStars={5}
             name='view-rating'
           />
+          <span style={{fontWeight: 600, marginLeft: '10px', color: '#2162a1'}}>({product?.ratingCount} ratings)</span>
           {/* <Rating ratingValue={product.rating} /> */}
         </div>
       </div>
@@ -157,29 +160,38 @@ const ProductDescriptionInfo = ({
               return (
                 option.type === 'radio' &&
                 <div className="pro-details-color-wrap" key={key}>
-                  <span>{option.name}</span>
-                  <div className="pro-details-color-content" style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span>Select {option.name}</span>
+                  <div className="options-container">
                     {
 
                       option.optionValues.map((value, index) => {
                         return (
-                          <div style={{ flexDirection: 'row', display: 'flex', alignItems: 'center', margin: 15 }} key={index}>
-                            {value.image && <img src={value.image} alt="product-option" />}
+                          <label className={checkedOrNot(value) ? "option selected": "option"}>
+                            <input type={option.type} name={option.name} value={value.id} onChange={() => onChangeOptions(value, option)} checked={checkedOrNot(value)} />
+                            {/* <img src="https://via.placeholder.com/100" alt="Product Image" /> */}
+                            {/* {value.image ? <img src={value.image} alt="product-option" /> : <div className="color-option" style={{ backgroundColor: value.code }}></div>} */}
+                            <div className="details" style={{color: value.code}}>
+                              <label>{value.description.name}</label>
+                              {/* <span>{value.price && '(' + value.price + ')'}</span> */}
+                            </div>
+                          </label>
+                          // <div style={{ flexDirection: 'row', display: 'flex', alignItems: 'center', margin: 15 }} key={index}>
+                          //   {value.image && <img src={value.image} alt="product-option" />}
 
-                            <label className={`pro-details-color-content--single`} style={{ backgroundColor: value.code }} key={index} >
+                          //   <label className={`pro-details-color-content--single`} style={{ backgroundColor: value.code }} key={index} >
 
-                              <input
-                                type={option.type}
-                                value={value.id}
-                                name={option.name}
-                                checked={checkedOrNot(value)}
-                                onChange={() => onChangeOptions(value, option)}
-                              />
-                              <span className="checkmark"></span>
+                          //     <input
+                          //       type={option.type}
+                          //       value={value.id}
+                          //       name={option.name}
+                          //       checked={checkedOrNot(value)}
+                          //       onChange={() => onChangeOptions(value, option)}
+                          //     />
+                          //     <span className="checkmark"></span>
 
-                            </label>
-                            <label>{value.description.name} {value.price && '(' + value.price + ')'}</label>
-                          </div>
+                          //   </label>
+                          //   <label>{value.description.name} {value.price && '(' + value.price + ')'}</label>
+                          // </div>
                         );
                       })
                       // )
@@ -196,7 +208,7 @@ const ProductDescriptionInfo = ({
               return (
                 option.type === 'select' &&
                 <div className="pro-details-size" key={index}>
-                  <span>{option.name}</span>
+                  <span>Select {option.name}</span>
                   <div className="pro-details-size-content">
                     {
                       <select onChange={(e) => { onChangeOptions(JSON.parse(e.target.value), option) }}>
@@ -221,7 +233,7 @@ const ProductDescriptionInfo = ({
               return (
                 option.type === 'checkbox' &&
                 <div className="pro-details-size" key={index}>
-                  <span>{option.name}</span>
+                  <span>Select {option.name}</span>
                   <div className="pro-details-size-content" style={{ display: 'flex' }}>
                     {
                       option.optionValues.map((singleSize, key) => {
@@ -229,7 +241,7 @@ const ProductDescriptionInfo = ({
                           <div style={{ flexDirection: 'column ', display: 'flex', alignItems: 'center', marginRight: 15 }} key={key}>
                             {singleSize.image && <img src={singleSize.image} alt="product-option" />}
 
-                            <label className={`pro-details-size-content--single`} key={key}  >
+                            <label className={checkedOrNot(singleSize) ? `pro-details-size-content--single selected` : `pro-details-size-content--single`} key={key}  >
                               <input
                                 type="checkbox"
                                 value={singleSize.description.name}
@@ -242,8 +254,9 @@ const ProductDescriptionInfo = ({
                                   //   setQuantityCount(1);
                                 }}
                               />
-                              <span className="size-name">{singleSize.description.name}  {singleSize.price && '(' + singleSize.price + ')'}</span>
+                              <span className="size-name">{singleSize.description.name}  </span>
                             </label>
+                            {/* {singleSize.price && '(' + singleSize.price + ')'} */}
                           </div>
                         );
 
@@ -255,8 +268,8 @@ const ProductDescriptionInfo = ({
           }
         </div>
       ) : (
-          ""
-        )}
+        ""
+      )}
       {
         //   product.affiliateLink ? (
         //   <div className="pro-details-quality">
@@ -305,8 +318,8 @@ const ProductDescriptionInfo = ({
                 {strings["Add to cart"]}{" "}
               </button>
             ) : (
-                <button disabled>{strings["Out of Stock"]}</button>
-              )}
+              <button disabled>{strings["Out of Stock"]}</button>
+            )}
           </div>
           {/* <div className="pro-details-wishlist">
             <button
@@ -339,7 +352,7 @@ const ProductDescriptionInfo = ({
         </div>
         // )
       }
-      <div className="pro-details-meta">
+      {/* <div className="pro-details-meta">
         <span>{strings["SKU"]} :</span>
         <ul>
           <li >
@@ -348,8 +361,8 @@ const ProductDescriptionInfo = ({
             </Link>
           </li>
         </ul>
-      </div>
-      {product.categories && product.categories.length > 0 ? (
+      </div> */}
+      {/* {product.categories && product.categories.length > 0 ? (
         <div className="pro-details-meta">
           <span>{strings["Categories"]} :</span>
           <ul>
@@ -365,8 +378,8 @@ const ProductDescriptionInfo = ({
           </ul>
         </div>
       ) : (
-          ""
-        )}
+        ""
+      )} */}
       {/* {product.tag ? (
         <div className="pro-details-meta">
           <span>Tags :</span>

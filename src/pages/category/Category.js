@@ -19,7 +19,7 @@ import { multilanguage } from "redux-multilanguage";
 import { setCategoryID, setCategoryFrindlyUrl } from "../../redux/actions/productActions";
 import ReactPaginate from 'react-paginate';
 
-const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader, friendlyUrl, setCategoryFrindlyUrl }) => {
+const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader, friendlyUrl, setCategoryFrindlyUrl, childCategory }) => {
     const [layout, setLayout] = useState('grid three-column');
     const history = useHistory();
     // const [sortType, setSortType] = useState('');
@@ -40,6 +40,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
     const [size, setSize] = useState([]);
     const [selectedOption, setSelectedOption] = useState([]);
     const [selectedManufature, setSelectedManufature] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState([]);
     // const [sortedProducts, setSortedProducts] = useState([]);
     const [showFilter, setShowFilter] = useState(false);
     const containerRef = useRef(null); // Reference to the container
@@ -96,17 +97,37 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
             setSelectedManufature(tempSelectedManufature)
         }
         // console.log(categoryValue, tempSelectedOption, selectedManufature)
-        getProductList(categoryValue, tempSelectedOption, tempSelectedManufature, categoryURL)
+        if (selectedCategory.length > 0) {
+            getProductList(selectedCategory, tempSelectedOption, tempSelectedManufature, categoryURL)
+        } else {
+            getProductList(categoryValue, tempSelectedOption, tempSelectedManufature, categoryURL)
+        }
+
     }
 
     const getCategoryParams = (sortType, sortValue) => {
+        console.log(sortValue)
         // console.log(sortType)
         // console.log(sortValue)
         // setCategoryValue(sortValue)
-        setCategoryID(sortValue.id)
-        setCategoryFrindlyUrl(sortValue.description.friendlyUrl)
-        history.push("/category/" + sortValue.description.friendlyUrl)
-        // getProductList(categoryValue, selectedOption, selectedManufature)
+        // setCategoryID(sortValue.id)
+        // setCategoryFrindlyUrl(sortValue.description.friendlyUrl)
+        // history.push("/category/" + sortValue.description.friendlyUrl)
+        let tempSelectedCategory = selectedCategory;
+        let index = selectedCategory.findIndex(a => a === sortValue.id);
+        // console.log(index)
+        if (index === -1) {
+            tempSelectedCategory = [...selectedCategory, sortValue.id]
+        } else {
+            tempSelectedCategory.splice(index, 1);
+        }
+        console.log(tempSelectedCategory)
+        setSelectedCategory(tempSelectedCategory)
+        if (tempSelectedCategory.length > 0) {
+            getProductList(tempSelectedCategory, selectedOption, selectedManufature)
+        } else {
+            getProductList(categoryValue, selectedOption, selectedManufature)
+        }
     }
 
     useEffect(() => {
@@ -119,6 +140,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         setSize([])
         setSelectedManufature([])
         setSelectedOption([])
+        setSelectedCategory([])
         getProductList(categoryID, [], [], friendlyUrl)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categoryID, offset]);
@@ -126,9 +148,9 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         setLoader(true)
         // setProductData([]);
         // let action = `${constant.ACTION.PRODUCTS} + '?store=' + defaultStore + '&lang=' + currentLanguageCode + '&start=' + offset + '&count=' + pageLimit + '&category=' + categoryID`;
-        let action = `${constant.ACTION.PRODUCTS}?${isCheckValueAndSetParams('&store=', defaultStore)}${isCheckValueAndSetParams('&lang=', currentLanguageCode)}${isCheckValueAndSetParams('&page=', offset)}${isCheckValueAndSetParams('&count=', pageLimit)}${isCheckValueAndSetParams('&category=', categoryid)}${isCheckValueAndSetParams('&optionValues=', size.join())}${isCheckValueAndSetParams('&manufacturer=', manufacture.join())}`;
+        let action = `${constant.ACTION.PRODUCTS}?${isCheckValueAndSetParams('&store=', defaultStore)}${isCheckValueAndSetParams('&lang=', currentLanguageCode)}${isCheckValueAndSetParams('&page=', offset)}${isCheckValueAndSetParams('&count=', pageLimit)}${isCheckValueAndSetParams('&categoryIds=', categoryid)}${isCheckValueAndSetParams('&optionValueIds=', size.join())}${isCheckValueAndSetParams('&manufacturer=', manufacture.join())}`;
         try {
-            let response = await WebService.get(action);
+            let response = await WebService.get(window._env_.APP_BASE_URL + '/api/v2/' + action);
             if (response) {
                 setCurrentPage(response.totalPages)
                 setProductData(response.products);
@@ -138,23 +160,34 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         } catch (error) {
             setLoader(false)
         }
+        if (selectedCategory.length === 0) {
+            getCategoryDetails(categoryid, friendlyUrl)
+        }
 
-        getCategoryDetails(categoryid, friendlyUrl)
     }
     const getCategoryDetails = async (categoryid, friendlyUrl) => {
-        let action = constant.ACTION.CATEGORY + friendlyUrl + '?store=' + defaultStore + '&lang=' + currentLanguageCode;
-        try {
-            let response = await WebService.get(action);
-            // console.log(response.children);
-            if (response) {
-                //console.log(response);
-                history.push(response.description.friendlyUrl)
-                setProductDetails(response);
-                // let temp = response.children;
-                // console.log(temp)
-                setSubCategory(response.children);
+
+        // let action = constant.ACTION.CATEGORY + friendlyUrl + '?store=' + defaultStore + '&lang=' + currentLanguageCode;
+        // try {
+        //     let response = await WebService.get(action);
+        //     // console.log(response.children);
+        //     if (response) {
+        //         //console.log(response);
+        //         history.push(response.description.friendlyUrl)
+        //         setProductDetails(response);
+        //         // let temp = response.children;
+        //         // console.log(temp)
+        //         setSubCategory(response.children);
+        //     }
+        // } catch (error) {
+        // }
+        let childData = childCategory.filter((val) => val.id === categoryid);
+        console.log(childData)
+        if (childData.length > 0) {
+            setProductDetails(childData[0]);
+            if (childData[0].children.length > 0) {
+                setSubCategory(childData[0].children);
             }
-        } catch (error) {
         }
         getManufacturers(categoryid)
     }
@@ -281,7 +314,8 @@ const mapStateToProps = state => {
         defaultStore: state.merchantData.defaultStore,
         categoryID: state.productData.categoryid,
         friendlyUrl: state.productData.friendlyUrl,
-        isLoading: state.loading.isLoading
+        isLoading: state.loading.isLoading,
+        childCategory: state.productData.categoryData
 
     }
 }
