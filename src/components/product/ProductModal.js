@@ -225,17 +225,18 @@ function ProductModal(props, strings) {
                 </div>
 
                 <div className="pro-details-rating-wrap">
-                  <div className="pro-details-rating">
-                    <StarRatings
-                      rating={product.rating}
-                      starRatedColor="#ffa900"
-                      starDimension="17px"
-                      starSpacing="1px"
-                      numberOfStars={5}
-                      name='view-rating'
-                    />
-                    {/* <Rating ratingValue={product.rating} /> */}
-                  </div>
+                <div className="pro-details-rating">
+                  {product?.rating > 0 && <span style={{fontWeight: 600, marginRight: '10px'}}>{product?.rating}</span>}
+                  <StarRatings
+                    rating={product?.rating}
+                    starRatedColor="#ffa900"
+                    starDimension="17px"
+                    starSpacing="1px"
+                    numberOfStars={5}
+                    name='view-rating'
+                  />
+                  <span style={{fontWeight: 600, marginLeft: '10px', color: '#2162a1'}}>({product?.ratingCount} ratings)</span>
+                </div>
                 </div>
                 <div className="pro-details-list">
                   <p dangerouslySetInnerHTML={{ __html: product.description.description }}></p>
@@ -266,28 +267,34 @@ function ProductModal(props, strings) {
                         return (
                           option.type === 'radio' &&
                           <div className="pro-details-color-wrap" key={key}>
-                            <span>{option.name}</span>
-                            <div className="pro-details-color-content" style={{ display: 'flex', flexDirection: 'column' }}>
+                            <span>Select {option.name}</span>
+                            <div className="options-container">
                               {
 
                                 option.optionValues.map((value, index) => {
                                   return (
-                                    <div style={{ flexDirection: 'row', display: 'flex', alignItems: 'center', margin: 15 }} key={index}>
-                                      {value.image && <img src={value.image} alt="product-option" />}
+                                    <label className={checkedOrNot(value) ? "option selected": "option"}>
+                                      <input type={option.type} name={option.name} value={value.id} onChange={() => onChangeOptions(value, option)} checked={checkedOrNot(value)} />
+                                      <div className="details" style={{color: value.code}}>
+                                        <label>{value.description.name}</label>
+                                      </div>
+                                    </label>
+                                    // <div style={{ flexDirection: 'row', display: 'flex', alignItems: 'center', margin: 15 }} key={index}>
+                                    //   {value.image && <img src={value.image} alt="product-option" />}
 
-                                      <label className={`pro-details-color-content--single`} style={{ backgroundColor: value.code }} key={index} >
+                                    //   <label className={`pro-details-color-content--single`} style={{ backgroundColor: value.code }} key={index} >
 
-                                        <input
-                                          type={option.type}
-                                          value={value.id}
-                                          name={option.name}
-                                          checked={checkedOrNot(value)}
-                                          onChange={() => onChangeOptions(value, option)}
-                                        />
-                                        <span className="checkmark"></span>
-                                      </label>
-                                      <label>{value.description.name} {value.price && '(' + value.price + ')'}</label>
-                                    </div>
+                                    //     <input
+                                    //       type={option.type}
+                                    //       value={value.id}
+                                    //       name={option.name}
+                                    //       checked={checkedOrNot(value)}
+                                    //       onChange={() => onChangeOptions(value, option)}
+                                    //     />
+                                    //     <span className="checkmark"></span>
+                                    //   </label>
+                                    //   <label>{value.description.name} {value.price && '(' + value.price + ')'}</label>
+                                    // </div>
                                   );
                                 })
                                 // )
@@ -304,7 +311,7 @@ function ProductModal(props, strings) {
                         return (
                           option.type === 'select' &&
                           <div className="pro-details-size" key={index}>
-                            <span>{option.name}</span>
+                            <span>Select {option.name}</span>
                             <div className="pro-details-size-content">
                               {
                                 <select onChange={(e) => { onChangeOptions(JSON.parse(e.target.value), option) }}>
@@ -329,7 +336,7 @@ function ProductModal(props, strings) {
                         return (
                           option.type === 'checkbox' &&
                           <div className="pro-details-size" key={index}>
-                            <span>{option.name}</span>
+                            <span>Select {option.name}</span>
                             <div className="pro-details-size-content" style={{ display: 'flex' }}>
                               {
                                 option.optionValues.map((singleSize, key) => {
@@ -337,7 +344,7 @@ function ProductModal(props, strings) {
                                     <div style={{ flexDirection: 'column ', display: 'flex', alignItems: 'center', marginRight: 15 }} key={key}>
                                       {singleSize.image && <img src={singleSize.image} alt="product-option" />}
 
-                                      <label className={`pro-details-size-content--single`} key={key}  >
+                                      <label className={checkedOrNot(singleSize) ? `pro-details-size-content--single selected` : `pro-details-size-content--single`} key={key}  >
                                         <input
                                           type="checkbox"
                                           value={singleSize.description.name}
@@ -350,7 +357,7 @@ function ProductModal(props, strings) {
                                             //   setQuantityCount(1);
                                           }}
                                         />
-                                        <span className="size-name">{singleSize.description.name} {singleSize.price && '(' + singleSize.price + ')'}</span>
+                                        <span className="size-name">{singleSize.description.name}</span>
                                       </label>
                                     </div>
                                   );

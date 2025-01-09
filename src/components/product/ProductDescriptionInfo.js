@@ -143,7 +143,6 @@ const ProductDescriptionInfo = ({
             name='view-rating'
           />
           <span style={{fontWeight: 600, marginLeft: '10px', color: '#2162a1'}}>({product?.ratingCount} ratings)</span>
-          {/* <Rating ratingValue={product.rating} /> */}
         </div>
       </div>
       {/* ) : (

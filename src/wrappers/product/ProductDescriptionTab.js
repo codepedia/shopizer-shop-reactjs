@@ -139,7 +139,7 @@ const ProductDescriptionTab = ({ strings, spaceBottomClass, product, review, use
                     {
                       product.properties.map((value, i) => {
                         return <li key={i}>
-                          <span><b>{value.property.name}</b></span> {value.propertyValue.name}
+                          <span>{value.property.name}</span> {value.propertyValue.name}
                         </li>
                       })
                     }
