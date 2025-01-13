@@ -13,3 +13,14 @@
     transform: scale(1.1);
   }
 }
+.slider-area {
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: #fff !important;
+
+    &:after {
+      font-size: 25px !important
+    }
+  }
+}
