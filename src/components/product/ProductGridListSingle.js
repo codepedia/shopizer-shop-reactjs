@@ -22,7 +22,8 @@ const ProductGridListSingle = ({
   setProductID,
   defaultStore,
   userData,
-  strings
+  strings,
+  setProductCode
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const { addToast } = useToasts();
