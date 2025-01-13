@@ -23,7 +23,7 @@ import Layout from "../../layouts/Layout";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import constant from '../../util/constant';
 import WebService from '../../util/webService';
-
+import { setProductID, setProductCode } from "../../redux/actions/productActions";
 const couponCode = {
   code: {
     name: 'code',
@@ -85,8 +85,10 @@ const Cart = ({
   merchant,
   isLoading,
   setLoader,
-  cartCount
+  cartCount,
   // deleteAllFromCart,
+  setProductID,
+  setProductCode
 
 }) => {
   const { addToast } = useToasts();
@@ -204,6 +206,10 @@ const Cart = ({
       setLoader(false)
     }
   }
+  const onClickProductDetails = (product) => {
+    setProductID(product?.id)
+    setProductCode(product?.sku)
+  }
   return (
     <Fragment>
       <MetaTags>
@@ -252,13 +258,13 @@ const Cart = ({
                             return (
                               <tr key={key}>
                                 <td className="product-thumbnail">
-                                  <Link to={"/product/" + cartItem.description.friendlyUrl} >
+                                  <Link to={"/product/" + cartItem.description.friendlyUrl} onClick={() => onClickProductDetails(cartItem)}>
                                     <img className="img-fluid" src={defaultImage(cartItem)} alt="" />
                                   </Link>
                                 </td>
 
                                 <td className="product-name">
-                                  <Link to={"/product/" + cartItem.description.friendlyUrl}>
+                                  <Link to={"/product/" + cartItem.description.friendlyUrl} onClick={() => onClickProductDetails(cartItem)}>
                                     {cartItem.description.name}
                                   </Link>
                                 </td>
@@ -567,10 +573,16 @@ const mapDispatchToProps = dispatch => {
     },
     getState: (code) => {
       dispatch(getState(code));
-    }
+    },
     // deleteAllFromCart: addToast => {
     //   dispatch(deleteAllFromCart(addToast));
     // }
+    setProductID: (value) => {
+      dispatch(setProductID(value));
+    },
+    setProductCode: (code) => {
+      dispatch(setProductCode(code));
+    }
   };
 };
 

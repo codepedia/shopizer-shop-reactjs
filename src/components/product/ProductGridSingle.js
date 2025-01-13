@@ -5,7 +5,7 @@ import { useToasts } from "react-toast-notifications";
 import { connect } from "react-redux";
 // import { getDiscountPrice } from "../../helpers/product";
 import ProductModal from "./ProductModal";
-import { setProductID } from "../../redux/actions/productActions";
+import { setProductID, setProductCode } from "../../redux/actions/productActions";
 const ProductGridSingleTwo = ({
   product,
   // currency,
@@ -21,7 +21,8 @@ const ProductGridSingleTwo = ({
   titlePriceClass,
   defaultStore,
   setProductID,
-  userData
+  userData,
+  setProductCode
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const { addToast } = useToasts();
@@ -29,8 +30,9 @@ const ProductGridSingleTwo = ({
   // const discountedPrice = getDiscountPrice(product.price, product.discount);
   const finalProductPrice = product.originalPrice;
   const finalDiscountedPrice = product.finalPrice;
-  const onClickProductDetails = (id) => {
-    setProductID(id)
+  const onClickProductDetails = (product) => {
+    setProductID(product?.id)
+    setProductCode(product?.sku)
   }
   return (
     <Fragment>
@@ -39,7 +41,7 @@ const ProductGridSingleTwo = ({
         <div
           className={`product-wrap-2 ${spaceBottomClass ? spaceBottomClass : ""} ${colorClass ? colorClass : ""} `}>
           <div className="product-img">
-            <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
+            <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product)}>
               {product.images && product.images.length > 0 ?
                 <img src={product?.images[0]?.imageUrl} alt="" />
                 :
@@ -79,7 +81,7 @@ const ProductGridSingleTwo = ({
                 </Link>
               ) : product.stock && product.stock > 0 ? ( */}
               <Link
-                to={`product/${product.description.friendlyUrl}`} onClick={() => onClickProductDetails(product.id)} title="Select options">
+                to={`product/${product.description.friendlyUrl}`} onClick={() => onClickProductDetails(product)} title="Select options">
                 <i className="fa fa-cog"></i>
               </Link>
               {
@@ -120,7 +122,7 @@ const ProductGridSingleTwo = ({
           <div className="product-content-2">
             <div className={`title-price-wrap-2 ${titlePriceClass ? titlePriceClass : ""}`}>
               <h3>
-                <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
+                <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product)}>
                   {product.description.name}
                 </Link>
               </h3>
@@ -203,6 +205,9 @@ const mapDispatchToProps = dispatch => {
   return {
     setProductID: (value) => {
       dispatch(setProductID(value));
+    },
+    setProductCode: (code) => {
+      dispatch(setProductCode(code));
     }
   };
 };

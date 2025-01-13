@@ -5,9 +5,14 @@ import { useToasts } from "react-toast-notifications";
 import { isValidObject } from "../../../util/helper";
 import { connect } from "react-redux";
 import { multilanguage } from "redux-multilanguage";
-const MenuCart = ({ cartData, deleteFromCart, defaultStore, strings }) => {
+import { setProductID, setProductCode } from "../../../redux/actions/productActions";
+const MenuCart = ({ cartData, deleteFromCart, defaultStore, strings, setProductID, setProductCode }) => {
   // let cartTotalPrice = 0;
   const { addToast } = useToasts();
+  const onClickProductDetails = (product) => {
+    setProductID(product?.id)
+    setProductCode(product?.sku)
+  }
   return (
     <div className="shopping-cart-content">
       {isValidObject(cartData) && cartData.products.length > 0 ? (
@@ -20,7 +25,7 @@ const MenuCart = ({ cartData, deleteFromCart, defaultStore, strings }) => {
               return (
                 <li className="single-shopping-cart" key={key}>
                   <div className="shopping-cart-img">
-                    <Link to={"/product/" + single.id}>
+                    <Link to={"/product/" + single.description.friendlyUrl} onClick={() => onClickProductDetails(single)}>
                       <img alt="" src={defaultImage(single)} className="img-fluid" />
                     </Link>
                   </div>
@@ -99,7 +104,16 @@ const mapStateToProps = state => {
     defaultStore: state.merchantData.defaultStore
   };
 };
+const mapDispatchToProps = dispatch => {
+  return {
+    setProductID: (value) => {
+      dispatch(setProductID(value));
+    },
+    setProductCode: (code) => {
+      dispatch(setProductCode(code));
+    }
+  };
+};
 
-
-export default connect(mapStateToProps, null)(multilanguage(MenuCart));
+export default connect(mapStateToProps, mapDispatchToProps)(multilanguage(MenuCart));
 // export default MenuCart;

@@ -1,6 +1,7 @@
 export const FETCH_PRODUCTS_SUCCESS = "FETCH_PRODUCTS_SUCCESS";
 export const SET_PRODUCT_ID = "SET_PRODUCT_ID";
 export const SET_CATEGORY_ID = "SET_CATEGORY_ID";
+export const SET_PRODUCT_CODE = "SET_PRODUCT_CODE";
 
 const fetchProductsSuccess = products => ({
   type: FETCH_PRODUCTS_SUCCESS,
@@ -27,6 +28,14 @@ export const setCategoryID = (categoryID) => {
     dispatch({
       type: SET_CATEGORY_ID,
       payload: categoryID
+    });
+  }
+}
+export const setProductCode = (code) => {
+  return dispatch => {
+    dispatch({
+      type: SET_PRODUCT_CODE,
+      payload: code
     });
   }
 }

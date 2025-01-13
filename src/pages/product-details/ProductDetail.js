@@ -12,7 +12,7 @@ import WebService from '../../util/webService';
 import constant from '../../util/constant';
 import { setLoader } from "../../redux/actions/loaderActions";
 import { multilanguage } from "redux-multilanguage";
-const ProductDetails = ({ strings, location, productID, currentLanguageCode, setLoader, defaultStore }) => {
+const ProductDetails = ({ strings, location, productID, currentLanguageCode, setLoader, defaultStore, productCode }) => {
   const { pathname } = location;
   const [productDetails, setProductDetails] = useState();
   const [productReview, setProductReview] = useState([]);
@@ -25,9 +25,9 @@ const ProductDetails = ({ strings, location, productID, currentLanguageCode, set
 
   const getProductDetails = async () => {
     setLoader(true)
-    let action = constant.ACTION.PRODUCTS + productID + '?lang=' + currentLanguageCode + '&store=' + defaultStore;
+    let action = constant.ACTION.PRODUCT + productCode + '?lang=' + currentLanguageCode + '&store=' + defaultStore;
     try {
-      let response = await WebService.get(action);
+      let response = await WebService.get(window._env_.APP_BASE_URL + '/api/v2/' + action);
       if (response) {
         console.log(response)
         setProductDetails(response)
@@ -38,7 +38,7 @@ const ProductDetails = ({ strings, location, productID, currentLanguageCode, set
     }
   }
   const getReview = async () => {
-    let action = constant.ACTION.PRODUCTS + productID + '/reviews?store=' + defaultStore;
+    let action = constant.ACTION.PRODUCT + productID + '/reviews?store=' + defaultStore;
     try {
       let response = await WebService.get(action);
       if (response) {
@@ -112,7 +112,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     productID: state.productData.productid,
     currentLanguageCode: state.multilanguage.currentLanguageCode,
-    defaultStore: state.merchantData.defaultStore
+    defaultStore: state.merchantData.defaultStore,
+    productCode: state.productData.productCode
   };
 };
 const mapDispatchToProps = dispatch => {
