@@ -48,7 +48,9 @@ const ProductImageDescription = ({
               <ProductImageFixed product={product} />
             ) :
              ( */}
-            <ProductImageGallery product={product} />
+            {
+              product && product.images.length > 0 ? <ProductImageGallery product={product} /> : <img src={'/assets/img/no-image.png'} alt="" style={{ width: '100%' }} />
+            }
             {/* )} */}
           </div>
           <div className="col-lg-6 col-md-6">

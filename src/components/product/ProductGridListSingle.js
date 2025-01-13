@@ -34,6 +34,15 @@ const ProductGridListSingle = ({
     setProductID(id)
   }
 
+  function defaultImage(product) {
+    if (product.images && product.images.length > 0) {
+      return product.images[0].imageUrl;
+    } else if (product.image != null) {
+      return product.imageUrl;
+    } else {
+      return '/assets/img/no-image.png';
+    }
+  }
   return (
     <Fragment>
       <div
@@ -46,12 +55,11 @@ const ProductGridListSingle = ({
         >
           <div className="product-img">
             <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
-              {
-                product.image && <img className="default-img" src={defaultImage(product)} alt="" />
-              }
-              {
+              <img className="default-img" src={defaultImage(product)} alt="" />
+              
+              {/* {
                 product.images.length > 1 ? <img className="hover-img-A" src={defaultImage(product)} alt="" /> : ''
-              }
+              } */}
             </Link>
 
 
@@ -126,9 +134,8 @@ const ProductGridListSingle = ({
               <div className="product-list-image-wrap">
                 <div className="product-img">
                   <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
-                    {
-                      product.image && <img className="default-img img-fluid" src={product.image.imageUrl} alt="" />
-                    }
+                    <img className="default-img" src={defaultImage(product)} alt="" />
+                    {/* {product.image && <img className="default-img img-fluid" src={product.image.imageUrl} alt="" />} */}
                     
                     {/*product.images.length > 1 ?
                       <img

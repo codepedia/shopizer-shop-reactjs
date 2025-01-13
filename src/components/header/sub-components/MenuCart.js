@@ -85,12 +85,12 @@ MenuCart.propTypes = {
 };
 
 function defaultImage(product) {
-  if(product.images && product.images.length > 0) {
+  if (product.images && product.images.length > 0) {
     return product.images[0].imageUrl;
-  } else if(product.image != null) {
+  } else if (product.image != null) {
     return product.imageUrl;
   } else {
-    return null;
+    return '/assets/img/no-image.png';
   }
 }
 

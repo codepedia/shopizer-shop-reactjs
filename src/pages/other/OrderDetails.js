@@ -57,6 +57,15 @@ const OrderDetails = ({
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
+    function defaultImage(product) {
+        if (product.images && product.images.length > 0) {
+            return product.images[0].imageUrl;
+        } else if (product.image != null) {
+            return product.imageUrl;
+        } else {
+            return '/assets/img/no-image.png';
+        }
+    }
     return (
         <Fragment>
             <MetaTags>
@@ -112,7 +121,7 @@ const OrderDetails = ({
                                                             <tr key={key} className="customTrRow">
                                                                 <td className="product-thumbnail">
                                                                     <Link onClick={() => onClickItem(orderItem.product)} to={"/product/" + orderItem.product.description.friendlyUrl}>
-                                                                        <img className="img-fluid" src={orderItem.product.image.imageUrl} alt="" />
+                                                                        <img className="img-fluid" src={defaultImage(orderItem?.product)} alt="" />
                                                                     </Link>
                                                                 </td>
 

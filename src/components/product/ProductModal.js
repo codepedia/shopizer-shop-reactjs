@@ -168,7 +168,7 @@ function ProductModal(props, strings) {
             <div className="col-md-5 col-sm-12 col-xs-12">
               <div className="product-large-image-wrapper">
                 <Swiper {...gallerySwiperParams}>
-                  {product.images && product.images.length > 0 &&
+                  {product.images && product.images.length > 0 ?
                     product.images.map((single, key) => {
                       return (
                         <div key={key}>
@@ -183,7 +183,9 @@ function ProductModal(props, strings) {
                           </div>
                         </div>
                       );
-                    })}
+                    })
+                    : <img src={'/assets/img/no-image.png'} alt="" />
+                    }
                 </Swiper>
               </div>
               <div className="product-small-image-wrapper mt-15">

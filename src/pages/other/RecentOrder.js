@@ -56,6 +56,15 @@ const RecentOrder = ({
     // console.log(product);
     setProductID(product.id)
   }
+  function defaultImage(product) {
+    if (product.images && product.images.length > 0) {
+      return product.images[0].imageUrl;
+    } else if (product.image != null) {
+      return product.imageUrl;
+    } else {
+      return '/assets/img/no-image.png';
+    }
+  }
   return (
     <Fragment>
       <MetaTags>
@@ -106,7 +115,7 @@ const RecentOrder = ({
                                           <img
                                             style={{ width: 140 }}
                                             className="img-fluid"
-                                            src={orderItem.product.image.imageUrl}
+                                            src={defaultImage(orderItem?.product)}
                                             alt=""
                                           />
                                         </Link>
