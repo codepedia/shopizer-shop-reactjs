@@ -19,7 +19,7 @@ import { multilanguage } from "redux-multilanguage";
 import { setCategoryID } from "../../redux/actions/productActions";
 import ReactPaginate from 'react-paginate';
 
-const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader, }) => {
+const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader, childCategory}) => {
     const [layout, setLayout] = useState('grid three-column');
     const history = useHistory();
     // const [sortType, setSortType] = useState('');
@@ -118,24 +118,33 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         getCategoryDetails(categoryid)
     }
     const getCategoryDetails = async (categoryid) => {
-        let action = constant.ACTION.CATEGORY + categoryid + '?store=' + defaultStore + '&lang=' + currentLanguageCode;
-        try {
-            let response = await WebService.get(action);
-            // console.log(response.children);
-            if (response) {
-                //console.log(response);
-                history.push(response.description.friendlyUrl)
-                setProductDetails(response);
-                // let temp = response.children;
-                // console.log(temp)
-                setSubCategory(response.children);
+        // let action = constant.ACTION.CATEGORY + categoryid + '?store=' + defaultStore + '&lang=' + currentLanguageCode;
+        // try {
+        //     let response = await WebService.get(action);
+        //     // console.log(response.children);
+        //     if (response) {
+        //         //console.log(response);
+        //         history.push(response.description.friendlyUrl)
+        //         setProductDetails(response);
+        //         // let temp = response.children;
+        //         // console.log(temp)
+        //         setSubCategory(response.children);
+        //     }
+        // } catch (error) {
+        // }
+
+        let childData = childCategory.filter((val) => val.id === categoryid);
+        console.log(childData)
+        if (childData.length > 0) {
+            setProductDetails(childData[0]);
+            if (childData[0].children.length > 0) {
+                setSubCategory(childData[0].children);
             }
-        } catch (error) {
         }
         getManufacturers(categoryid)
     }
     const getManufacturers = async (categoryid) => {
-        let action = constant.ACTION.CATEGORY + categoryid + '/' + constant.ACTION.MANUFACTURERS + '?store=' + defaultStore + '&lang=' + currentLanguageCode
+        let action = constant.ACTION.CATEGORY + categoryid + '/' + constant.ACTION.MANUFACTURER + '?store=' + defaultStore + '&lang=' + currentLanguageCode
         try {
             let response = await WebService.get(action);
             //console.log(JSON.stringify(response));
@@ -147,9 +156,9 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         getVariants(categoryid)
     }
     const getVariants = async (categoryid) => {
-        let action = constant.ACTION.CATEGORY + categoryid + '/' + constant.ACTION.VARIANTS + '?store=' + defaultStore + '&lang=' + currentLanguageCode;
+        let action = constant.ACTION.CATEGORY + categoryid + '/' + constant.ACTION.VARIATIONS;
         try {
-            let response = await WebService.get(action);
+            let response = await WebService.get(window._env_.APP_BASE_URL + '/api/v2/' + action);
             // console.log(response);
             if (response) {
                 response.forEach(variant => {
@@ -249,7 +258,8 @@ const mapStateToProps = state => {
         currentLanguageCode: state.multilanguage.currentLanguageCode,
         defaultStore: state.merchantData.defaultStore,
         categoryID: state.productData.categoryid,
-        isLoading: state.loading.isLoading
+        isLoading: state.loading.isLoading,
+        childCategory: state.productData.categoryData
 
     }
 }

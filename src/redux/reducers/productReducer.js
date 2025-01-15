@@ -1,10 +1,11 @@
-import { FETCH_PRODUCTS_SUCCESS, SET_PRODUCT_ID, SET_CATEGORY_ID, SET_PRODUCT_CODE } from "../actions/productActions";
+import { FETCH_PRODUCTS_SUCCESS, SET_PRODUCT_ID, SET_CATEGORY_ID, SET_PRODUCT_CODE, SET_CATEGORYS } from "../actions/productActions";
 
 const initState = {
   products: [],
   productid: '',
   categoryid: '',
-  productCode: ''
+  productCode: '',
+  categoryData: []
 };
 
 const productReducer = (state = initState, action) => {
@@ -31,6 +32,12 @@ const productReducer = (state = initState, action) => {
     return {
       ...state,
       productCode: action.payload
+    };
+  }
+  if (action.type === SET_CATEGORYS) {
+    return {
+      ...state,
+      categoryData: action.payload
     };
   }
   return state;
