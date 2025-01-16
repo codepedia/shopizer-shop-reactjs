@@ -8,15 +8,16 @@ const PromoSingle = ({ data, spaceBottomClass }) => {
       <div
         className={`single-banner ${spaceBottomClass ? spaceBottomClass : ""}`}
       >
-        <Link to={process.env.PUBLIC_URL + data.link}>
-          <img src={process.env.PUBLIC_URL + data.image} alt="" />
+        <Link to={process.env.PUBLIC_URL + data.description.friendlyUrl}>
+          {data?.image ? <img src={data?.image?.imageUrl} alt="" /> : <img src={data?.image?.imageUrl} alt="" />}
         </Link>
         <div className="banner-content">
-          <h3>{data.title}</h3>
+          <h3>{data.description.name}</h3>
+          <br/>
           <h4>
-            {data.subtitle} <span>{data.price}</span>
+          <p dangerouslySetInnerHTML={{ __html: data.description.description }} ></p>
           </h4>
-          <Link to={process.env.PUBLIC_URL + data.link}>
+          <Link to={process.env.PUBLIC_URL + data.description.friendlyUrl}>
             <i className="fa fa-long-arrow-right" />
           </Link>
         </div>

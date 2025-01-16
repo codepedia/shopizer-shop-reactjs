@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import BannerOneSingle from "../../components/promos/PromosSingle.js";
+import PromoSingle from "../../components/promos/PromosSingle.js";
 import WebService from '../../util/webService';
 import constant from '../../util/constant';
 import { connect } from "react-redux";
@@ -36,7 +36,7 @@ const FeatureIcon  = ({ spaceTopClass, spaceBottomClass, defaultStore, currentLa
           {promoData &&
             promoData.map((single, key) => {
               return (
-                <BannerOneSingle
+                <PromoSingle
                   data={single}
                   key={key}
                   spaceBottomClass="mb-30"
