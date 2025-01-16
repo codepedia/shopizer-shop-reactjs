@@ -160,7 +160,7 @@ export const deleteFromCart = (cartID, item, defaultStore, addToast) => {
   return async dispatch => {
     dispatch(setLoader(true))
     try {
-      let action = constant.ACTION.CART + cartID + '/' + constant.ACTION.PRODUCT + item.id + '?store=' + window._env_.APP_MERCHANT;
+      let action = constant.ACTION.CART + cartID + '/' + constant.ACTION.PRODUCT + item.sku + '?store=' + window._env_.APP_MERCHANT;
       await WebService.delete(action);
 
       dispatch({
