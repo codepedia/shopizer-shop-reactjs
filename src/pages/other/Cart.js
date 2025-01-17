@@ -107,6 +107,8 @@ const Cart = ({
     useForm({ mode: 'onChange' });
 
   const [shippingOptions, setShippingOptions] = useState();
+  const [cartTotal, setCartTotals] = useState([]);
+  const [selectedQuoteId, setSelectedQuoteId] = useState('');
   // const [shippingOptions] = useState();
 
   useEffect(() => {
@@ -145,6 +147,7 @@ const Cart = ({
       if (response) {
         setCartItems(response)
       }
+      getCartTotal('')
       setLoader(false)
     } catch (error) {
       setLoader(false)
@@ -152,6 +155,21 @@ const Cart = ({
         history.push('/')
       }, 200);
 
+    }
+  }
+  const getCartTotal = async(quoteID) => {
+    let action;
+    if (quoteID) {
+      action = constant.ACTION.CART + cartID + '/' + constant.ACTION.TOTAL + '?quote=' + quoteID;
+    } else {
+      action = constant.ACTION.CART + cartID + '/' + constant.ACTION.TOTAL;
+    }
+    try {
+      let response = await WebService.get(action);
+      if (response) {
+        setCartTotals(response.totals)
+      }
+    } catch (error) {
     }
   }
   const deleteAllFromCart = () => {
@@ -445,18 +463,39 @@ const Cart = ({
                             {strings["Cart Total"]}
                           </h4>
                         </div>
-                        <h5>
+                        {/* <h5>
                           {strings["Total products"]}{" "}
                           <span>
                             {cartItems.displaySubTotal}
                           </span>
-                        </h5>
-                        <h4 className="grand-totall-title">
-                          {strings["Grand Total"]}{" "}
-                          <span>
-                            {cartItems.displaySubTotal}
-                          </span>
-                        </h4>
+                        </h5> */}
+                        {
+                          cartTotal.length > 0 &&
+                          cartTotal.map((value, i) => {
+                            return (
+                              value.title !== 'Total' &&
+                              <h5>
+                                {value.title}{" "}
+                                <span>
+                                  {value.total}
+                                </span>
+                              </h5>)
+                          })
+                        }
+                        {
+                          cartTotal.length > 0 &&
+                          cartTotal.map((value, i) => {
+                            return (
+                              value.title === 'Total' &&
+                              <h4 className="grand-totall-title">
+                                {value.title}{" "}
+                                <span>
+                                  {value.total}
+                                </span>
+                              </h4>
+                            )
+                          })
+                        }
                         <Link to={process.env.PUBLIC_URL + "/checkout"}>
                           {strings["Proceed to Checkout"]}
                         </Link>
@@ -470,11 +509,22 @@ const Cart = ({
                             {"Shipping and tax"}
                           </h4>
                         </div>
+                        {/* {
+                          shippingOptions.map((value, i) => {
+                            return (<h5 key={i}>
+                              {value.optionName}{" "}
+                              <span>
+                                {value.optionPriceText}
+                              </span>
+                            </h5>)
+                          })
+                        } */}
                         {
                           shippingOptions.map((value, i) => {
                             return (<h5 key={i}>
                               {value.optionName}{" "}
                               <span>
+                                <input className="shipping-option-input" type="radio" value={value.shippingQuoteOptionId} onChange={() => { setSelectedQuoteId(value.shippingQuoteOptionId); getCartTotal(value.shippingQuoteOptionId) }} checked={selectedQuoteId === value.shippingQuoteOptionId}/>
                                 {value.optionPriceText}
                               </span>
                             </h5>)

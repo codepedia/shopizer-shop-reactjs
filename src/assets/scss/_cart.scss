@@ -573,7 +573,13 @@ h3.cart-page-title {
       float: right;
     }
   }
-
+  .shipping-option-input{
+    height: 15px;
+    margin: 0px 10px 0px 0px;
+    position: relative;
+    top: 1px;
+    width: 17px;
+  }
   .total-shipping {
     margin: 0 0 27px;
     padding: 28px 0;
