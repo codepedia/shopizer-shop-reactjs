@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 // import { getDiscountPrice } from "../../helpers/product";
 import { isValidObject } from "../../util/helper";
 import { useForm } from "react-hook-form";
-import { getState } from "../../redux/actions/userAction";
+import { getState, getShippingCountry } from "../../redux/actions/userAction";
 import { setLoader } from "../../redux/actions/loaderActions";
 import {
   addToCart,
@@ -89,7 +89,9 @@ const Cart = ({
   cartCount,
   // deleteAllFromCart,
   setProductID,
-  setProductCode
+  setProductCode,
+  getShippingCountry,
+  shipCountryData
 
 }) => {
   const { addToast } = useToasts();
@@ -112,6 +114,7 @@ const Cart = ({
   // const [shippingOptions] = useState();
 
   useEffect(() => {
+    getShippingCountry();
     getCartData()
     // if (!isValidObject(cartItems)) {
     //   history.push('/')
@@ -379,7 +382,7 @@ const Cart = ({
                                       <option>{strings["Select a country"]}</option>
                                       {
 
-                                        countryData.map((data, i) => {
+                                        shipCountryData.map((data, i) => {
                                           return <option key={i} value={data.code}>{data.name}</option>
                                         })
                                       }
@@ -580,7 +583,8 @@ const mapStateToProps = state => {
     countryData: state.userData.country,
     stateData: state.userData.state,
     merchant: state.merchantData.merchant,
-    isLoading: state.loading.isLoading
+    isLoading: state.loading.isLoading,
+    shipCountryData: state.userData.shipCountry
   };
 };
 
@@ -633,6 +637,9 @@ const mapDispatchToProps = dispatch => {
     },
     setProductCode: (code) => {
       dispatch(setProductCode(code));
+    },
+    getShippingCountry: (value) => {
+      dispatch(getShippingCountry(value));
     }
   };
 };
