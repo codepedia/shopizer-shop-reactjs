@@ -5,6 +5,8 @@ import WebService from '../../util/webService';
 import constant from '../../util/constant';
 import { connect } from "react-redux";
 // import promoData from "../../data/feature-icons/feature-icon-four.json";
+import ProductGrid from "../product/ProductGrid.js";
+import SectionTitle from "../../components/section-title/SectionTitle";
 
 const FeatureIcon  = ({ spaceTopClass, spaceBottomClass, defaultStore, currentLanguageCode }) => {
   const [promoData, setPromoData] = useState([]);
@@ -31,9 +33,16 @@ const FeatureIcon  = ({ spaceTopClass, spaceBottomClass, defaultStore, currentLa
         spaceBottomClass ? spaceBottomClass : ""
       }`}
     >
+      <SectionTitle titleText="Promotional Products" positionClass="text-center" />
       <div className="container">
         <div className="row">
-          {promoData &&
+          <ProductGrid
+            products={promoData}
+            type="men"
+            limit={8}
+            spaceBottomClass="mb-25"
+          />
+          {/* {promoData &&
             promoData.map((single, key) => {
               return (
                 <PromoSingle
@@ -42,7 +51,7 @@ const FeatureIcon  = ({ spaceTopClass, spaceBottomClass, defaultStore, currentLa
                   spaceBottomClass="mb-30"
                 />
               );
-            })}
+            })} */}
         </div>
       </div>
     </div>
