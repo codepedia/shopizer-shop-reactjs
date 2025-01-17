@@ -11,6 +11,7 @@ export const DECREASE_QUANTITY = "DECREASE_QUANTITY";
 export const INCREASE_QUANTITY = "INCREASE_QUANTITY";
 export const DELETE_FROM_CART = "DELETE_FROM_CART";
 export const DELETE_ALL_FROM_CART = "DELETE_ALL_FROM_CART";
+export const DISCOUNT_AMOUNT = "DISCOUNT_AMOUNT";
 
 //add to cart
 export const addToCart = (item, addToast, cartId, quantityCount, defaultStore, userData, selectedProductOptions) => {
@@ -202,3 +203,11 @@ export const cartItemStock = (item, color, size) => {
       .size.filter(single => single.name === size)[0].stock;
   }
 };
+export const setDiscountAmount = (amount) => {
+  return dispatch => {
+    dispatch({
+      type: DISCOUNT_AMOUNT,
+      payload: amount
+    });
+  }
+}

@@ -468,7 +468,14 @@ h3.cart-page-title {
 
   .discount-code {
     margin: 21px 0 0;
-
+    .remove-coupon{
+      background: transparent;
+      border: 0;
+      font-size: 18px;
+      text-align: center;
+      color: red;
+      vertical-align: bottom;
+    }
     p {
       margin: 0 0 15px;
     }

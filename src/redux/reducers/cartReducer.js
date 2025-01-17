@@ -9,14 +9,16 @@ import {
   DELETE_FROM_CART,
   DELETE_ALL_FROM_CART,
   GET_CART,
-  GET_SHOPIZER_CART_ID
+  GET_SHOPIZER_CART_ID,
+  DISCOUNT_AMOUNT
 } from "../actions/cartActions";
 
 const initState = {
   cartItems: {},
   cartID: '',
   cartCount: 0,
-  orderID: ''
+  orderID: '',
+  discountPrice: null
 
 };
 
@@ -95,7 +97,12 @@ const cartReducer = (state = initState, action) => {
       orderID: action.payload,
     }
   }
-
+  if (action.type === DISCOUNT_AMOUNT) {
+      return {
+        ...state,
+        discountPrice: action.payload
+      };
+  }
   return state;
 };
 

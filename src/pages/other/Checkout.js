@@ -241,7 +241,7 @@ const CARD_ELEMENT_OPTIONS = {
     }
   }
 };
-const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, strings, location, cartID, defaultStore,getShippingCountry, getState,getShippingState,  shipCountryData, stateData, currentLocation, userData, setLoader, deleteAllFromCart }) => {
+const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, strings, location, cartID, defaultStore,getShippingCountry, getState,getShippingState,  shipCountryData, stateData, currentLocation, userData, setLoader, deleteAllFromCart, discountPrice }) => {
   const { pathname } = location;
   const history = useHistory();
   const { addToast } = useToasts();
@@ -1132,6 +1132,15 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
                                   </ul>)
                               })
                             }
+                            {
+                              discountPrice && 
+                              <ul className="mb-20">
+                                <li className="order-total"  style={{color: 'red'}}>Discount</li>
+                                <li  style={{color: 'red'}}>
+                                  - {discountPrice.toFixed(2)}
+                                </li>
+                              </ul>
+                            }
 
                           </div>
                           {
@@ -1178,7 +1187,7 @@ const Checkout = ({shipStateData, isLoading, currentLanguageCode, merchant, stri
                                 {
                                   shippingQuote.length > 0 &&
                                   shippingQuote.map((quote, i) => {
-                                    return quote.title === 'Total' && quote.total
+                                    return quote.title === 'Total' && ( discountPrice ? `$${(quote.value - discountPrice)}` :  quote.total)
                                   })
                                 }
                                 {/* {cartItems.displayTotal} */}
@@ -1308,6 +1317,7 @@ const mapStateToProps = state => {
     merchant: state.merchantData.merchant,
     isLoading: state.loading.isLoading,
     currentLanguageCode: state.multilanguage.currentLanguageCode,
+    discountPrice: state.cartData.discountPrice,
     // currency: state.currencyData
   };
 };

@@ -18,6 +18,7 @@ import {
   deleteFromCart,
   // cartItemStock,
   // deleteAllFromCart
+  setDiscountAmount
 } from "../../redux/actions/cartActions";
 import Layout from "../../layouts/Layout";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
@@ -91,7 +92,9 @@ const Cart = ({
   setProductID,
   setProductCode,
   getShippingCountry,
-  shipCountryData
+  shipCountryData,
+  setDiscountAmount,
+  discountPrice
 
 }) => {
   const { addToast } = useToasts();
@@ -121,6 +124,16 @@ const Cart = ({
     // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+      if(cartItems.promoCode) {
+        const discountData = cartItems.totals.filter((cart) => cart.code.includes('discount'));
+        if(discountData.length > 0) {
+          const finalDiscount = discountData.reduce((n, {value}) => n + value, 0);
+          setDiscountAmount(finalDiscount)
+        }
+      }
+  }, [cartItems])
   useEffect(() => {
     console.log(cartCount)
     async function fetchData() {
@@ -444,7 +457,7 @@ const Cart = ({
                           cartItems.promoCode ?
                             <div className="discount-code">
                               <p className="coupon-applied">Your coupon code has been applied!</p>
-                              <h1 className="promoCode">{cartItems.promoCode}</h1>
+                              <h1 className="promoCode">{cartItems.promoCode} <button className="remove-coupon">Delete</button></h1>
                             </div> :
                             <div className="discount-code">
                               <p>{strings["Enter your coupon code if you have one."]}</p>
@@ -486,6 +499,15 @@ const Cart = ({
                           })
                         }
                         {
+                          discountPrice && 
+                          <h5 style={{color: 'red'}}>
+                            Discount{" "}
+                            <span>
+                              - {discountPrice.toFixed(2)}
+                            </span>
+                          </h5>
+                        }
+                        {
                           cartTotal.length > 0 &&
                           cartTotal.map((value, i) => {
                             return (
@@ -493,7 +515,7 @@ const Cart = ({
                               <h4 className="grand-totall-title">
                                 {value.title}{" "}
                                 <span>
-                                  {value.total}
+                                  {discountPrice ? `$${(value.value - discountPrice)}` : value.total}
                                 </span>
                               </h4>
                             )
@@ -584,7 +606,8 @@ const mapStateToProps = state => {
     stateData: state.userData.state,
     merchant: state.merchantData.merchant,
     isLoading: state.loading.isLoading,
-    shipCountryData: state.userData.shipCountry
+    shipCountryData: state.userData.shipCountry,
+    discountPrice: state.cartData.discountPrice
   };
 };
 
@@ -640,6 +663,9 @@ const mapDispatchToProps = dispatch => {
     },
     getShippingCountry: (value) => {
       dispatch(getShippingCountry(value));
+    },
+    setDiscountAmount: (amount) => {
+      dispatch(setDiscountAmount(amount));
     }
   };
 };
