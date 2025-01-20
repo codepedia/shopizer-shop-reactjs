@@ -42,7 +42,8 @@ const Constant = {
         AGREEMENT: 'agreement/',
         PROMO: 'promo/',
         MANUFACTURER: 'manufacturer/',
-        VARIATIONS: 'variations/'
+        VARIATIONS: 'variations/',
+        CATEGORYWITHCHILD: 'categoryWithChildren/'
     }
 }
 
