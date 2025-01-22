@@ -29,8 +29,8 @@ const IconGroup = ({
   const history = useHistory();
   const timeout = 1000 * 60 * 30;
   // const [idleTimer, setIdleTimer] = useState(null);
-  // const [searchData, setSearchData] = useState([]);
-  // const [searchText, setSearchText] = useState('');
+  const [searchData, setSearchData] = useState([]);
+  const [searchText, setSearchText] = useState('');
   const [useDetails, setUseDetails] = useState({});
   useEffect(() => {
     // getCart(cartData.code, userData)
@@ -92,34 +92,34 @@ const IconGroup = ({
     // logout()
   }
 
-  // const onSearch = async (e) => {
-  //   setSearchText(e.target.value)
-  //   if (e.target.value.length >= 3) {
+  const onSearch = async (e) => {
+    setSearchText(e.target.value)
+    if (e.target.value.length >= 3) {
 
-  //     let action = constant.ACTION.SEARCH + constant.ACTION.AUTOCOMPLETE;
-  //     let param = { "query": e.target.value }
-  //     try {
-  //       let response = await WebService.post(action, param);
-  //       if (response) {
-  //         setSearchData(response.values)
-  //       }
-  //     } catch (error) {
-  //       console.log(error, '------------')
-  //     }
-  //   }
-  // }
-  // const onSelectedSearch = (data) => {
-  //   setSearchText(data)
-  //   setSearchData([])
-  // }
-  // const keyDownFunction = (e) => {
-  //   if (e.keyCode === 13) {
-  //     onSearchClick()
-  //   }
-  // }
-  // const onSearchClick = () => {
-  //   history.push('/search/' + searchText)
-  // }
+      let action = constant.ACTION.SEARCH + constant.ACTION.AUTOCOMPLETE;
+      let param = { "query": e.target.value }
+      try {
+        let response = await WebService.post(action, param);
+        if (response) {
+          setSearchData(response.values)
+        }
+      } catch (error) {
+        console.log(error, '------------')
+      }
+    }
+  }
+  const onSelectedSearch = (data) => {
+    setSearchText(data)
+    setSearchData([])
+  }
+  const keyDownFunction = (e) => {
+    if (e.keyCode === 13) {
+      onSearchClick()
+    }
+  }
+  const onSearchClick = () => {
+    history.push('/search/' + searchText)
+  }
   return (
     <div
       className={`header-right-wrap ${iconWhiteClass ? iconWhiteClass : ""}`}
@@ -133,7 +133,7 @@ const IconGroup = ({
         timeout={timeout} />
 
       {/*  search as configurable component */}
-      {/*
+      
       <div className="same-style header-search">
 
         < button className="search-active" onClick={e => handleClick(e)}>
@@ -170,7 +170,6 @@ const IconGroup = ({
           }
         </div>
       </div>
-      */}
 
       <div className="same-style account-setting d-none d-lg-block">
         {
