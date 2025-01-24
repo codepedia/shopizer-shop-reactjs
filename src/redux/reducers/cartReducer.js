@@ -71,7 +71,8 @@ const cartReducer = (state = initState, action) => {
         ...state,
         cartItems: {},
         cartCount: cartItems.cartItems.products.length,
-        cartID: ''
+        cartID: '',
+        discountPrice: null
       }
     } else {
       return {

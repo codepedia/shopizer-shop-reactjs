@@ -339,7 +339,12 @@ const Cart = ({
                                 </td>
 
                                 <td className="product-remove">
-                                  <button onClick={() => deleteFromCart(cartItems.code, cartItem, defaultStore, addToast)}> <i className="fa fa-times"></i> </button>
+                                  <button onClick={() => {
+                                    deleteFromCart(cartItems.code, cartItem, defaultStore, addToast);
+                                    setTimeout(() => {
+                                      getCartTotal(selectedQuoteId)
+                                    }, 1000); 
+                                  }}> <i className="fa fa-times"></i> </button>
                                 </td>
                               </tr>
                             );
